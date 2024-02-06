@@ -1,10 +1,10 @@
 import { APP_TITLE } from '@src/utils/constants';
 import React from 'react';
-import facebookIcon from '~uswds/dist/img/usa-icons/facebook.svg';
-import instagramIcon from '~uswds/dist/img/usa-icons/instagram.svg';
-import rssIcon from '~uswds/dist/img/usa-icons/rss_feed.svg';
-import twitterIcon from '~uswds/dist/img/usa-icons/twitter.svg';
-import youtubeIcon from '~uswds/dist/img/usa-icons/youtube.svg';
+// import facebookIcon from '~uswds/dist/img/usa-icons/facebook.svg';
+// import instagramIcon from '~uswds/dist/img/usa-icons/instagram.svg';
+// import rssIcon from '~uswds/dist/img/usa-icons/rss_feed.svg';
+// import twitterIcon from '~uswds/dist/img/usa-icons/twitter.svg';
+// import youtubeIcon from '~uswds/dist/img/usa-icons/youtube.svg';
 import logo from '/img/logo.png';
 
 export const Footer = (): React.ReactElement => {
@@ -25,7 +25,7 @@ export const Footer = (): React.ReactElement => {
           Return to top
         </a>
       </div>
-      <div className="usa-footer__primary-section">
+      {/* <div className="usa-footer__primary-section">
         <nav className="usa-footer__nav" aria-label="Footer navigation">
           <ul className="grid-row grid-gap">
             <li
@@ -89,7 +89,7 @@ export const Footer = (): React.ReactElement => {
             </li>
           </ul>
         </nav>
-      </div>
+      </div> */}
 
       <div className="usa-footer__secondary-section">
         <div className="grid-container">
@@ -113,7 +113,7 @@ export const Footer = (): React.ReactElement => {
               </div>
             </div>
             <div className="usa-footer__contact-links mobile-lg:grid-col-6">
-              <div className="usa-footer__social-links grid-row grid-gap-1">
+              {/* <div className="usa-footer__social-links grid-row grid-gap-1">
                 <div className="grid-col-auto">
                   <a className="usa-social-link" href="/#">
                     <img
@@ -163,18 +163,16 @@ export const Footer = (): React.ReactElement => {
                     />
                   </a>
                 </div>
-              </div>
-              <h2 className="usa-footer__contact-heading">
-                &lt;Agency Contact Center&gt;
-              </h2>
+              </div> */}
+              <h2 className="usa-footer__contact-heading">Bot Not Working?</h2>
               <address className="usa-footer__address">
                 <div className="usa-footer__contact-info grid-row grid-gap">
-                  <div className="grid-col-auto">
+                  {/* <div className="grid-col-auto">
                     <a href="tel:1-800-555-5555"> &lt;(800) 555-GOVT&gt; </a>
-                  </div>
+                  </div> */}
                   <div className="grid-col-auto">
-                    <a href="mailto:&lt;info@agency.gov&gt;">
-                      &lt;info@agency.gov&gt;
+                    <a href="mailto:dvasquez@metrostar.com">
+                      dvasquez@metrostar.com
                     </a>
                   </div>
                 </div>

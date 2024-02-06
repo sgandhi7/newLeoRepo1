@@ -6,15 +6,15 @@ import { Footer } from './footer';
 describe('Footer', () => {
   test('should render successfully', () => {
     const { baseElement } = render(<Footer />);
-    const primarySection = baseElement.querySelector(
-      '.usa-footer__primary-section',
-    );
+    // const primarySection = baseElement.querySelector(
+    //   '.usa-footer__primary-section',
+    // );
     const secondarySection = baseElement.querySelector(
       '.usa-footer__secondary-section',
     );
 
     expect(baseElement).toBeTruthy();
-    expect(primarySection).toBeTruthy();
+    // expect(primarySection).toBeTruthy();
     expect(secondarySection).toBeTruthy();
   });
 
