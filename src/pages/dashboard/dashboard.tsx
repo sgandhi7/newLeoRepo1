@@ -1,7 +1,6 @@
 // import { Spinner } from '@metrostar/comet-extras';
 // import { Card, CardBody } from '@metrostar/comet-uswds';
 // import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 // import ErrorNotification from '../../components/error-notification/error-notification';
 // import useAuth from '../../hooks/use-auth';
 // import { DashboardBarChart } from './dashboard-bar-chart/dashboard-bar-chart';

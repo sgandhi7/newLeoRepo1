@@ -32,9 +32,10 @@ export default defineConfig({
     open: true,
     port: 8080,
     proxy: {
-      '/score': {
+      '/api': {
         target: 'https://dvasquez-seattle-vcqoi.eastus.inference.ml.azure.com',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

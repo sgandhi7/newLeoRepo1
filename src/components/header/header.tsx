@@ -1,4 +1,4 @@
-import { Banner, Icon, Search } from '@metrostar/comet-uswds';
+import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
@@ -52,10 +52,15 @@ export const Header = (): React.ReactElement => {
       <a className="usa-skipnav " href="#mainSection">
         Skip to main content
       </a>
-      <Banner id="banner" />
       <div className="usa-overlay"></div>
       <header className="usa-header usa-header--basic">
         <div className="usa-nav-container">
+          <img
+            className="chatbot-icon"
+            src="/public/img/chatbot.png"
+            width={113}
+            height={113}
+          ></img>
           <div className="usa-navbar">
             <div className="usa-logo" id="-logo">
               <em className="usa-logo__text">
@@ -114,9 +119,6 @@ export const Header = (): React.ReactElement => {
                 </Link>
               </li>
             </ul>
-            <section aria-label="Search component">
-              <Search id="search" type="small" placeholder="Search our Site" />
-            </section>
           </nav>
         </div>
       </header>

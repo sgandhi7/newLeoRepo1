@@ -1,11 +1,11 @@
-import { APP_TITLE } from '@src/utils/constants';
+// import { APP_TITLE } from '@src/utils/constants';
 import React from 'react';
 // import facebookIcon from '~uswds/dist/img/usa-icons/facebook.svg';
 // import instagramIcon from '~uswds/dist/img/usa-icons/instagram.svg';
 // import rssIcon from '~uswds/dist/img/usa-icons/rss_feed.svg';
 // import twitterIcon from '~uswds/dist/img/usa-icons/twitter.svg';
 // import youtubeIcon from '~uswds/dist/img/usa-icons/youtube.svg';
-import logo from '/img/logo.png';
+// import logo from '/img/logo.png';
 
 export const Footer = (): React.ReactElement => {
   const scrollToTop = (event: React.MouseEvent<HTMLAnchorElement>): void => {
@@ -94,7 +94,7 @@ export const Footer = (): React.ReactElement => {
       <div className="usa-footer__secondary-section">
         <div className="grid-container">
           <div className="grid-row grid-gap">
-            <div
+            {/* <div
               className="
                 usa-footer__logo
                 grid-row
@@ -111,7 +111,7 @@ export const Footer = (): React.ReactElement => {
               <div className="mobile-lg:grid-col-auto">
                 <p className="usa-footer__logo-heading">{APP_TITLE}</p>
               </div>
-            </div>
+            </div> */}
             <div className="usa-footer__contact-links mobile-lg:grid-col-6">
               {/* <div className="usa-footer__social-links grid-row grid-gap-1">
                 <div className="grid-col-auto">
