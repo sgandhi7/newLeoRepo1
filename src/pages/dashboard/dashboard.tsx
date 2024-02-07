@@ -5,9 +5,10 @@
 // import useAuth from '../../hooks/use-auth';
 // import { DashboardBarChart } from './dashboard-bar-chart/dashboard-bar-chart';
 // import { DashboardPieChart } from './dashboard-pie-chart/dashboard-pie-chart';
-import ChatComponent from './dashboard-copilot-chat/chat';
+// import ChatComponent from './dashboard-copilot-chat/chat';
 // import { DashboardTable } from './dashboard-table/dashboard-table';
 // import axios from '@src/utils/axios';
+import { Investigation } from '../chatwindow/chatwindow';
 
 export const Dashboard = (): React.ReactElement => {
   // const { isSignedIn } = useAuth();
@@ -49,7 +50,7 @@ export const Dashboard = (): React.ReactElement => {
       <div className="grid-row">
         <div className="tablet:grid-col-6">
           <div>
-            <ChatComponent />
+            <Investigation />
           </div>
         </div>
         {/* <div className="tablet:grid-col-6">

@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { Route, Routes } from 'react-router';
-import { Footer } from './components/footer/footer';
+// import { Footer } from './components/footer/footer';
 import { Header } from './components/header/header';
 import { ProtectedRoute } from './components/protected-route/protected-route';
+import { Investigation } from './pages/chatwindow/chatwindow';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Home } from './pages/home/home';
 import { SignIn } from './pages/sign-in/sign-in';
@@ -20,10 +21,12 @@ export const App = (): React.ReactElement => (
           <Route path="/" element={<Home />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/investigations" element={<Investigation />} />
+            <Route path="/investigations/:id" element={<Investigation />} />
           </Route>
         </Routes>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   </QueryClientProvider>
 );
