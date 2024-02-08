@@ -57,7 +57,7 @@ export const Header = (): React.ReactElement => {
         <div className="usa-nav-container">
           <img
             className="chatbot-icon"
-            src="/public/img/TACopilotLogo2.png"
+            src="/img/TACopilotLogo2.png"
             width={200}
             height={100}
           ></img>
