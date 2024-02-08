@@ -75,7 +75,7 @@ body {
     min-height: 800px;
     margin-top: 96px;
     .signin {
-      background-image: url('/img/hero.jpg');
+      background-image: url('/img/TACopilotLogo2.png');
       background-size: cover;
       height: 100vh;
       min-width: 100%;
@@ -403,21 +403,6 @@ body {
       height: 20px;
     }
   }
-}
-
-.usa-checkbox__input:checked + [class*='__label']::before {
-  background-color: #381f59;
-  box-shadow: 0 0 0 2px #381f59;
-}
-
-.usa-checkbox__input:checked + [class*='__label']::before,
-.usa-checkbox__input:checked:disabled + [class*='__label']::before,
-.usa-checkbox__input:checked[aria-disabled='true']
-  + [class*='__label']::before {
-  background-image: url(/img/usa-icons/correct8.eac85396.svg),
-    linear-gradient(transparent, transparent);
-  background-repeat: no-repeat;
-  filter: brightness(0.5) sepia(1) hue-rotate(140deg) saturate(6);
 }
 
 table.data-table thead th {
