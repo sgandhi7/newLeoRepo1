@@ -405,24 +405,6 @@ body {
   }
 }
 
-table.data-table thead th {
-  background-color: $color-primary;
-  color: $color-green-light;
-}
-
-table.data-table tbody tr {
-  background-color: $color-white;
-  color: $color-black;
-}
-
-table.data-table tbody td {
-  padding: 8px 16px;
-}
-
-table.data-table tbody tr:hover {
-  background-color: $color-green;
-}
-
 @media (min-width: 80em) {
   .usa-header {
     .usa-logo {
