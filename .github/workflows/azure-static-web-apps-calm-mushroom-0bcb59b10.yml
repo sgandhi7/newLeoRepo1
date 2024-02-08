@@ -35,7 +35,7 @@ jobs:
           output_location: "/app/dist"   # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
         env:
-          APP_BASE_URL: "/"
+          APP_BASE_URL: "/public"
           API_BASE_URL: "/api"
           API_KEY: "Bearer 5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct"
 
