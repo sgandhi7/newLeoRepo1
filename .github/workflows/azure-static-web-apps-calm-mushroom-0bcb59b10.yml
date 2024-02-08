@@ -33,6 +33,10 @@ jobs:
           output_location: "" # Built app content directory - optional
           skip_api_build: true
           ###### End of Repository/Build Configurations ######
+        env:
+          APP_BASE_URL: "/"
+          API_BASE_URL: "/api"
+          API_KEY: "Bearer 5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
