@@ -86,7 +86,7 @@ export const Investigation = (): React.ReactElement => {
                             className="usa__logo-mark"
                             src={chatBot}
                             height={50}
-                            width={50}
+                            width={40}
                             alt="TA Copilot Logo"
                           />
                         </div>

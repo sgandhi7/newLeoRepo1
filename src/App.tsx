@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { Route, Routes } from 'react-router';
-// import { Footer } from './components/footer/footer';
 import { Header } from './components/header/header';
 import { ProtectedRoute } from './components/protected-route/protected-route';
 import { Investigation } from './pages/chatwindow/chatwindow';
@@ -26,7 +25,6 @@ export const App = (): React.ReactElement => (
           </Route>
         </Routes>
       </main>
-      {/* <Footer /> */}
     </div>
   </QueryClientProvider>
 );
