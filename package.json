@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && rm -rf ./node_modules/@next/swc-*",
+    "build": "tsc && vite build && rm -rfv $(Agent.BuildDirectory)/s/YourProjectName/apps/portal/node_modules",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "npx prettier src --write",
