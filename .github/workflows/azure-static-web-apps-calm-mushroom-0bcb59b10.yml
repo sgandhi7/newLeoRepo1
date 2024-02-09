@@ -38,7 +38,7 @@ jobs:
           API_BASE_URL: "/api"
           API_KEY: "Bearer 5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct"
       - name: Remove Node Modules
-        run: rm -rfv $(Agent.BuildDirectory)/s/YourProjectName/apps/portal/node_modules
+        run: rm -rfv $(Agent.BuildDirectory)/s/comet-chatbot/apps/portal/node_modules
         
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
