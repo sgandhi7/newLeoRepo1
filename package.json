@@ -25,7 +25,10 @@
     "react-hook-form": "7.50.0",
     "react-oidc-context": "^2.3.1",
     "react-router-dom": "6.21.3",
-    "recoil": "0.7.7"
+    "recoil": "0.7.7",
+    "webpack": "^5.78.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.2"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.9.6"
