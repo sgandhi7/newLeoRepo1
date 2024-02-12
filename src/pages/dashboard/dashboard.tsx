@@ -8,9 +8,24 @@
 // import ChatComponent from './dashboard-copilot-chat/chat';
 // import { DashboardTable } from './dashboard-table/dashboard-table';
 // import axios from '@src/utils/axios';
-import { Investigation } from '../chatwindow/chatwindow';
+import { Search } from '@src/pages/dashboard/dashboard-copilot-chat/chat';
+import { Investigation as InvestigationState } from '@src/types/investigation';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { currentInvestigation as defaultInvestigation } from '../../store';
 
 export const Dashboard = (): React.ReactElement => {
+  const [, setCurrentInvestigation] =
+    useRecoilState<InvestigationState>(defaultInvestigation);
+  const [searchInput, setSearchInput] = useState<string>('');
+
+  const handleButtonClick = (buttonText: string) => {
+    setSearchInput(buttonText);
+  };
+
+  useEffect(() => {
+    setCurrentInvestigation({});
+  }, [setCurrentInvestigation]);
   // const { isSignedIn } = useAuth();
   // const {
   //   // isLoading,
@@ -37,7 +52,7 @@ export const Dashboard = (): React.ReactElement => {
     <div className="grid-container">
       <div className="grid-row padding-bottom-2">
         <div className="grid-col">
-          <h1>Dashboard</h1>
+          <h1>TA Copilot</h1>
         </div>
       </div>
       {/* {error && (
@@ -48,9 +63,50 @@ export const Dashboard = (): React.ReactElement => {
         </div>
       )} */}
       <div className="grid-row">
-        <div className="tablet:grid-col-6">
-          <div>
-            <Investigation />
+        <div className="grid-col">
+          <div
+            className="width-100 padding-top-6"
+            style={{ textAlign: 'center' }}
+          >
+            <h1 className="margin-bottom-4">What would you like help with?</h1>
+            <p className="margin-top-1">Perform a search.</p>
+            <div className="button-container">
+              <p className="helper-text">
+                Don't know where to start? Try a helper prompt.
+              </p>
+              <button
+                className="helper-button"
+                onClick={() =>
+                  handleButtonClick('List employees with Drupal experience')
+                }
+              >
+                List employees with Drupal experience
+              </button>
+              <button
+                className="helper-button"
+                onClick={() =>
+                  handleButtonClick(
+                    'List employees that would best fit job requisition Drupal developer 4883',
+                  )
+                }
+              >
+                List employees that would best fit job requisition Drupal
+                developer 4883
+              </button>
+              <button
+                className="helper-button"
+                onClick={() =>
+                  handleButtonClick(
+                    'Given Rosa Nguyen’s skills, what job posting best fits them?',
+                  )
+                }
+              >
+                Given Rosa Nguyen’s skills, what job posting best fits them?
+              </button>
+            </div>
+          </div>
+          <div id="investigations" className="prompt">
+            <Search searchInput={searchInput} setSearchInput={setSearchInput} />
           </div>
         </div>
         {/* <div className="tablet:grid-col-6">

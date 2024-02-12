@@ -1,4 +1,4 @@
-export const APP_TITLE = '';
+export const APP_TITLE = 'Leo';
 export const REQUIRED_FIELD_MESSAGE = 'This field is required.';
 export const MIN_PASSWORD_LENGTH = 8;
 export const PASSWORD_LENGTH_MESSAGE = `Password must be at least ${MIN_PASSWORD_LENGTH} characters long`;

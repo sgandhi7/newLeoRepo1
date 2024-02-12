@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { currentInvestigation as defaultInvestigation } from 'src/store';
-import chatBot from '/img/TACopilotChat.png';
+import chatBot from '/img/MetroStarLogo.png';
 import infinteLoop from '/img/infinteLoop.svg';
 // import logomark from '/img/logo-mark.svg';
 export const Investigation = (): React.ReactElement => {

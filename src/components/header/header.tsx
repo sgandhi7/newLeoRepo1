@@ -57,13 +57,16 @@ export const Header = (): React.ReactElement => {
         <div className="usa-nav-container">
           <img
             className="chatbot-icon"
-            src="/img/TACopilotLogo2.png"
-            width={200}
+            src="/img/MetroStarLogo.png"
+            width={100}
             height={100}
           ></img>
           <div className="usa-navbar">
             <div className="usa-logo" id="-logo">
-              <em className="usa-logo__text">
+              <em
+                className="usa-logo__text"
+                style={{ fontSize: '35px', height: '52px' }}
+              >
                 <NavLink id="logo-link" to="/">
                   {APP_TITLE}
                 </NavLink>
@@ -102,7 +105,7 @@ export const Header = (): React.ReactElement => {
                       location.pathname === '/dashboard' ? 'usa-current' : ''
                     }`}
                   >
-                    Dashboard
+                    Copilot
                   </NavLink>
                 </li>
               )}

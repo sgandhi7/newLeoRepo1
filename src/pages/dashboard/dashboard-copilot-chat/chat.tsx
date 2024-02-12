@@ -215,7 +215,7 @@ export const Search = ({
             onClick={handleSearch}
             disabled={loading || isSearching}
           >
-            Search
+            Send
           </Button>
         )}
       </div>

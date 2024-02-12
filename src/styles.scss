@@ -14,7 +14,7 @@
 
 @forward 'providers/uswds/uswds.scss';
 
-$color-primary: #1244cf;
+$color-primary: #0097FE;
 $color-primary-gray: #edeaee;
 $color-secondary: #d83933;
 $color-white: #ffffff;
@@ -137,7 +137,7 @@ body {
     .helper-button {
       margin: 1rem;
       padding: 1rem;
-      border: 2px solid rgba(17, 27, 212, 0.7);
+      border: 2px solid $color-primary;
       cursor: pointer;
       border-radius: 10px;
       width: 30%;
