@@ -16,14 +16,14 @@
 // } from '@src/utils/constants';
 // import React, { FormEvent } from 'react';
 // import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+// import { useHref, useNavigate } from 'react-router-dom';
 // import useAuth from '../../hooks/use-auth';
 import { Button, ButtonGroup } from '@metrostar/comet-uswds';
 import { useRecoilState } from 'recoil';
 import { signedIn } from 'src/store';
 
 export const SignIn = (): React.ReactElement => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [, setIsSignedIn] = useRecoilState<boolean>(signedIn);
   // const { signIn, error } = useAuth();
   // const {
@@ -48,8 +48,8 @@ export const SignIn = (): React.ReactElement => {
   // };
 
   const handleSsoSignIn = (): void => {
-    navigate('/.auth/login/aad');
     setIsSignedIn(true);
+    // navigate('/.auth/login/aad');
   };
 
   return (
@@ -62,7 +62,10 @@ export const SignIn = (): React.ReactElement => {
               id="sign-in-sso"
               type="button"
               variant="outline"
-              onClick={handleSsoSignIn}
+              onClick={() => {
+                handleSsoSignIn;
+                window.location.href = '/.auth/login/aad';
+              }}
             >
               SSO
             </Button>
