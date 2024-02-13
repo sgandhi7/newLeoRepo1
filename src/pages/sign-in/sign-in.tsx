@@ -19,6 +19,7 @@
 // import { useHref, useNavigate } from 'react-router-dom';
 // import useAuth from '../../hooks/use-auth';
 import { Button, ButtonGroup } from '@metrostar/comet-uswds';
+// import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { signedIn } from 'src/store';
 
@@ -58,17 +59,16 @@ export const SignIn = (): React.ReactElement => {
         <div className="tablet:grid-col-6">
           <h1>Sign In</h1>
           <ButtonGroup>
-            <Button
-              id="sign-in-sso"
-              type="button"
-              variant="outline"
-              onClick={() => {
-                handleSsoSignIn;
-                window.location.href = '/.auth/login/aad';
-              }}
-            >
-              SSO
-            </Button>
+            <a href="/.auth/login/aad">
+              <Button
+                id="sign-in-sso"
+                type="button"
+                variant="outline"
+                onClick={handleSsoSignIn}
+              >
+                SSO
+              </Button>
+            </a>
           </ButtonGroup>
           {/* {error && (
             <Alert id="loginAlert" type="error" heading="Error">
