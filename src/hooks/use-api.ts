@@ -1,4 +1,4 @@
-import axios from '@src/utils/axios';
+import axios from '@src/utils/api/axios';
 import { useCallback, useState } from 'react';
 import { Investigation } from '../types/investigation';
 

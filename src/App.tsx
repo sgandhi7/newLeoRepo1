@@ -6,7 +6,7 @@ import { ProtectedRoute } from './components/protected-route/protected-route';
 import { Investigation } from './pages/chatwindow/chatwindow';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Home } from './pages/home/home';
-// import { SignIn } from './pages/sign-in/sign-in';
+import { SignIn } from './pages/sign-in/sign-in';
 
 const queryClient = new QueryClient();
 
@@ -15,9 +15,8 @@ export const App = (): React.ReactElement => (
     <div>
       <Header />
       <main id="mainSection" className="usa-section">
-        <a href="/.auth/login/aad?post_login_redirect_uri=/dashboard">Login</a>
         <Routes>
-          {/* <Route path="/signin" element={<SignIn />} /> */}
+          <Route path="/signin" element={<SignIn />} />
           <Route path="/" element={<Home />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />

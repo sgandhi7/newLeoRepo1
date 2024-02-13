@@ -1,58 +1,63 @@
-import {
-  Alert,
-  Button,
-  ButtonGroup,
-  ErrorMessages,
-  Form,
-  FormGroup,
-  Label,
-  TextInput,
-} from '@metrostar/comet-uswds';
-import { FormInput } from '@src/types/form';
-import { hasSsoConfig } from '@src/utils/auth';
-import {
-  PASSWORD_RULES,
-  REQUIRED_FORM_FIELDS_RULES,
-} from '@src/utils/constants';
-import React, { FormEvent } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/use-auth';
+// import {
+//   Alert,
+//   Button,
+//   ButtonGroup,
+//   ErrorMessages,
+//   Form,
+//   FormGroup,
+//   Label,
+//   TextInput,
+// } from '@metrostar/comet-uswds';
+// import { FormInput } from '@src/types/form';
+// import { hasSsoConfig } from '@src/utils/auth';
+// import {
+//   PASSWORD_RULES,
+//   REQUIRED_FORM_FIELDS_RULES,
+// } from '@src/utils/constants';
+// import React, { FormEvent } from 'react';
+// import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+// import { useNavigate } from 'react-router-dom';
+// import useAuth from '../../hooks/use-auth';
 
 export const SignIn = (): React.ReactElement => {
-  const navigate = useNavigate();
-  const { signIn, error } = useAuth();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInput>({
-    defaultValues: {
-      username: '',
-      password: '',
-    },
-  });
+  // const navigate = useNavigate();
+  // const { signIn, error } = useAuth();
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = useForm<FormInput>({
+  //   defaultValues: {
+  //     username: '',
+  //     password: '',
+  //   },
+  // });
 
-  const onSubmit: SubmitHandler<FormInput> = () => {
-    signIn(false);
-    navigate('/dashboard');
-  };
+  // const onSubmit: SubmitHandler<FormInput> = () => {
+  //   signIn(false);
+  //   navigate('/dashboard');
+  // };
 
-  const handleCancel = (event: FormEvent): void => {
-    event.preventDefault();
-    navigate('/');
-  };
+  // const handleCancel = (event: FormEvent): void => {
+  //   event.preventDefault();
+  //   navigate('/');
+  // };
 
-  const handleSsoSignIn = (): void => {
-    signIn(true);
-  };
+  // const handleSsoSignIn = (): void => {
+  //   signIn(true);
+  // };
 
   return (
     <div className="grid-container">
       <div className="grid-row">
         <div className="tablet:grid-col-6">
           <h1>Sign In</h1>
-          {error && (
+          <div>
+            <a href="/.auth/login/aad?post_login_redirect_uri=/dashboard">
+              SSO
+            </a>
+          </div>
+          {/* {error && (
             <Alert id="loginAlert" type="error" heading="Error">
               Incorrect email or password was entered.
             </Alert>
@@ -117,7 +122,7 @@ export const SignIn = (): React.ReactElement => {
                 </Button>
               )}
             </ButtonGroup>
-          </Form>
+          </Form> */}
         </div>
       </div>
     </div>
