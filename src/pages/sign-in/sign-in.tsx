@@ -16,11 +16,13 @@
 // } from '@src/utils/constants';
 // import React, { FormEvent } from 'react';
 // import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import useAuth from '../../hooks/use-auth';
 
+import { Button, ButtonGroup } from '@metrostar/comet-uswds';
+
 export const SignIn = (): React.ReactElement => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // const { signIn, error } = useAuth();
   // const {
   //   control,
@@ -43,18 +45,25 @@ export const SignIn = (): React.ReactElement => {
   //   navigate('/');
   // };
 
-  // const handleSsoSignIn = (): void => {
-  //   signIn(true);
-  // };
+  const handleSsoSignIn = (): void => {
+    navigate('/.auth/login/aad');
+  };
 
   return (
     <div className="grid-container">
       <div className="grid-row">
         <div className="tablet:grid-col-6">
           <h1>Sign In</h1>
-          <div>
-            <a href="/.auth/login/aad">SSO</a>
-          </div>
+          <ButtonGroup>
+            <Button
+              id="sign-in-sso"
+              type="button"
+              variant="outline"
+              onClick={handleSsoSignIn}
+            >
+              SSO
+            </Button>
+          </ButtonGroup>
           {/* {error && (
             <Alert id="loginAlert" type="error" heading="Error">
               Incorrect email or password was entered.
