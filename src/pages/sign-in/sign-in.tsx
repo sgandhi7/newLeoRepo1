@@ -25,7 +25,7 @@ import { signedIn } from 'src/store';
 
 export const SignIn = (): React.ReactElement => {
   // const navigate = useNavigate();
-  const [, setIsSignedIn] = useRecoilState<boolean>(signedIn);
+  const [isSignedIn, setIsSignedIn] = useRecoilState<boolean>(signedIn);
   // const { signIn, error } = useAuth();
   // const {
   //   control,
@@ -49,7 +49,9 @@ export const SignIn = (): React.ReactElement => {
   // };
 
   const handleSsoSignIn = (): void => {
-    setIsSignedIn(true);
+    if (!isSignedIn) {
+      setIsSignedIn(true);
+    }
     // navigate('/.auth/login/aad');
   };
 
