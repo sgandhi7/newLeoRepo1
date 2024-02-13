@@ -124,40 +124,18 @@ export const Header = (): React.ReactElement => {
                   </NavLink>
                 </li>
               )}
-              {!isSignedIn && (
-                <li className="usa-nav__primary-item">
-                  <Link
-                    id="auth-link"
-                    to="/signin"
-                    className={`usa-nav__link ${
-                      location.pathname === '/signin' ? 'usa-current' : ''
-                    }`}
-                    onClick={handleAuth}
-                  >
-                    {/* {isSignedIn ? 'Sign Out' : 'Sign In'} */}
-                    Sign In
-                  </Link>
-                </li>
-              )}
-              {isSignedIn && (
-                <a href="/.auth/logout">
-                  <li className="usa-nav__primary-item">
-                    <Link
-                      id="auth-link-out"
-                      to="/.auth/logout"
-                      className={`usa-nav__link ${
-                        location.pathname === '/.auth/logout'
-                          ? 'usa-current'
-                          : ''
-                      }`}
-                      onClick={handleAuth}
-                    >
-                      {/* {isSignedIn ? 'Sign Out' : 'Sign In'} */}
-                      Sign Out
-                    </Link>
-                  </li>
-                </a>
-              )}
+              <li className="usa-nav__primary-item">
+                <Link
+                  id="auth-link"
+                  to={isSignedIn ? '/.auth/logout' : '/signin'}
+                  className={`usa-nav__link ${
+                    location.pathname === '/signin' ? 'usa-current' : ''
+                  }`}
+                  onClick={handleAuth}
+                >
+                  {isSignedIn ? 'Sign Out' : 'Sign In'}
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
