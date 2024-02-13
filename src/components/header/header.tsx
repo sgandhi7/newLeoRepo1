@@ -1,16 +1,14 @@
 import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
-import React, { SyntheticEvent, useEffect, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/use-auth';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 
 export const Header = (): React.ReactElement => {
   const [showMenu, setShowMenu] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const location = useLocation();
-  const { isSignedIn, signOut } = useAuth();
 
   const handleMenuClick = (): void => {
     window.scrollTo({ top: 0 });
@@ -37,15 +35,15 @@ export const Header = (): React.ReactElement => {
     setShowMenu(false);
   }, [location]);
 
-  const handleAuth = (event: SyntheticEvent): void => {
-    event.preventDefault();
-    if (isSignedIn) {
-      signOut();
-      navigate('/');
-    } else {
-      navigate('/signin');
-    }
-  };
+  // const handleAuth = (event: SyntheticEvent): void => {
+  //   event.preventDefault();
+  //   if (isSignedIn) {
+  //     signOut();
+  //     navigate('/');
+  //   } else {
+  //     navigate('/signin');
+  //   }
+  // };
 
   return (
     <>
@@ -96,21 +94,21 @@ export const Header = (): React.ReactElement => {
                   Home
                 </NavLink>
               </li>
-              {isSignedIn && (
-                <li className="usa-nav__primary-item">
-                  <NavLink
-                    id="dashboard-link"
-                    to="/dashboard"
-                    className={`usa-nav__link ${
-                      location.pathname === '/dashboard' ? 'usa-current' : ''
-                    }`}
-                  >
-                    Copilot
-                  </NavLink>
-                </li>
-              )}
+              {/* {isSignedIn && ( */}
               <li className="usa-nav__primary-item">
-                <Link
+                <NavLink
+                  id="dashboard-link"
+                  to="/dashboard"
+                  className={`usa-nav__link ${
+                    location.pathname === '/dashboard' ? 'usa-current' : ''
+                  }`}
+                >
+                  Copilot
+                </NavLink>
+              </li>
+              {/* )} */}
+              <li className="usa-nav__primary-item">
+                {/* <Link
                   id="auth-link"
                   to="/signin"
                   className={`usa-nav__link ${
@@ -119,7 +117,7 @@ export const Header = (): React.ReactElement => {
                   onClick={handleAuth}
                 >
                   {isSignedIn ? 'Sign Out' : 'Sign In'}
-                </Link>
+                </Link> */}
               </li>
             </ul>
           </nav>
