@@ -35,6 +35,7 @@ export const Header = (): React.ReactElement => {
       setIsSignedIn(true);
     } else {
       setIsSignedIn(false);
+      navigate('/signin');
     }
     // Ensure cleanup after the effect
     return () => {
