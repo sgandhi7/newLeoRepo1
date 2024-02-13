@@ -7,10 +7,10 @@ import './styles.scss';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename={process.env.APP_BASE_URL}>
-      <RecoilRoot>
+    <RecoilRoot>
+      <BrowserRouter basename={process.env.APP_BASE_URL}>
         <App />
-      </RecoilRoot>
-    </BrowserRouter>
+      </BrowserRouter>
+    </RecoilRoot>
   </React.StrictMode>,
 );

@@ -1,7 +1,7 @@
 import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
-import React, { useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { signedIn } from 'src/store';
@@ -37,8 +37,8 @@ export const Header = (): React.ReactElement => {
     setShowMenu(false);
   }, [location]);
 
-  const handleAuth = (): void => {
-    // event.preventDefault();
+  const handleAuth = (event: SyntheticEvent): void => {
+    event.preventDefault();
     if (isSignedIn) {
       setIsSignedIn(false);
       navigate('/.auth/logout');
@@ -96,19 +96,19 @@ export const Header = (): React.ReactElement => {
                   Home
                 </NavLink>
               </li>
-              {/* {isSignedIn && ( */}
-              <li className="usa-nav__primary-item">
-                <NavLink
-                  id="dashboard-link"
-                  to="/dashboard"
-                  className={`usa-nav__link ${
-                    location.pathname === '/dashboard' ? 'usa-current' : ''
-                  }`}
-                >
-                  Copilot
-                </NavLink>
-              </li>
-              {/* )} */}
+              {isSignedIn && (
+                <li className="usa-nav__primary-item">
+                  <NavLink
+                    id="dashboard-link"
+                    to="/dashboard"
+                    className={`usa-nav__link ${
+                      location.pathname === '/dashboard' ? 'usa-current' : ''
+                    }`}
+                  >
+                    Copilot
+                  </NavLink>
+                </li>
+              )}
               <li className="usa-nav__primary-item">
                 <Link
                   id="auth-link"
@@ -120,7 +120,6 @@ export const Header = (): React.ReactElement => {
                 >
                   {isSignedIn ? 'Sign Out' : 'Sign In'}
                 </Link>
-                {/* <a href="/.auth/logout">Sign out</a> */}
               </li>
             </ul>
           </nav>
