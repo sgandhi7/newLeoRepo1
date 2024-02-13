@@ -124,8 +124,9 @@ export const Header = (): React.ReactElement => {
                   className={`usa-nav__link ${
                     location.pathname === '/.auth/logout'
                   }`}
-                  // onClick={}
-                ></Link>
+                >
+                  Sign Out
+                </Link>
               </li>
             </ul>
           </nav>
