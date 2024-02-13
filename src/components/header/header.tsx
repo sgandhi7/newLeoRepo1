@@ -1,14 +1,14 @@
 import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-// import { useRecoilState } from 'recoil';
-// import { signedIn } from 'src/store';
+import { useRecoilState } from 'recoil';
+import { signedIn } from 'src/store';
 
 export const Header = (): React.ReactElement => {
   const [showMenu, setShowMenu] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useRecoilState<boolean>(signedIn);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -37,8 +37,8 @@ export const Header = (): React.ReactElement => {
     setShowMenu(false);
   }, [location]);
 
-  const handleAuth = (event: SyntheticEvent): void => {
-    event.preventDefault();
+  const handleAuth = (): void => {
+    // event.preventDefault();
     if (isSignedIn) {
       setIsSignedIn(false);
       navigate('/.auth/logout');
