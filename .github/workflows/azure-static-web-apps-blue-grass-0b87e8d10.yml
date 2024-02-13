@@ -34,7 +34,7 @@ jobs:
           ###### End of Repository/Build Configurations ######
         env:
           APP_BASE_URL: "/"
-          API_BASE_URL: "/api"
+          API_BASE_URL: "https://dvasquez-seattle-vcqoi.eastus.inference.ml.azure.com"
           API_KEY: "Bearer 5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct"
 
   close_pull_request_job:
