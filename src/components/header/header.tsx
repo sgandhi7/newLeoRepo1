@@ -120,7 +120,7 @@ export const Header = (): React.ReactElement => {
                 </Link> */}
                 <Link
                   id="auth-link"
-                  to="/signin"
+                  to="/.auth/logout"
                   className={`usa-nav__link ${
                     location.pathname === '/.auth/logout'
                   }`}
