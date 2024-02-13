@@ -54,7 +54,7 @@ export const Header = (): React.ReactElement => {
     // Check if signed in
     if (isSignedIn) {
       setIsSignedIn(false);
-      navigate('/.auth/logout');
+      // navigate('/.auth/logout');
     } else {
       navigate('/signin');
     }
@@ -127,7 +127,7 @@ export const Header = (): React.ReactElement => {
                   id="auth-link"
                   to="/signin"
                   className={`usa-nav__link ${
-                    location.pathname === '/signin' ? 'usa-current' : ''
+                    location.pathname === '/signin' ? '/.auth/logout' : ''
                   }`}
                   onClick={handleAuth}
                 >
