@@ -52,12 +52,15 @@ export const Header = (): React.ReactElement => {
     setShowMenu(false);
   }, [location]);
 
+  const handleLogout = (): void => {
+    window.location.href = '/.auth/logout';
+  };
   const handleAuth = (event: SyntheticEvent): void => {
     event.preventDefault();
     // Check if signed in
     if (isSignedIn) {
       setIsSignedIn(false);
-      // navigate('/.auth/logout');
+      handleLogout();
     } else {
       navigate('/signin');
     }
@@ -128,7 +131,7 @@ export const Header = (): React.ReactElement => {
               <li className="usa-nav__primary-item">
                 <Link
                   id="auth-link"
-                  to={isSignedIn ? '/.auth/logout' : '/signin'}
+                  to="/signin"
                   className={`usa-nav__link ${
                     location.pathname === '/signin' ? 'usa-current' : ''
                   }`}
