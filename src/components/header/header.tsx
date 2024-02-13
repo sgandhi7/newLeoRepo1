@@ -107,8 +107,8 @@ export const Header = (): React.ReactElement => {
                 </NavLink>
               </li>
               {/* )} */}
-              {/* <li className="usa-nav__primary-item">
-                <Link
+              <li className="usa-nav__primary-item">
+                {/* <Link
                   id="auth-link"
                   to="/signin"
                   className={`usa-nav__link ${
@@ -117,9 +117,9 @@ export const Header = (): React.ReactElement => {
                   onClick={handleAuth}
                 >
                   {isSignedIn ? 'Sign Out' : 'Sign In'}
-                </Link>
+                </Link> */}
                 <a href="/.auth/logout">Sign out</a>
-              </li> */}
+              </li>
             </ul>
           </nav>
         </div>
