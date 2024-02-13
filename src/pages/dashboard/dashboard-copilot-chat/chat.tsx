@@ -15,7 +15,7 @@ import {
 } from 'src/store';
 // eslint-disable-next-line prettier/prettier
 // import useApi from '@src/hooks/use-api';
-import { generateGUID } from '@src/utils/api';
+import { generateGUID } from '@src/utils/api/api';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
