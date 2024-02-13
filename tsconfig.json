@@ -33,6 +33,6 @@
       "@src/utils/*": ["src/utils/*"]
     }
   },
-  "include": ["src", "api"],
+  "include": ["src", "src/utils/api"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
