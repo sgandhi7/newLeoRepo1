@@ -18,11 +18,13 @@
 // import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 // import useAuth from '../../hooks/use-auth';
-
 import { Button, ButtonGroup } from '@metrostar/comet-uswds';
+import { useRecoilState } from 'recoil';
+import { signedIn } from 'src/store';
 
 export const SignIn = (): React.ReactElement => {
   const navigate = useNavigate();
+  const [, setIsSignedIn] = useRecoilState<boolean>(signedIn);
   // const { signIn, error } = useAuth();
   // const {
   //   control,
@@ -47,6 +49,7 @@ export const SignIn = (): React.ReactElement => {
 
   const handleSsoSignIn = (): void => {
     navigate('/.auth/login/aad');
+    setIsSignedIn(true);
   };
 
   return (

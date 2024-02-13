@@ -1,13 +1,15 @@
 import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
-import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { signedIn } from 'src/store';
 
 export const Header = (): React.ReactElement => {
   const [showMenu, setShowMenu] = useState(false);
-
-  // const navigate = useNavigate();
+  const [isSignedIn, setIsSignedIn] = useRecoilState<boolean>(signedIn);
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleMenuClick = (): void => {
@@ -35,15 +37,15 @@ export const Header = (): React.ReactElement => {
     setShowMenu(false);
   }, [location]);
 
-  // const handleAuth = (event: SyntheticEvent): void => {
-  //   event.preventDefault();
-  //   if (isSignedIn) {
-  //     signOut();
-  //     navigate('/');
-  //   } else {
-  //     navigate('/signin');
-  //   }
-  // };
+  const handleAuth = (event: SyntheticEvent): void => {
+    event.preventDefault();
+    if (isSignedIn) {
+      setIsSignedIn(false);
+      navigate('/.auth/logout');
+    } else {
+      navigate('/signin');
+    }
+  };
 
   return (
     <>
@@ -108,7 +110,7 @@ export const Header = (): React.ReactElement => {
               </li>
               {/* )} */}
               <li className="usa-nav__primary-item">
-                {/* <Link
+                <Link
                   id="auth-link"
                   to="/signin"
                   className={`usa-nav__link ${
@@ -117,8 +119,8 @@ export const Header = (): React.ReactElement => {
                   onClick={handleAuth}
                 >
                   {isSignedIn ? 'Sign Out' : 'Sign In'}
-                </Link> */}
-                <a href="/.auth/logout">Sign out</a>
+                </Link>
+                {/* <a href="/.auth/logout">Sign out</a> */}
               </li>
             </ul>
           </nav>
