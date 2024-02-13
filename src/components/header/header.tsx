@@ -33,6 +33,8 @@ export const Header = (): React.ReactElement => {
 
     if (isAuth != null) {
       setIsSignedIn(true);
+    } else {
+      setIsSignedIn(false);
     }
     // Ensure cleanup after the effect
     return () => {
@@ -122,18 +124,40 @@ export const Header = (): React.ReactElement => {
                   </NavLink>
                 </li>
               )}
-              <li className="usa-nav__primary-item">
-                <Link
-                  id="auth-link"
-                  to="/signin"
-                  className={`usa-nav__link ${
-                    location.pathname === '/signin' ? '/.auth/logout' : ''
-                  }`}
-                  onClick={handleAuth}
-                >
-                  {isSignedIn ? 'Sign Out' : 'Sign In'}
-                </Link>
-              </li>
+              {!isSignedIn && (
+                <li className="usa-nav__primary-item">
+                  <Link
+                    id="auth-link"
+                    to="/signin"
+                    className={`usa-nav__link ${
+                      location.pathname === '/signin' ? 'usa-current' : ''
+                    }`}
+                    onClick={handleAuth}
+                  >
+                    {/* {isSignedIn ? 'Sign Out' : 'Sign In'} */}
+                    Sign In
+                  </Link>
+                </li>
+              )}
+              {isSignedIn && (
+                <a href="/.auth/logout">
+                  <li className="usa-nav__primary-item">
+                    <Link
+                      id="auth-link-out"
+                      to="/.auth/logout"
+                      className={`usa-nav__link ${
+                        location.pathname === '/.auth/logout'
+                          ? 'usa-current'
+                          : ''
+                      }`}
+                      onClick={handleAuth}
+                    >
+                      {/* {isSignedIn ? 'Sign Out' : 'Sign In'} */}
+                      Sign Out
+                    </Link>
+                  </li>
+                </a>
+              )}
             </ul>
           </nav>
         </div>
