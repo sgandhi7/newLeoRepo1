@@ -1,5 +1,5 @@
-import axios from '@src/utils/api/axios';
 import { useCallback, useState } from 'react';
+import axios from 'src/api/axios';
 import { Investigation } from '../types/investigation';
 
 const useApi = () => {

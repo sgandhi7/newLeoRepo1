@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "ms-azuretools.vscode-azurefunctions",
     "mgmcdermott.vscode-language-babel",
     "editorconfig.editorconfig",
     "irongeek.vscode-env",

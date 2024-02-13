@@ -17,11 +17,23 @@ export const Header = (): React.ReactElement => {
     setShowMenu(!showMenu);
   };
 
+  async function getUserInfo() {
+    const response = await fetch('/.auth/me');
+    const payload = await response.json();
+    const { clientPrincipal } = payload;
+    return clientPrincipal;
+  }
+
   // Ensure navigation JS is loaded
   useEffect(() => {
     const bodyElement = document.body;
     navigation.on(bodyElement);
 
+    const isAuth = getUserInfo();
+
+    if (isAuth != null) {
+      setIsSignedIn(true);
+    }
     // Ensure cleanup after the effect
     return () => {
       navigation.off(bodyElement);
@@ -39,6 +51,7 @@ export const Header = (): React.ReactElement => {
 
   const handleAuth = (event: SyntheticEvent): void => {
     event.preventDefault();
+    // Check if signed in
     if (isSignedIn) {
       setIsSignedIn(false);
       navigate('/.auth/logout');
