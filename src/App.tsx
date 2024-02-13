@@ -15,6 +15,7 @@ export const App = (): React.ReactElement => (
     <div>
       <Header />
       <main id="mainSection" className="usa-section">
+        <a href="/.auth/login/aad?post_login_redirect_uri=/dashboard">Login</a>
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/" element={<Home />} />
