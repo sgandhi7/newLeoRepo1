@@ -43,6 +43,7 @@ export const Header = (): React.ReactElement => {
       setIsSignedIn(false);
       navigate('/.auth/logout');
     } else {
+      setIsSignedIn(true);
       navigate('/signin');
     }
   };
