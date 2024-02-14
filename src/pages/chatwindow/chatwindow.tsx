@@ -21,6 +21,7 @@ export const Investigation = (): React.ReactElement => {
   // const [showSources, setShowSources] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState('');
 
+  // Set current chat
   useEffect(() => {
     if (item) {
       const prompts = item.prompts;

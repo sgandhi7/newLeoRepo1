@@ -108,41 +108,35 @@ export const Search = ({
       chatHistory = JSON.parse(localData);
       console.log(chatHistory);
     }
-    // await search(queryCopy, chatHistory).then((response) => {
-    //   newPrompt = {
-    //     id: generateGUID(),
-    //     prompt: queryCopy,
-    //     completion: response.reply,
-    //   };
-    //   console.log('Breakpoint');
-    //   chatHistory = formatConversation(chatHistory, queryCopy, response);
-    //   window.sessionStorage.setItem(
-    //     'chat_history',
-    //     JSON.stringify(chatHistory),
-    //   );
-    //   newData[0] = newPrompt;
-    //   updateCurrentInvestigation(newData);
-    //   setIsSearching(false);
-    //   setSearchInput('');
-    // });
+
+    // Intialize variable to send to api
     const data = {
       query: queryCopy,
       chat_history: chatHistory,
     };
     try {
+      // Make API call
       const response = await axios.post('/score', data);
+      // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
         prompt: queryCopy,
         completion: response.data.reply,
       };
+      // Format chat history
       chatHistory = formatConversation(chatHistory, queryCopy, response.data);
+
+      // Send chat history to session storage
       window.sessionStorage.setItem(
         'chat_history',
         JSON.stringify(chatHistory),
       );
+
+      // Update investigation (chat)
       newData[0] = newPrompt;
       updateCurrentInvestigation(newData);
+
+      // Finished responding
       loading = false;
       setIsSearching(false);
       setSearchInput('');

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Set up initial api instance
 const instance = axios.create({
   withCredentials: true,
   baseURL: process.env.API_BASE_URL,

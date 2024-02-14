@@ -22,14 +22,6 @@ export const Header = (): React.ReactElement => {
     const bodyElement = document.body;
     navigation.on(bodyElement);
 
-    // if (isAuth != null) {
-    //   setIsSignedIn(true);
-    // } else {
-    //   console.log('Auth is null');
-    //   setIsSignedIn(false);
-    //   navigate('/signin');
-    // }
-    // Ensure cleanup after the effect
     return () => {
       navigation.off(bodyElement);
     };
