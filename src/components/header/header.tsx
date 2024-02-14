@@ -24,7 +24,6 @@ export const Header = (): React.ReactElement => {
       const { clientPrincipal } = payload;
       return clientPrincipal.data;
     } catch (error) {
-      console.log('User not logged in:', error);
       return null;
     }
   }
@@ -39,6 +38,7 @@ export const Header = (): React.ReactElement => {
     if (isAuth != null) {
       setIsSignedIn(true);
     } else {
+      console.log('User not logged in');
       setIsSignedIn(false);
       navigate('/signin');
     }
