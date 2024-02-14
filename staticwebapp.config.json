@@ -9,6 +9,12 @@
         "statusCode": 302
     }
   },
+  "routes": [
+    {
+      "route": "/",
+      "allowedRoles": ["authenticated"]
+    }
+  ],
   "auth": {
     "identityProviders": {
       "azureActiveDirectory": {
