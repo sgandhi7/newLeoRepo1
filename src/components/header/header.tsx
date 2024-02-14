@@ -1,15 +1,15 @@
 import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
-import React, { SyntheticEvent, useEffect, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { signedIn } from 'src/store';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+// import { useRecoilState } from 'recoil';
+// import { signedIn } from 'src/store';
 
 export const Header = (): React.ReactElement => {
   const [showMenu, setShowMenu] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useRecoilState<boolean>(signedIn);
-  const navigate = useNavigate();
+  // const [isSignedIn, setIsSignedIn] = useRecoilState<boolean>(signedIn);
+  // const navigate = useNavigate();
   const location = useLocation();
 
   const handleMenuClick = (): void => {
@@ -17,31 +17,10 @@ export const Header = (): React.ReactElement => {
     setShowMenu(!showMenu);
   };
 
-  async function getUserInfo() {
-    try {
-      const response = await fetch('/.auth/me');
-      if (response === null) {
-        console.log('User is not signed in');
-        setIsSignedIn(false);
-        navigate('/signin');
-      } else {
-        setIsSignedIn(true);
-        const payload = await response.json();
-        const { clientPrincipal } = payload;
-        return clientPrincipal;
-      }
-    } catch (error) {
-      console.log('Error checking user info:', error);
-      return null;
-    }
-  }
-
   // Ensure navigation JS is loaded
   useEffect(() => {
     const bodyElement = document.body;
     navigation.on(bodyElement);
-    const isAuth = getUserInfo();
-    console.log('User data: ', isAuth);
 
     // if (isAuth != null) {
     //   setIsSignedIn(true);
@@ -65,29 +44,29 @@ export const Header = (): React.ReactElement => {
     setShowMenu(false);
   }, [location]);
 
-  const handleLogout = (): void => {
-    window.location.href = '/logout';
-    setIsSignedIn(false);
-    clearCacheData();
-  };
+  // const handleLogout = (): void => {
+  //   window.location.href = '/logout';
+  //   setIsSignedIn(false);
+  //   clearCacheData();
+  // };
 
-  const clearCacheData = () => {
-    caches.keys().then((names) => {
-      names.forEach((name) => {
-        caches.delete(name);
-      });
-    });
-  };
+  // const clearCacheData = () => {
+  //   caches.keys().then((names) => {
+  //     names.forEach((name) => {
+  //       caches.delete(name);
+  //     });
+  //   });
+  // };
 
-  const handleAuth = (event: SyntheticEvent): void => {
-    event.preventDefault();
-    // Check if signed in
-    if (isSignedIn) {
-      handleLogout();
-    } else {
-      navigate('/signin');
-    }
-  };
+  // const handleAuth = (event: SyntheticEvent): void => {
+  //   event.preventDefault();
+  //   // Check if signed in
+  //   if (isSignedIn) {
+  //     handleLogout();
+  //   } else {
+  //     navigate('/signin');
+  //   }
+  // };
 
   return (
     <>
@@ -138,20 +117,18 @@ export const Header = (): React.ReactElement => {
                   Home
                 </NavLink>
               </li>
-              {isSignedIn && (
-                <li className="usa-nav__primary-item">
-                  <NavLink
-                    id="dashboard-link"
-                    to="/dashboard"
-                    className={`usa-nav__link ${
-                      location.pathname === '/dashboard' ? 'usa-current' : ''
-                    }`}
-                  >
-                    Copilot
-                  </NavLink>
-                </li>
-              )}
               <li className="usa-nav__primary-item">
+                <NavLink
+                  id="dashboard-link"
+                  to="/dashboard"
+                  className={`usa-nav__link ${
+                    location.pathname === '/dashboard' ? 'usa-current' : ''
+                  }`}
+                >
+                  Copilot
+                </NavLink>
+              </li>
+              {/* <li className="usa-nav__primary-item">
                 <Link
                   id="auth-link"
                   to="/signin"
@@ -162,7 +139,7 @@ export const Header = (): React.ReactElement => {
                 >
                   {isSignedIn ? 'Sign Out' : 'Sign In'}
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </div>

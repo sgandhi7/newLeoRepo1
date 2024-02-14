@@ -15,7 +15,7 @@ export const App = (): React.ReactElement => (
       <Header />
       <main id="mainSection" className="usa-section">
         <Routes>
-          <Route path="/signin" element={<SignIn />} />
+          {/* <Route path="/signin" element={<SignIn />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/investigations" element={<Investigation />} />
