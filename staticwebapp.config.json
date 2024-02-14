@@ -5,7 +5,7 @@
   },
   "routes": [
     {
-      "route": "/dashboard",
+      "route": "/",
       "allowedRoles": ["authenticated"]
     }
   ],
