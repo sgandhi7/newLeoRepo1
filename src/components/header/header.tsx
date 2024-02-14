@@ -21,12 +21,17 @@ export const Header = (): React.ReactElement => {
     try {
       const response = await fetch('/.auth/me');
       const payload = await response.json();
-      const { clientPrincipal } = payload;
-      return clientPrincipal.data;
+      const clientPrincipal = payload;
+      if (
+        clientPrincipal.items['PromiseResult'] === null ||
+        clientPrincipal.items['PromiseResult'] === undefined
+      ) {
+        setIsSignedIn(false);
+        navigate('/signin');
+      }
+      return clientPrincipal;
     } catch (error) {
-      console.log('User is not logged in');
-      setIsSignedIn(false);
-      navigate('/signin');
+      console.log('Error checking user info');
       return null;
     }
   }
