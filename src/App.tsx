@@ -5,7 +5,7 @@ import { Header } from './components/header/header';
 import { Investigation } from './pages/chatwindow/chatwindow';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Home } from './pages/home/home';
-import { SignIn } from './pages/sign-in/sign-in';
+// import { SignIn } from './pages/sign-in/sign-in';
 
 const queryClient = new QueryClient();
 
