@@ -30,6 +30,7 @@ export const Home = (): React.ReactElement => {
 
   useEffect(() => {
     getUser;
+    console.log(currentUser);
   });
 
   return (
