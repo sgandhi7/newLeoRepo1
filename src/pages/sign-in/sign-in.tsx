@@ -49,6 +49,7 @@ export const SignIn = (): React.ReactElement => {
   // };
 
   const handleSsoSignIn = (): void => {
+    console.log('Performing SSO Sign in');
     window.location.href = '/.auth/login/aad';
     setIsSignedIn(true);
     navigate('/dashboard');

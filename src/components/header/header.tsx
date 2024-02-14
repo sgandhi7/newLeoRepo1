@@ -24,7 +24,7 @@ export const Header = (): React.ReactElement => {
       if (data.PromiseResult === null || data.PromiseResult === undefined) {
         setIsSignedIn(false);
         navigate('/signin');
-        return null;
+        return data;
       }
     } catch (error) {
       console.log('Error checking user info:', error);
