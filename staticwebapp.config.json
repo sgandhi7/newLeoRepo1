@@ -8,5 +8,11 @@
       "redirect": "/signin",
       "statusCode": 302
     }
-  }
+  },
+  "routes": [
+    {
+      "route": "/logout",
+      "redirect": "/.auth/logout"
+    }
+  ]
 }

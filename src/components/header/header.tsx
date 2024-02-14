@@ -11,6 +11,7 @@ export const Header = (): React.ReactElement => {
   const [isSignedIn, setIsSignedIn] = useRecoilState<boolean>(signedIn);
   const navigate = useNavigate();
   const location = useLocation();
+  const realConfirm = window.confirm;
 
   const handleMenuClick = (): void => {
     window.scrollTo({ top: 0 });
@@ -28,7 +29,6 @@ export const Header = (): React.ReactElement => {
   useEffect(() => {
     const bodyElement = document.body;
     navigation.on(bodyElement);
-
     const isAuth = getUserInfo();
 
     if (isAuth != null) {
@@ -53,13 +53,15 @@ export const Header = (): React.ReactElement => {
   }, [location]);
 
   const handleLogout = (): void => {
-    window.location.href = '/.auth/logout';
+    window.location.href = '/logout';
+    setIsSignedIn(false);
+    localStorage.removeItem('access_token');
   };
+
   const handleAuth = (event: SyntheticEvent): void => {
     event.preventDefault();
     // Check if signed in
     if (isSignedIn) {
-      setIsSignedIn(false);
       handleLogout();
     } else {
       navigate('/signin');
