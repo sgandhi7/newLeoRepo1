@@ -25,6 +25,8 @@ export const Header = (): React.ReactElement => {
       return clientPrincipal.data;
     } catch (error) {
       console.log('User is not logged in');
+      setIsSignedIn(false);
+      navigate('/signin');
       return null;
     }
   }
@@ -36,13 +38,13 @@ export const Header = (): React.ReactElement => {
     const isAuth = getUserInfo();
     console.log('User data: ', isAuth);
 
-    if (isAuth != null) {
-      setIsSignedIn(true);
-    } else {
-      console.log('Auth is null');
-      setIsSignedIn(false);
-      navigate('/signin');
-    }
+    // if (isAuth != null) {
+    //   setIsSignedIn(true);
+    // } else {
+    //   console.log('Auth is null');
+    //   setIsSignedIn(false);
+    //   navigate('/signin');
+    // }
     // Ensure cleanup after the effect
     return () => {
       navigation.off(bodyElement);
