@@ -1,4 +1,4 @@
-import { User } from '@src/types/user';
+// import { User } from '@src/types/user';
 import { atom } from 'recoil';
 import { Investigation } from './types/investigation';
 
@@ -7,9 +7,9 @@ const signedIn = atom({
   default: false,
 });
 
-const currentUser = atom<User | undefined>({
+const currentUser = atom({
   key: 'currentUser',
-  default: undefined,
+  default: '',
 });
 
 const currentInvestigation = atom<Investigation>({

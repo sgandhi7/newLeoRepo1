@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { currentUser } from 'src/store';
 
 export const Home = (): React.ReactElement => {
-  const [user, setUser] = useState<string>('');
+  const [, setUser] = useRecoilState<string>(currentUser);
 
   module.exports = async function (
     context: { res: { body: { clientPrincipal: JSON } } },
@@ -34,7 +36,7 @@ export const Home = (): React.ReactElement => {
     <div className="grid-container">
       <div className="grid-row">
         <div className="grid-col">
-          <h1>Welcome {user}</h1>
+          <h1>Welcome {useRecoilValue(currentUser)}</h1>
         </div>
       </div>
     </div>
