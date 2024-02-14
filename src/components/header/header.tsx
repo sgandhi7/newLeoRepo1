@@ -21,7 +21,10 @@ export const Header = (): React.ReactElement => {
     const response = await fetch('/.auth/me');
     const payload = await response.json();
     const { clientPrincipal } = payload;
-    return clientPrincipal.data;
+    if (clientPrincipal.data) {
+      return true;
+    }
+    return false;
   }
 
   // Ensure navigation JS is loaded
