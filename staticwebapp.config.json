@@ -3,12 +3,6 @@
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, PUT"
   },
-  "responseOverrides": {
-    "401": {
-      "redirect": "/signin",
-      "statusCode": 302
-    }
-  },
   "routes": [
     {
       "route": "/logout",
