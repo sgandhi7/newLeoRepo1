@@ -68,13 +68,18 @@ export const Search = ({
   };
 
   const submitSearch = async () => {
+    // Begin chat
     loading = true;
     setIsSearching(true);
+
+    // Navigate to chatwindow
     if (location.pathname === '/dashboard') {
       navigate('/investigations');
     }
 
+    // Intialize chat history
     let chatHistory: object[] = [];
+
     const queryCopy = searchInput;
     if (
       queryCopy.toLowerCase() == 'clear chat history' ||

@@ -20,16 +20,12 @@ export const Header = (): React.ReactElement => {
   async function getUserInfo() {
     try {
       const response = await fetch('/.auth/me');
-      const payload = await response.json();
-      const clientPrincipal = payload;
-      if (
-        clientPrincipal.items['PromiseResult'] === null ||
-        clientPrincipal.items['PromiseResult'] === undefined
-      ) {
+      const data = await response.json();
+      if (data.PromiseResult === null || data.PromiseResult === undefined) {
         setIsSignedIn(false);
         navigate('/signin');
+        return null;
       }
-      return clientPrincipal;
     } catch (error) {
       console.log('Error checking user info:', error);
       return null;
