@@ -4,9 +4,20 @@
     "Access-Control-Allow-Methods": "GET, POST, PUT"
   },
   "routes": [
-      {
-        "route": "/dashboard",
-        "allowedRoles": ["authenticated"]
+    {
+      "route": "/dashboard",
+      "allowedRoles": ["authenticated"]
+    }
+  ],
+  "auth": {
+    "identityProviders": {
+      "azureActiveDirectory": {
+        "registration": {
+          "openIdIssuer": "https://login.microsoftonline.com/399ed244-adb0-4a01-91a2-898d9918314a/v2.0",
+          "clientIdSettingName": "AZURE_CLIENT_ID",
+          "clientSecretSettingName": "AZURE_CLIENT_SECRET"
+        }
       }
-    ]
+    }
+  }
 }
