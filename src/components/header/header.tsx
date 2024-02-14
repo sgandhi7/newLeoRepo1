@@ -36,8 +36,10 @@ export const Header = (): React.ReactElement => {
   useEffect(() => {
     const bodyElement = document.body;
     navigation.on(bodyElement);
-    const isAuth = getUserInfo();
-    console.log('User data: ', isAuth);
+    if (isSignedIn) {
+      const isAuth = getUserInfo();
+      console.log('User data: ', isAuth);
+    }
 
     // if (isAuth != null) {
     //   setIsSignedIn(true);
