@@ -11,7 +11,6 @@ export const Header = (): React.ReactElement => {
   const [isSignedIn, setIsSignedIn] = useRecoilState<boolean>(signedIn);
   const navigate = useNavigate();
   const location = useLocation();
-  const realConfirm = window.confirm;
 
   const handleMenuClick = (): void => {
     window.scrollTo({ top: 0 });
