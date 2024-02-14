@@ -54,7 +54,15 @@ export const Header = (): React.ReactElement => {
   const handleLogout = (): void => {
     window.location.href = '/logout';
     setIsSignedIn(false);
-    localStorage.removeItem('access_token');
+    clearCacheData();
+  };
+
+  const clearCacheData = () => {
+    caches.keys().then((names) => {
+      names.forEach((name) => {
+        caches.delete(name);
+      });
+    });
   };
 
   const handleAuth = (event: SyntheticEvent): void => {
