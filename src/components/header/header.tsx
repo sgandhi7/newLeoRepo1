@@ -21,7 +21,7 @@ export const Header = (): React.ReactElement => {
     const response = await fetch('/.auth/me');
     const payload = await response.json();
     const { clientPrincipal } = payload;
-    return clientPrincipal;
+    return clientPrincipal.data;
   }
 
   // Ensure navigation JS is loaded
@@ -30,6 +30,7 @@ export const Header = (): React.ReactElement => {
     navigation.on(bodyElement);
     const isAuth = getUserInfo();
     console.log('User data: ', isAuth);
+
     if (isAuth != null) {
       setIsSignedIn(true);
     } else {
