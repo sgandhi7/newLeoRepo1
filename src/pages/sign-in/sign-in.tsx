@@ -49,6 +49,7 @@ export const SignIn = (): React.ReactElement => {
   // };
 
   const handleSsoSignIn = (): void => {
+    window.location.href = '/.auth/login/aad';
     setIsSignedIn(true);
     navigate('/dashboard');
   };
@@ -59,16 +60,14 @@ export const SignIn = (): React.ReactElement => {
         <div className="tablet:grid-col-6">
           <h1>Sign In</h1>
           <ButtonGroup>
-            <a href="/.auth/login/aad">
-              <Button
-                id="sign-in-sso"
-                type="button"
-                variant="outline"
-                onClick={handleSsoSignIn}
-              >
-                SSO
-              </Button>
-            </a>
+            <Button
+              id="sign-in-sso"
+              type="button"
+              variant="outline"
+              onClick={handleSsoSignIn}
+            >
+              SSO
+            </Button>
           </ButtonGroup>
           {/* {error && (
             <Alert id="loginAlert" type="error" heading="Error">

@@ -31,7 +31,7 @@ export const Header = (): React.ReactElement => {
       }
       return clientPrincipal;
     } catch (error) {
-      console.log('Error checking user info');
+      console.log('Error checking user info:', error);
       return null;
     }
   }
