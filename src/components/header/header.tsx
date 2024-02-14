@@ -18,13 +18,15 @@ export const Header = (): React.ReactElement => {
   };
 
   async function getUserInfo() {
-    const response = await fetch('/.auth/me');
-    const payload = await response.json();
-    const { clientPrincipal } = payload;
-    if (clientPrincipal.data) {
-      return true;
+    try {
+      const response = await fetch('/.auth/me');
+      const payload = await response.json();
+      const { clientPrincipal } = payload;
+      return clientPrincipal.data;
+    } catch (error) {
+      console.log('User not logged in:', error);
+      return null;
     }
-    return false;
   }
 
   // Ensure navigation JS is loaded
