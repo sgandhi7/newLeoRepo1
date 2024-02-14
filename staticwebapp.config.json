@@ -4,9 +4,9 @@
     "Access-Control-Allow-Methods": "GET, POST, PUT"
   },
   "routes": [
-    {
-      "route": "/logout",
-      "redirect": "/.auth/logout"
-    }
-  ]
+      {
+        "route": "/dashboard",
+        "allowedRoles": ["authenticated"]
+      }
+    ]
 }
