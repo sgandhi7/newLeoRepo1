@@ -7,9 +7,6 @@ const instance = axios.create({
   headers: {
     'Content-Type': 'application/json',
     // eslint-disable-next-line prettier/prettier
-    'Authorization': process.env.API_KEY,
-    'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
-    'Access-Control-Allow-Origin': '*',
   },
 });
 
