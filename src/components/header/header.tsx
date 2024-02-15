@@ -2,7 +2,7 @@ import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 // import { useRecoilState } from 'recoil';
 // import { signedIn } from 'src/store';
 
@@ -121,15 +121,15 @@ export const Header = (): React.ReactElement => {
                 </NavLink>
               </li>
               <li className="usa-nav__primary-item">
-                <Link
+                <NavLink
                   id="auth-link"
                   to="/logout"
                   className={`usa-nav__link ${
-                    location.pathname === '/signin' ? 'usa-current' : ''
+                    location.pathname === '/' ? 'usa-current' : ''
                   }`}
                 >
                   Sign Out
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </nav>
