@@ -1,4 +1,3 @@
-import axios from 'axios';
 // eslint-disable-next-line prettier/prettier
 import {
   Investigation as InvestigationState,
@@ -118,15 +117,27 @@ export const Search = ({
     };
     try {
       // Make API call
-      const response = await axios.post('api/PromptFlowAPI', data);
+      const response = await fetch('api/PromptFlowAPI', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-functions-key': process.env.API_KEY,
+        } as HeadersInit,
+        body: JSON.stringify(data),
+      });
+      const jsonResponse = await response.json();
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
         prompt: queryCopy,
-        completion: response.data.reply,
+        completion: jsonResponse.data.reply,
       };
       // Format chat history
-      chatHistory = formatConversation(chatHistory, queryCopy, response.data);
+      chatHistory = formatConversation(
+        chatHistory,
+        queryCopy,
+        jsonResponse.data,
+      );
 
       // Send chat history to session storage
       window.sessionStorage.setItem(
