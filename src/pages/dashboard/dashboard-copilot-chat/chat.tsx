@@ -115,50 +115,46 @@ export const Search = ({
       query: queryCopy,
       chat_history: chatHistory,
     };
-    try {
-      // Make API call
-      const response = await fetch('api/PromptFlowAPI', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-functions-key': process.env.API_KEY,
-        } as HeadersInit,
-        body: JSON.stringify(data),
-      });
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        // Initialize variable with response
-        newPrompt = {
-          id: generateGUID(),
-          prompt: queryCopy,
-          completion: jsonResponse.data.reply,
-        };
-        // Format chat history
-        chatHistory = formatConversation(
-          chatHistory,
-          queryCopy,
-          jsonResponse.data,
-        );
+    // Make API call
+    const response = await fetch('api/PromptFlowAPI', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-functions-key': process.env.API_KEY,
+      } as HeadersInit,
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      const jsonResponse = await response.json();
+      // Initialize variable with response
+      newPrompt = {
+        id: generateGUID(),
+        prompt: queryCopy,
+        completion: jsonResponse.data.reply,
+      };
+      // Format chat history
+      chatHistory = formatConversation(
+        chatHistory,
+        queryCopy,
+        jsonResponse.data,
+      );
 
-        // Send chat history to session storage
-        window.sessionStorage.setItem(
-          'chat_history',
-          JSON.stringify(chatHistory),
-        );
+      // Send chat history to session storage
+      window.sessionStorage.setItem(
+        'chat_history',
+        JSON.stringify(chatHistory),
+      );
 
-        // Update investigation (chat)
-        newData[0] = newPrompt;
-        updateCurrentInvestigation(newData);
+      // Update investigation (chat)
+      newData[0] = newPrompt;
+      updateCurrentInvestigation(newData);
 
-        // Finished responding
-        loading = false;
-        setIsSearching(false);
-        setSearchInput('');
-      } else {
-        console.error('Error:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error sending message: ', error);
+      // Finished responding
+      loading = false;
+      setIsSearching(false);
+      setSearchInput('');
+    } else {
+      console.error('Error:', response.statusText);
     }
     setQuery('');
   };
