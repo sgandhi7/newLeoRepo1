@@ -118,7 +118,7 @@ export const Search = ({
     };
     try {
       // Make API call
-      const response = await axios.post('/api/PromptFlowAPI', data);
+      const response = await axios.post('/PromptFlowAPI', data);
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
