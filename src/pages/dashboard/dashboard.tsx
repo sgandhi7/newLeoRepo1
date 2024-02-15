@@ -50,11 +50,11 @@ export const Dashboard = (): React.ReactElement => {
 
   return (
     <div className="grid-container">
-      <div className="grid-row padding-bottom-2">
+      {/* <div className="grid-row padding-bottom-2">
         <div className="grid-col">
-          <h1>TA Copilot</h1>
+          <h1>Let's Discover Top Talent</h1>
         </div>
-      </div>
+      </div> */}
       {/* {error && (
         <div className="grid-row padding-bottom-2">
           <div className="grid-col">
@@ -68,19 +68,19 @@ export const Dashboard = (): React.ReactElement => {
             className="width-100 padding-top-6"
             style={{ textAlign: 'center' }}
           >
-            <h1 className="margin-bottom-4">What would you like help with?</h1>
-            <p className="margin-top-1">Perform a search.</p>
+            <h1 className="margin-bottom-4">Let's Discover Top Talent</h1>
             <div className="button-container">
-              <p className="helper-text">
+              {/* <p className="helper-text">
                 Don't know where to start? Try a helper prompt.
-              </p>
+              </p> */}
               <button
                 className="helper-button"
+                style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
                   handleButtonClick('List employees with Drupal experience')
                 }
               >
-                List employees with Drupal experience
+                List employees that have Drupal and PHP experience
               </button>
               <button
                 className="helper-button"
