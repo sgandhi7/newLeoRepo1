@@ -126,6 +126,7 @@ export const Search = ({
     });
     if (response.ok) {
       const jsonResponse = await response.json();
+      console.log(jsonResponse);
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
