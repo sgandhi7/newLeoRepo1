@@ -80,7 +80,7 @@ export const Dashboard = (): React.ReactElement => {
                   handleButtonClick('List employees with Drupal experience')
                 }
               >
-                List employees that have Drupal and PHP experience
+                List employees that have front-end and back-end experience
               </button>
               <button
                 className="helper-button"
