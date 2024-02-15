@@ -38,7 +38,6 @@ export const Header = (): React.ReactElement => {
 
   const handleLogout = (): void => {
     window.location.href = '/logout';
-    window.location.href = '/';
   };
 
   // const clearCacheData = () => {
