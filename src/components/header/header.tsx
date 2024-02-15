@@ -2,7 +2,7 @@ import { Icon } from '@metrostar/comet-uswds';
 import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
 import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 // import { useRecoilState } from 'recoil';
 // import { signedIn } from 'src/store';
 
@@ -36,11 +36,9 @@ export const Header = (): React.ReactElement => {
     setShowMenu(false);
   }, [location]);
 
-  // const handleLogout = (): void => {
-  //   window.location.href = '/logout';
-  //   setIsSignedIn(false);
-  //   clearCacheData();
-  // };
+  const handleLogout = (): void => {
+    window.location.href = '/logout';
+  };
 
   // const clearCacheData = () => {
   //   caches.keys().then((names) => {
@@ -121,15 +119,16 @@ export const Header = (): React.ReactElement => {
                 </NavLink>
               </li>
               <li className="usa-nav__primary-item">
-                <NavLink
+                <Link
                   id="auth-link"
                   to="/logout"
                   className={`usa-nav__link ${
                     location.pathname === '/' ? 'usa-current' : ''
                   }`}
+                  onClick={handleLogout}
                 >
                   Sign Out
-                </NavLink>
+                </Link>
               </li>
             </ul>
           </nav>
