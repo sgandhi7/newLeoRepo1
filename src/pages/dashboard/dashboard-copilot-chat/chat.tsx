@@ -131,14 +131,10 @@ export const Search = ({
       newPrompt = {
         id: generateGUID(),
         prompt: queryCopy,
-        completion: jsonResponse.data.reply,
+        completion: jsonResponse.reply,
       };
       // Format chat history
-      chatHistory = formatConversation(
-        chatHistory,
-        queryCopy,
-        jsonResponse.data,
-      );
+      chatHistory = formatConversation(chatHistory, queryCopy, jsonResponse);
 
       // Send chat history to session storage
       window.sessionStorage.setItem(
