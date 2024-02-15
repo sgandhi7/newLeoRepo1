@@ -15,6 +15,18 @@
       "allowedRoles": ["authenticated"]
     },
     {
+      "route": "/home",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/dashboard",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/investigations",
+      "allowedRoles": ["authenticated"]
+    },
+    {
       "route": "/.auth/*",
       "allowedRoles": [
         "anonymous",
