@@ -36,7 +36,7 @@ jobs:
         env:
           APP_BASE_URL: "/"
           API_BASE_URL: "/api"
-          API_KEY: "Bearer 5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct"
+          API_KEY: "4uZqh-4ky4xvm1aRsluHwYdpPhu1C-FIZI_XpLYm7Ie0AzFu9XMTkw=="
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
