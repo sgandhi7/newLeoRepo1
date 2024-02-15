@@ -29,6 +29,7 @@ function formatConversation(
     fetched_docs: ListItem;
     reply: string;
     search_intents: string;
+    output_entities: ListItem;
   },
 ) {
   const conversationHistory = history;
@@ -41,6 +42,7 @@ function formatConversation(
       fetched_docs: response.fetched_docs,
       reply: response.reply,
       search_intents: response.search_intents,
+      output_entities: response.output_entities,
     },
   });
   return conversationHistory;

@@ -32,6 +32,7 @@ export interface Completion {
   fetched_docs: ListItem;
   reply: string;
   search_intents: string;
+  output_entities: ListItem;
 }
 
 // export interface ChatHistory {
