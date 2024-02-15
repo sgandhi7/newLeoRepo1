@@ -1,4 +1,4 @@
-import axios from 'src/api/axios';
+import axios from 'axios';
 // eslint-disable-next-line prettier/prettier
 import {
   Investigation as InvestigationState,
@@ -118,7 +118,10 @@ export const Search = ({
     };
     try {
       // Make API call
-      const response = await axios.post('/PromptFlowAPI', data);
+      const response = await axios.post(
+        'https://mssresumesync.azurewebsites.net/api/PromptFlowAPI?code=4uZqh-4ky4xvm1aRsluHwYdpPhu1C-FIZI_XpLYm7Ie0AzFu9XMTkw==',
+        data,
+      );
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
