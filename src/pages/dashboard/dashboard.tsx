@@ -77,10 +77,12 @@ export const Dashboard = (): React.ReactElement => {
                 className="helper-button"
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
-                  handleButtonClick('List employees with Drupal experience')
+                  handleButtonClick(
+                    'List employees that have Drupal and PHP experience',
+                  )
                 }
               >
-                List employees that have front-end and back-end experience
+                List employees that have Drupal and PHP experience
               </button>
               <button
                 className="helper-button"
