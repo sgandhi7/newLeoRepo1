@@ -118,10 +118,7 @@ export const Search = ({
     };
     try {
       // Make API call
-      const response = await axios.post(
-        'https://mssresumesync.azurewebsites.net/api/PromptFlowAPI?code=4uZqh-4ky4xvm1aRsluHwYdpPhu1C-FIZI_XpLYm7Ie0AzFu9XMTkw==',
-        data,
-      );
+      const response = await axios.post('api/PromptFlowAPI', data);
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
