@@ -1,13 +1,12 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 // Set up initial api instance
-const instance = axios.create({
-  withCredentials: true,
-  baseURL: process.env.API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    // eslint-disable-next-line prettier/prettier
-  },
-});
+// const instance = axios.create({
+//   baseURL: process.env.API_BASE_URL,
+//   headers: {
+//     'Content-Type': 'application/json',
+//     // eslint-disable-next-line prettier/prettier
+//   },
+// });
 
-export default instance;
+// export default instance;

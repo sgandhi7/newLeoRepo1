@@ -1,4 +1,4 @@
-import axios from 'src/api/axios';
+import axios from 'axios';
 // eslint-disable-next-line prettier/prettier
 import {
   Investigation as InvestigationState,
@@ -118,7 +118,7 @@ export const Search = ({
     };
     try {
       // Make API call
-      const response = await axios.post('/PromptFlowAPI', data);
+      const response = await axios.post('/api/PromptFlowAPI', data);
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
