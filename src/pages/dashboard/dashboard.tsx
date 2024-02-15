@@ -105,9 +105,6 @@ export const Dashboard = (): React.ReactElement => {
               </button>
             </div>
           </div>
-          <div id="investigations" className="prompt">
-            <Search searchInput={searchInput} setSearchInput={setSearchInput} />
-          </div>
         </div>
         {/* <div className="tablet:grid-col-6">
           <Card id="pie-chart-card">
@@ -125,6 +122,19 @@ export const Dashboard = (): React.ReactElement => {
             </CardBody>
           </Card>
         </div> */}
+      </div>
+      <div
+        style={{
+          position: 'relative',
+          top: '300px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 999,
+        }}
+      >
+        <div id="investigations" className="prompt">
+          <Search searchInput={searchInput} setSearchInput={setSearchInput} />
+        </div>
       </div>
       {/* <div className="grid-row">
         <div className="grid-col">
