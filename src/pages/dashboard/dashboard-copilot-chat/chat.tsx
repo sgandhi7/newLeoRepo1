@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'src/api/axios';
 // eslint-disable-next-line prettier/prettier
 import {
   Investigation as InvestigationState,
