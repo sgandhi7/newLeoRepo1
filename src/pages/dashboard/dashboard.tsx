@@ -126,7 +126,7 @@ export const Dashboard = (): React.ReactElement => {
       <div
         style={{
           position: 'relative',
-          top: '300px',
+          top: '240px',
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 999,
