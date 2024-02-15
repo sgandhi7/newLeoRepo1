@@ -120,7 +120,7 @@ export const Search = ({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-functions-key': process.env.API_KEY,
+        // 'x-functions-key': process.env.API_KEY,
       } as HeadersInit,
       body: JSON.stringify(data),
     });
