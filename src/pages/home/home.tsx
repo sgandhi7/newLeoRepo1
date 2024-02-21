@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 export const Home = (): React.ReactElement => {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(Object);
 
   // Get user info
   useEffect(() => {
@@ -23,7 +23,7 @@ export const Home = (): React.ReactElement => {
     <div className="grid-container">
       <div className="grid-row">
         <div className="grid-col">
-          <h1>Welcome {user}</h1>
+          <h1>Welcome {user.userId}</h1>
         </div>
       </div>
     </div>
