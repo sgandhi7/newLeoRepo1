@@ -38,16 +38,9 @@ export const Header = (): React.ReactElement => {
 
   const handleLogout = (): void => {
     sessionStorage.clear();
+    localStorage.clear();
     window.location.href = '/logout';
   };
-
-  // const clearCacheData = () => {
-  //   caches.keys().then((names) => {
-  //     names.forEach((name) => {
-  //       caches.delete(name);
-  //     });
-  //   });
-  // };
 
   // const handleAuth = (event: SyntheticEvent): void => {
   //   event.preventDefault();
