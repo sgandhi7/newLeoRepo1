@@ -122,6 +122,7 @@ export const Header = (): React.ReactElement => {
                 <Link
                   id="auth-link"
                   to="/logout"
+                  data-clear-previous-history="true"
                   className={`usa-nav__link ${
                     location.pathname === '/' ? 'usa-current' : ''
                   }`}
