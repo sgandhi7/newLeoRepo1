@@ -4,11 +4,18 @@
   "bindings": [
     {
       "type": "httpTrigger",
+      "direction": "in",
+      "route": "PromptFlowAPI",
       "methods": [
         "post"
       ],
       "authLevel": "function",
       "name": "req"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
     }
   ],
   "disabled": false,
