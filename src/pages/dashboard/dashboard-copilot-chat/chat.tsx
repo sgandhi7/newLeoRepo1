@@ -116,11 +116,11 @@ export const Search = ({
       chat_history: chatHistory,
     };
     // Make API call
-    const response = await fetch('api/PromptFlowAPI', {
+    const response = await fetch('api/Function1', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // 'x-functions-key': process.env.API_KEY,
+        'x-functions-key': process.env.API_KEY,
       } as HeadersInit,
       body: JSON.stringify(data),
     });
