@@ -36,7 +36,7 @@
     {
       "route": "/logout",
       "redirect": "/.auth/logout"
-    }
+    },
     {
       "route": "/login",
       "redirect": "/.auth/login/aad"
