@@ -151,7 +151,7 @@ export const Search = ({
       setIsSearching(false);
       setSearchInput('');
     } else {
-      console.error('Error:', response.statusText);
+      console.error('Error:', response);
     }
     setQuery('');
   };
