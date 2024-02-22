@@ -116,7 +116,7 @@ export const Search = ({
       chat_history: chatHistory,
     };
     // Make API call
-    const response = await fetch('api/Function1', {
+    const response = await fetch('api/PromptFlowAPI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
