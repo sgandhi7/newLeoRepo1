@@ -27,18 +27,23 @@ const httpTrigger: AzureFunction = async function (
   };
 
   const request = https.request(url, options, (response) => {
-    let responseBody = Buffer.from([]);
+    let responseBody = '';
     response.on('data', (chunk) => {
-      console.log('Received chunk:', chunk);
-      console.log('Type of chunk:', typeof chunk);
-      responseBody = Buffer.concat([responseBody, chunk]);
+      // Concatenate each chunk of data
+      responseBody += chunk;
     });
     response.on('end', () => {
-      const resultJson = JSON.parse(responseBody.toString());
-      context.res = {
-        status: 200,
-        body: resultJson,
-      };
+      try {
+        // Parse the entire response data directly into a JavaScript object
+        const resultJson = JSON.parse(responseBody);
+        context.res = {
+          status: 200,
+          body: resultJson,
+        };
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        // Handle the error if JSON parsing fails
+      }
     });
   });
 
