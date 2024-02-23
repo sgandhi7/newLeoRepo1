@@ -30,10 +30,13 @@ export async function run(
   headers.set('azureml-model-deployment', 'dvasquez-seattle-vcqoi-3');
 
   try {
+    // Encode the body with UTF-8
+    const bodyEncoded = new TextEncoder().encode(JSON.stringify(body));
+
     const request = new Request(url, {
       method: 'POST',
       headers,
-      body: JSON.stringify(body),
+      body: bodyEncoded,
     });
 
     const response = await fetch(request);
