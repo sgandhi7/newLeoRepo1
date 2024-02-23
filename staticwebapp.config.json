@@ -52,5 +52,8 @@
         }
       }
     }
+  },
+  "platform": {
+    "apiRuntime": "dotnet:6.0"
   }
 }
