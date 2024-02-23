@@ -14,16 +14,16 @@ const PromptFlowAPI: AzureFunction = async function (
   }
 
   try {
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // eslint-disable-next-line prettier/prettier
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
         'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
       } as HeadersInit,
-      body: req.body,
+      body: JSON.stringify(req.body),
     });
+    response = await response.json();
 
     context.res = {
       status: response.status,
