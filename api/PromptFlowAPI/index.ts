@@ -19,10 +19,10 @@ const PromptFlowAPI: AzureFunction = async function (
   };
 
   try {
-    const response = await context.bindings.httpTrigger(url, {
+    const response = await fetch(url, {
       method: 'POST',
-      headers,
       body: JSON.stringify(req.body),
+      headers,
     });
 
     context.res = {
