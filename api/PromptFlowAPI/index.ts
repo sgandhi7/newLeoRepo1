@@ -14,7 +14,7 @@ const PromptFlowAPI: AzureFunction = async function (
   }
 
   try {
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,12 +23,11 @@ const PromptFlowAPI: AzureFunction = async function (
       } as HeadersInit,
       body: JSON.stringify(req.body),
     });
-    response = await response.json();
+    const responseBody = await response.json();
 
     context.res = {
-      headers: { 'Content-Type': 'application/json' },
       status: response.status,
-      body: response.body,
+      body: responseBody,
     };
   } catch (error) {
     context.log.error(`Error calling the API: ${error.message}`);
