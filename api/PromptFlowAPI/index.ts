@@ -26,6 +26,7 @@ const PromptFlowAPI: AzureFunction = async function (
     response = await response.json();
 
     context.res = {
+      headers: { 'Content-Type': 'application/json' },
       status: response.status,
       body: response.body,
     };
