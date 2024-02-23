@@ -13,17 +13,15 @@ const PromptFlowAPI: AzureFunction = async function (
     throw new Error('A key should be provided to invoke the endpoint');
   }
 
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${apiKey}`,
-    'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
-  };
-
   try {
     const response = await fetch(url, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+        'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
+      } as HeadersInit,
       body: JSON.stringify(req.body),
-      headers,
     });
 
     context.res = {
