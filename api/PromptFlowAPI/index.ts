@@ -1,61 +1,72 @@
-import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import * as https from 'https';
+import { Context, HttpRequest, HttpResponse } from '@azure/functions';
 
-const httpTrigger: AzureFunction = async function (
+// Define the interfaces
+export interface PromptFlow {}
+
+export interface Root {
+  query: string;
+  chat_history: ChatHistoryItem[];
+}
+
+export interface ChatHistoryItem {
+  inputs: Inputs;
+  outputs: Outputs;
+}
+
+export interface Inputs {
+  query: string;
+}
+
+export interface Outputs {
+  current_query_intent: string;
+  fetched_docs: string[];
+  output_entities: string;
+  reply: string;
+  search_intents: string;
+}
+
+// Function signature (assuming HTTP trigger)
+export async function run(
   context: Context,
   req: HttpRequest,
-): Promise<void> {
-  const url: string =
+): Promise<HttpResponse> {
+  // Get the request body
+  const body: Root = JSON.parse(req.body);
+
+  // Implement your logic here and populate the response object
+
+  // Replace the following with your C# logic translated to TypeScript
+  const url =
     'https://dvasquez-seattle-vcqoi.eastus.inference.ml.azure.com/score';
-  const apiKey: string = '5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct';
+  const apiKey = '5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct';
 
   if (!apiKey) {
-    throw new Error('A key should be provided to invoke the endpoint');
+    throw new Error('A key is required to invoke the endpoint');
   }
 
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${apiKey}`,
-    'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
-  };
+  const headers = new Headers();
+  headers.set('Content-Type', 'application/json');
+  headers.set('Authorization', `Bearer ${apiKey}`);
+  headers.set('azureml-model-deployment', 'dvasquez-seattle-vcqoi-3');
 
-  // const encodedBody = Buffer.from(req.body);
-
-  const options = {
-    method: 'POST',
-    headers: headers,
-  };
-
-  const request = https.request(url, options, (response) => {
-    let responseBody = '';
-    response.on('data', (chunk) => {
-      // Concatenate each chunk of data
-      responseBody += chunk;
+  try {
+    const request = new Request(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
     });
-    response.on('end', () => {
-      try {
-        // Parse the entire response data directly into a JavaScript object
-        const resultJson = JSON.parse(responseBody);
-        context.res = {
-          status: 200,
-          body: resultJson,
-        };
-      } catch (error) {
-        console.error('Error parsing JSON:', error);
-        // Handle the error if JSON parsing fails
-      }
-    });
-  });
 
-  request.on('error', (error) => {
-    context.res = {
-      status: 500,
-      body: error.message,
-    };
-  });
+    const response = await fetch(request);
 
-  request.write(JSON.stringify(req.body));
-  request.end();
-};
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
 
-export default httpTrigger;
+    const result = await response.json();
+
+    return context.res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    return context.res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
