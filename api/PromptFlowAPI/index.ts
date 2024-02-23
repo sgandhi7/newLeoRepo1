@@ -5,24 +5,7 @@ export interface PromptFlow {}
 
 export interface Root {
   query: string;
-  chat_history: ChatHistoryItem[];
-}
-
-export interface ChatHistoryItem {
-  inputs: Inputs;
-  outputs: Outputs;
-}
-
-export interface Inputs {
-  query: string;
-}
-
-export interface Outputs {
-  current_query_intent: string;
-  fetched_docs: string[];
-  output_entities: string;
-  reply: string;
-  search_intents: string;
+  chat_history: object[];
 }
 
 // Function signature (assuming HTTP trigger)
