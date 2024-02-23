@@ -19,24 +19,16 @@ const PromptFlowAPI: AzureFunction = async function (
   };
 
   try {
-    const response = await fetch(url, {
+    const response = await context.bindings.httpTrigger(url, {
       method: 'POST',
       headers,
       body: JSON.stringify(req.body),
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      context.res = {
-        status: response.status,
-        body: data,
-      };
-    } else {
-      context.res = {
-        status: response.status,
-        body: 'Internal server error',
-      };
-    }
+    context.res = {
+      status: response.status,
+      body: response.body,
+    };
   } catch (error) {
     context.log.error(`Error calling the API: ${error.message}`);
     context.res = {
