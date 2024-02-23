@@ -19,7 +19,7 @@ const httpTrigger: AzureFunction = async function (
     'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
   };
 
-  const encodedBody = Buffer.from(req.body);
+  // const encodedBody = Buffer.from(req.body);
 
   const options = {
     method: 'POST',
@@ -54,7 +54,7 @@ const httpTrigger: AzureFunction = async function (
     };
   });
 
-  request.write(encodedBody);
+  request.write(req.body);
   request.end();
 };
 
