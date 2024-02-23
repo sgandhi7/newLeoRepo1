@@ -54,7 +54,7 @@ const httpTrigger: AzureFunction = async function (
     };
   });
 
-  request.write(req.body);
+  request.write(JSON.stringify(req.body));
   request.end();
 };
 
