@@ -29,6 +29,8 @@ const httpTrigger: AzureFunction = async function (
   const request = https.request(url, options, (response) => {
     let responseBody = Buffer.from([]);
     response.on('data', (chunk) => {
+      console.log('Received chunk:', chunk);
+      console.log('Type of chunk:', typeof chunk);
       responseBody = Buffer.concat([responseBody, chunk]);
     });
     response.on('end', () => {
