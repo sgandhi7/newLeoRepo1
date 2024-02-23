@@ -8,7 +8,7 @@ export interface Root {
   chat_history: object[];
 }
 
-// Function signature (assuming HTTP trigger)
+// Function signature
 export async function run(
   context: Context,
   req: HttpRequest,
@@ -16,9 +16,6 @@ export async function run(
   // Get the request body
   const body: Root = JSON.parse(req.body);
 
-  // Implement your logic here and populate the response object
-
-  // Replace the following with your C# logic translated to TypeScript
   const url =
     'https://dvasquez-seattle-vcqoi.eastus.inference.ml.azure.com/score';
   const apiKey = '5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct';

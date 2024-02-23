@@ -120,7 +120,6 @@ export const Search = ({
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // 'x-functions-key': process.env.API_KEY,
       } as HeadersInit,
       body: JSON.stringify(data),
     });
@@ -151,7 +150,7 @@ export const Search = ({
       setIsSearching(false);
       setSearchInput('');
     } else {
-      console.error('Error:', response);
+      console.error('Error:', response.statusText);
     }
     setQuery('');
   };
