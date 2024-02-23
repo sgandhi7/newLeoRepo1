@@ -41,8 +41,7 @@ const httpTrigger: AzureFunction = async function (
     'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
   };
 
-  const bodyContent = JSON.stringify(req.body);
-  const encodedBody = Buffer.from(bodyContent, 'utf-8');
+  const encodedBody = Buffer.from(req.body, 'utf-8');
 
   const options = {
     method: 'POST',
