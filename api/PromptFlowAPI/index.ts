@@ -1,55 +1,37 @@
-import { Context, HttpRequest, HttpResponse } from '@azure/functions';
+import { AzureFunction, Context, HttpRequest } from '@azure/functions';
+import axios from 'axios';
 
-// Define the interfaces
-export interface PromptFlow {}
-
-export interface Root {
-  query: string;
-  chat_history: object[];
-}
-
-// Function signature
-export async function run(
+const PromptFlowAPI: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
-): Promise<HttpResponse> {
-  // Get the request body
-  const body: Root = JSON.parse(req.body);
-
+): Promise<void> {
   const url =
     'https://dvasquez-seattle-vcqoi.eastus.inference.ml.azure.com/score';
   const apiKey = '5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct';
 
   if (!apiKey) {
-    throw new Error('A key is required to invoke the endpoint');
+    throw new Error('A key should be provided to invoke the endpoint');
   }
 
-  const headers = new Headers();
-  headers.set('Content-Type', 'application/json');
-  headers.set('Authorization', `Bearer ${apiKey}`);
-  headers.set('azureml-model-deployment', 'dvasquez-seattle-vcqoi-3');
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${apiKey}`,
+    'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
+  };
 
   try {
-    // Encode the body with UTF-8
-    const bodyEncoded = new TextEncoder().encode(JSON.stringify(body));
-
-    const request = new Request(url, {
-      method: 'POST',
-      headers,
-      body: bodyEncoded,
-    });
-
-    const response = await fetch(request);
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-
-    return context.res.status(200).json(result);
+    const response = await axios.post(url, req.body, { headers });
+    context.res = {
+      status: response.status,
+      body: response.data,
+    };
   } catch (error) {
-    console.error(error);
-    return context.res.status(500).json({ message: 'Internal Server Error' });
+    context.log.error(`Error calling the API: ${error.message}`);
+    context.res = {
+      status: 500,
+      body: 'Internal server error',
+    };
   }
-}
+};
+
+export default PromptFlowAPI;
