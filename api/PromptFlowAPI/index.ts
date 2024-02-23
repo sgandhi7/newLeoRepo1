@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import axios from 'axios';
+import * as https from 'https';
 
 interface ChatHistoryItem {
   inputs: Inputs;
@@ -41,38 +41,52 @@ const httpTrigger: AzureFunction = async function (
     'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
   };
 
-  try {
-    const bodyContent = req.body;
-    const response = await axios.post(url, bodyContent, { headers });
-    const resultJson = response.data;
+  const bodyContent = JSON.stringify(req.body);
+  const encodedBody = Buffer.from(bodyContent, 'utf-8');
 
-    // Format response to match C# output structure
-    const rootObject: Root = {
-      query: bodyContent.query,
-      chat_history: [
-        {
-          inputs: { query: bodyContent.query },
-          outputs: {
-            current_query_intent: resultJson.current_query_intent,
-            fetched_docs: resultJson.fetched_docs,
-            output_entities: resultJson.output_entities,
-            reply: resultJson.reply,
-            search_intents: resultJson.search_intents,
+  const options = {
+    method: 'POST',
+    headers: headers,
+  };
+
+  const responseData = [];
+  const request = https.request(url, options, (response) => {
+    response.on('data', (chunk) => {
+      responseData.push(chunk);
+    });
+    response.on('end', () => {
+      const resultJson = JSON.parse(Buffer.concat(responseData).toString());
+      const rootObject: Root = {
+        query: req.body.query,
+        chat_history: [
+          {
+            inputs: { query: req.body.query },
+            outputs: {
+              current_query_intent: resultJson.current_query_intent,
+              fetched_docs: resultJson.fetched_docs,
+              output_entities: resultJson.output_entities,
+              reply: resultJson.reply,
+              search_intents: resultJson.search_intents,
+            },
           },
-        },
-      ],
-    };
+        ],
+      };
+      context.res = {
+        status: 200,
+        body: rootObject,
+      };
+    });
+  });
 
-    context.res = {
-      status: 200,
-      body: rootObject,
-    };
-  } catch (error) {
+  request.on('error', (error) => {
     context.res = {
       status: 500,
-      body: error,
+      body: error.message,
     };
-  }
+  });
+
+  request.write(encodedBody);
+  request.end();
 };
 
 export default httpTrigger;
