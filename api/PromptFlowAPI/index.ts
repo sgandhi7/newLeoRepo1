@@ -1,5 +1,4 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import axios from 'axios';
 
 const PromptFlowAPI: AzureFunction = async function (
   context: Context,
@@ -20,11 +19,24 @@ const PromptFlowAPI: AzureFunction = async function (
   };
 
   try {
-    const response = await axios.post(url, req.body, { headers });
-    context.res = {
-      status: response.status,
-      body: response.data,
-    };
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(req.body),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      context.res = {
+        status: response.status,
+        body: data,
+      };
+    } else {
+      context.res = {
+        status: response.status,
+        body: 'Internal server error',
+      };
+    }
   } catch (error) {
     context.log.error(`Error calling the API: ${error.message}`);
     context.res = {
