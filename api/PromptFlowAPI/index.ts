@@ -1,27 +1,27 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import * as https from 'https';
 
-interface ChatHistoryItem {
-  inputs: Inputs;
-  outputs: Outputs;
-}
+// interface ChatHistoryItem {
+//   inputs: Inputs;
+//   outputs: Outputs;
+// }
 
-interface Inputs {
-  query: string;
-}
+// interface Inputs {
+//   query: string;
+// }
 
-interface Outputs {
-  current_query_intent: string;
-  fetched_docs: string[];
-  output_entities: string;
-  reply: string;
-  search_intents: string;
-}
+// interface Outputs {
+//   current_query_intent: string;
+//   fetched_docs: string[];
+//   output_entities: string;
+//   reply: string;
+//   search_intents: string;
+// }
 
-interface Root {
-  query: string;
-  chat_history: ChatHistoryItem[];
-}
+// interface Root {
+//   query: string;
+//   chat_history: ChatHistoryItem[];
+// }
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -41,7 +41,7 @@ const httpTrigger: AzureFunction = async function (
     'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
   };
 
-  const encodedBody = Buffer.from(req.body, 'utf-8');
+  const encodedBody = Buffer.from(req.body);
 
   const options = {
     method: 'POST',
@@ -55,31 +55,31 @@ const httpTrigger: AzureFunction = async function (
     });
     response.on('end', () => {
       const resultJson = JSON.parse(Buffer.concat(responseData).toString());
-      const rootObject: Root = {
-        query: req.body.query,
-        chat_history: [
-          {
-            inputs: { query: req.body.query },
-            outputs: {
-              current_query_intent: resultJson.current_query_intent,
-              fetched_docs: resultJson.fetched_docs,
-              output_entities: resultJson.output_entities,
-              reply: resultJson.reply,
-              search_intents: resultJson.search_intents,
-            },
-          },
-        ],
-      };
+      // const rootObject: Root = {
+      //   query: req.body.query,
+      //   chat_history: [
+      //     {
+      //       inputs: { query: req.body.query },
+      //       outputs: {
+      //         current_query_intent: resultJson.current_query_intent,
+      //         fetched_docs: resultJson.fetched_docs,
+      //         output_entities: resultJson.output_entities,
+      //         reply: resultJson.reply,
+      //         search_intents: resultJson.search_intents,
+      //       },
+      //     },
+      //   ],
+      // };
       context.res = {
         status: 200,
-        body: rootObject,
+        body: resultJson,
       };
     });
   });
 
   request.on('error', (error) => {
     context.res = {
-      status: 500,
+      status: 403,
       body: error.message,
     };
   });
