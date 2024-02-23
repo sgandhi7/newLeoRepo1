@@ -18,7 +18,8 @@ const PromptFlowAPI: AzureFunction = async function (
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
+        // eslint-disable-next-line prettier/prettier
+        'Authorization': `Bearer ${apiKey}`,
         'azureml-model-deployment': 'dvasquez-seattle-vcqoi-3',
       } as HeadersInit,
       body: req.body,
