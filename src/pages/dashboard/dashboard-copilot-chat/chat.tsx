@@ -124,6 +124,7 @@ export const Search = ({
       body: JSON.stringify(data),
     });
     if (response.ok) {
+      console.log(response);
       const jsonResponse = await response.json();
       console.log(jsonResponse);
       // Initialize variable with response
