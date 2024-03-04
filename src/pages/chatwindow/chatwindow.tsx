@@ -1,4 +1,5 @@
 // import { Button, Icon } from '@metrostar/comet-uswds';
+import { Button, Icon } from '@metrostar/comet-uswds';
 import useApi from '@src/hooks/use-api';
 import { Search } from '@src/pages/dashboard/dashboard-copilot-chat/chat';
 import {
@@ -18,9 +19,8 @@ export const Investigation = (): React.ReactElement => {
   const [prompts, setPrompts] = useState<Prompt[] | null>(null);
   const [currentInvestigation, setCurrentInvestigation] =
     useRecoilState<InvestigationState>(defaultInvestigation);
-  // const [showSources, setShowSources] = useState<boolean>(false);
+  const [showSources, setShowSources] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState('');
-
   // Set current chat
   useEffect(() => {
     if (item) {
@@ -93,7 +93,7 @@ export const Investigation = (): React.ReactElement => {
                         </div>
                         <div className="grid-col-10">
                           {prompt.completion}
-                          {/* {prompt.sources && prompt.sources.length > 0 ? (
+                          {prompt.sources && prompt.sources.length > 0 ? (
                             <div
                               className="grid-row"
                               key={`chat-content-sources-${prompt}`}
@@ -127,7 +127,21 @@ export const Investigation = (): React.ReactElement => {
                             </div>
                           ) : (
                             <></>
-                          )} */}
+                          )}
+                          <div>
+                            {showSources && (
+                              <div>
+                                <h2>List of Sources:</h2>
+                                <ul>
+                                  {prompt.sources.map((source, index) => (
+                                    <li key={index}>
+                                      <a href={source[1]}>{source[0]}</a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

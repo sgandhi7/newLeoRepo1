@@ -101,6 +101,7 @@ export const Search = ({
       id: Math.random().toString(),
       prompt: queryCopy,
       completion: 'Loading...',
+      sources: [],
     };
     newData.unshift(newPrompt);
     // Get current chat history
@@ -124,14 +125,39 @@ export const Search = ({
       body: JSON.stringify(data),
     });
     if (response.ok) {
-      console.log(response);
       const jsonResponse = await response.json();
-      console.log(jsonResponse);
+      console.log('Got jsonResponse: ', jsonResponse);
+      // Get resume sharepoint links and titles
+      const getSources: Array<[string, string]> = [];
+      for (const source of jsonResponse.fetched_docs) {
+        // console.log('Source: ', source);
+        if (source.includes('sharepoint')) {
+          const parsedSource = JSON.parse(source);
+          // console.log('Parsed Source: ', parsedSource);
+          for (const doc of parsedSource.retrieved_documents) {
+            for (const key in doc) {
+              const document = doc[key];
+              const sharepointData = document.sharepoint;
+              const sharepointName = document.title;
+              // console.log(sharepointData);
+              if (sharepointName && sharepointData) {
+                getSources.push([
+                  sharepointName,
+                  'https://metrostarsys.sharepoint.com/:f:/r/sites/PC/ContentRepository/Resumes/' +
+                    sharepointData,
+                ]);
+              }
+            }
+          }
+        }
+      }
+      // console.log('Sources found: ', getSources);
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
         prompt: queryCopy,
         completion: jsonResponse.reply,
+        sources: getSources,
       };
       // Format chat history
       chatHistory = formatConversation(chatHistory, queryCopy, jsonResponse);
@@ -151,7 +177,7 @@ export const Search = ({
       setIsSearching(false);
       setSearchInput('');
     } else {
-      console.error('Error:', response.body);
+      console.error('Error:', response.statusText);
     }
     setQuery('');
   };
