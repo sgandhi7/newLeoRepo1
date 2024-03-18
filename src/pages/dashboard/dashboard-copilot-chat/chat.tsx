@@ -10,6 +10,7 @@ import { TextAreaInput } from '@src/components/text-area-input/textarea-input';
 // eslint-disable-next-line prettier/prettier
 import {
   currentInvestigation as defaultInvestigation,
+  currentSearch as defaultSearch,
   searching,
 } from 'src/store';
 // eslint-disable-next-line prettier/prettier
@@ -56,11 +57,11 @@ export const Search = ({
 }): React.ReactElement => {
   const navigate = useNavigate();
   const location = useLocation();
-  let loading = false;
   const [, setQuery] = useState('');
   const [currentInvestigation, setCurrentInvestigation] =
     useRecoilState<InvestigationState>(defaultInvestigation);
   const [isSearching, setIsSearching] = useRecoilState<boolean>(searching);
+  const [, setCurrentSearch] = useRecoilState<string>(defaultSearch);
   const updateFocus = () => {
     const input = document.querySelector('textarea');
     if (input) {
@@ -70,7 +71,6 @@ export const Search = ({
 
   const submitSearch = async () => {
     // Begin chat
-    loading = true;
     setIsSearching(true);
 
     // Navigate to chatwindow
@@ -82,6 +82,7 @@ export const Search = ({
     let chatHistory: object[] = [];
 
     const queryCopy = searchInput;
+    setCurrentSearch(searchInput);
     if (
       queryCopy.toLowerCase() == 'clear chat history' ||
       queryCopy.toLowerCase() == 'clear' ||
@@ -130,16 +131,16 @@ export const Search = ({
       // Get resume sharepoint links and titles
       const getSources: Array<[string, string]> = [];
       for (const source of jsonResponse.fetched_docs) {
-        // console.log('Source: ', source);
+        console.log('Source: ', source);
         if (source.includes('sharepoint')) {
           const parsedSource = JSON.parse(source);
-          // console.log('Parsed Source: ', parsedSource);
+          console.log('Parsed Source: ', parsedSource);
           for (const doc of parsedSource.retrieved_documents) {
             for (const key in doc) {
               const document = doc[key];
               const sharepointData = document.sharepoint;
               const sharepointName = document.title;
-              // console.log(sharepointData);
+              console.log(sharepointData);
               if (sharepointName && sharepointData) {
                 getSources.push([
                   sharepointName,
@@ -151,7 +152,7 @@ export const Search = ({
           }
         }
       }
-      // console.log('Sources found: ', getSources);
+      console.log('Sources found: ', getSources);
       // Initialize variable with response
       newPrompt = {
         id: generateGUID(),
@@ -173,7 +174,6 @@ export const Search = ({
       updateCurrentInvestigation(newData);
 
       // Finished responding
-      loading = false;
       setIsSearching(false);
       setSearchInput('');
     } else {
@@ -202,10 +202,10 @@ export const Search = ({
   };
 
   useEffect(() => {
-    if (!isSearching && !loading) {
+    if (!isSearching) {
       updateFocus();
     }
-  }, [isSearching, loading]);
+  }, [isSearching]);
 
   return (
     <div className="grid-container position-relative bottom-2">
@@ -223,7 +223,7 @@ export const Search = ({
           className="search-area-input"
           autoFocus
           placeholder="Enter your search here..."
-          disabled={loading || isSearching}
+          disabled={isSearching}
           value={searchInput}
           onChange={handleOnChange}
           onKeyDown={(event) => {
@@ -241,14 +241,14 @@ export const Search = ({
             }
           }}
         />
-        {loading || isSearching ? (
-          <img src={infinteLoop} alt="loading" className="searching" />
+        {isSearching ? (
+          <img src={infinteLoop} alt="Loading" className="searching" />
         ) : (
           <Button
             id="search-btn"
             className="search-input"
             onClick={handleSearch}
-            disabled={loading || isSearching}
+            disabled={isSearching}
           >
             Send
           </Button>

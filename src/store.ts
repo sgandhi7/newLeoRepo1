@@ -22,4 +22,15 @@ const searching = atom({
   default: false,
 });
 
-export { currentInvestigation, currentUser, searching, signedIn };
+const currentSearch = atom({
+  key: 'currentSearch',
+  default: '',
+});
+
+export {
+  currentInvestigation,
+  currentSearch,
+  currentUser,
+  searching,
+  signedIn,
+};
