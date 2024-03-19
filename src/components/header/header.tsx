@@ -62,7 +62,7 @@ export const Header = (): React.ReactElement => {
         <div className="usa-nav-container">
           <img
             className="chatbot-icon"
-            src="/img/MetroStarLogo.png"
+            src="/img/leo.png"
             width={100}
             height={100}
           ></img>

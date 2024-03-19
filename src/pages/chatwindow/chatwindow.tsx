@@ -14,7 +14,7 @@ import {
   currentSearch as defaultSearch,
   searching,
 } from 'src/store';
-import chatBot from '/img/MetroStarLogo.png';
+import chatBot from '/img/leo.png';
 // import logomark from '/img/logo-mark.svg';
 export const Investigation = (): React.ReactElement => {
   const { id } = useParams();

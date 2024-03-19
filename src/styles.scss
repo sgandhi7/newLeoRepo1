@@ -14,13 +14,13 @@
 
 @forward 'providers/uswds/uswds.scss';
 
-$color-primary: #0097FE;
+$color-primary: #00101f;
 $color-primary-gray: #edeaee;
 $color-secondary: #d83933;
 $color-white: #ffffff;
 $color-black: #000000;
 $color-gray: #dfe1e2;
-$color-blue: #005ea2;
+$color-blue: #3f9fd3;
 $color-green: #00bb9d;
 $color-green-light: #00cfc8;
 
@@ -45,7 +45,7 @@ body {
   }
 
   .usa-header {
-    background-color: $color-primary;
+    background-image: linear-gradient(to right, $color-primary 0%, $color-primary 25%, $color-blue 50%, $color-primary 75%);
   }
 
   .usa-menu-btn,
@@ -75,7 +75,7 @@ body {
     min-height: 800px;
     margin-top: 96px;
     .signin {
-      background-image: url('/img/TACopilotLogo2.png');
+      background-image: url('/img/leo.png');
       background-size: cover;
       height: 100vh;
       min-width: 100%;
