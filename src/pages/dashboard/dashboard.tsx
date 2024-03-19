@@ -56,11 +56,11 @@ export const Dashboard = (): React.ReactElement => {
                 className="helper-button"
                 onClick={() =>
                   handleButtonClick(
-                    'Given Jorge Vasquez’s skills, what job posting best fits them?',
+                    'Given Dalton Noftsger’s skills, what job posting best fits them?',
                   )
                 }
               >
-                Given Jorge Vasquez's skills, what job postings best fit them?
+                Given Dalton Noftsger's skills, what job postings best fit them?
               </button>
               <button
                 className="helper-button"
