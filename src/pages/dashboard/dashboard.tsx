@@ -26,27 +26,6 @@ export const Dashboard = (): React.ReactElement => {
   useEffect(() => {
     setCurrentInvestigation({});
   }, [setCurrentInvestigation]);
-  // const { isSignedIn } = useAuth();
-  // const {
-  //   // isLoading,
-  //   error,
-  //   // data: items,
-  // } = useQuery<Spacecraft[], { message: string }>({
-  //   queryKey: ['dashboard'],
-  //   queryFn: () =>
-  //     // axios
-  //     //   .get('/spacecraft')
-  //     //   .then((response) => {
-  //     //     return response.data;
-  //     //   })
-  //     //   .then((data) => {
-  //     //     return data.items;
-  //     //   }),
-
-  //     // TODO: Remove this mock response and uncomment above if API available
-  //     Promise.resolve(mockData.items),
-  //   enabled: isSignedIn,
-  // });
 
   return (
     <div className="grid-container">
@@ -75,6 +54,16 @@ export const Dashboard = (): React.ReactElement => {
               </p> */}
               <button
                 className="helper-button"
+                onClick={() =>
+                  handleButtonClick(
+                    'Given Jorge Vasquez’s skills, what job posting best fits them?',
+                  )
+                }
+              >
+                Given Jorge Vasquez's skills, what job postings best fit them?
+              </button>
+              <button
+                className="helper-button"
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
                   handleButtonClick(
@@ -86,24 +75,14 @@ export const Dashboard = (): React.ReactElement => {
               </button>
               <button
                 className="helper-button"
+                style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
                   handleButtonClick(
-                    'List employees that would best fit job requisition Drupal developer 4883',
+                    'List the top 3 employees that have full-stack experience',
                   )
                 }
               >
-                List employees that would best fit job requisition Drupal
-                developer 4883
-              </button>
-              <button
-                className="helper-button"
-                onClick={() =>
-                  handleButtonClick(
-                    'Given Rosa Nguyen’s skills, what job posting best fits them?',
-                  )
-                }
-              >
-                Given Rosa Nguyen’s skills, what job posting best fits them?
+                List the top 3 employees that have full-stack experience
               </button>
             </div>
           </div>
