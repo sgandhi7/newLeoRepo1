@@ -42,6 +42,16 @@ export const Header = (): React.ReactElement => {
     window.location.href = '/logout';
   };
 
+  // const handleAuth = (event: SyntheticEvent): void => {
+  //   event.preventDefault();
+  //   // Check if signed in
+  //   if (isSignedIn) {
+  //     handleLogout();
+  //   } else {
+  //     navigate('/signin');
+  //   }
+  // };
+
   return (
     <>
       <a className="usa-skipnav " href="#mainSection">

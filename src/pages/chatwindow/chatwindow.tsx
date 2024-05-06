@@ -1,6 +1,5 @@
 // import { Button, Icon } from '@metrostar/comet-uswds';
 import { Button, Icon } from '@metrostar/comet-uswds';
-import Typewriter from '@src/components/text-area-input/typewriter';
 import useApi from '@src/hooks/use-api';
 import { Search } from '@src/pages/dashboard/dashboard-copilot-chat/chat';
 import {
@@ -9,17 +8,14 @@ import {
 } from '@src/types/investigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { TypeAnimation } from 'react-type-animation';
 import { useRecoilState } from 'recoil';
 import {
-  // abortController as abortControllerAtom,
   currentInvestigation as defaultInvestigation,
   currentSearch as defaultSearch,
   searching,
 } from 'src/store';
 import chatBot from '/img/leo.png';
-import lockIcon from '/img/lockIcon.svg';
-
+// import logomark from '/img/logo-mark.svg';
 export const Investigation = (): React.ReactElement => {
   const { id } = useParams();
   const { getItem, item } = useApi();
@@ -29,10 +25,9 @@ export const Investigation = (): React.ReactElement => {
   const [isSearching] = useRecoilState<boolean>(searching);
   const [showSources, setShowSources] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState('');
-  // const [abortController, setAbortController] =
-  //   useRecoilState(abortControllerAtom);
   const [currentSearch] = useRecoilState<string>(defaultSearch);
   const chatContentRef = useRef<HTMLDivElement>(null);
+
   // Function to scroll to the bottom when content is generated
   const scrollToBottom = () => {
     const answers = document.querySelectorAll('.chat-content-answer');
@@ -41,15 +36,6 @@ export const Investigation = (): React.ReactElement => {
       lastAnswer.scrollIntoView();
     }
   };
-
-  // useEffect(() => {
-  //   // Ensure an AbortController is always available
-  //   if (!abortController) {
-  //     const newController = new AbortController();
-  //     setAbortController(newController);
-  //   }
-  // }, [abortController, setAbortController]);
-
   // Set current chat
   useEffect(() => {
     if (item) {
@@ -138,12 +124,7 @@ export const Investigation = (): React.ReactElement => {
                           alt="Leo Logo"
                         />
                       </div>
-                      <div className="grid-col-10">
-                        <TypeAnimation
-                          sequence={['Generating response...']}
-                          speed={50}
-                        />
-                      </div>
+                      <div className="grid-col-10">Generating response...</div>
                     </div>
                   </div>
                 </div>
@@ -175,34 +156,7 @@ export const Investigation = (): React.ReactElement => {
                         />
                       </div>
                       <div className="grid-col-10">
-                        <div
-                          style={{
-                            color: 'gray',
-                            display: 'flex',
-                            alignItems: 'center',
-                            fontSize: '0.9rem',
-                            justifyContent: 'center',
-                            marginTop: '-20px',
-                          }}
-                        >
-                          <img
-                            src={lockIcon}
-                            alt="Lock Icon"
-                            style={{ width: '18px', height: '18px' }}
-                          />
-                          Work content and chats cannot be seen outside your
-                          organization
-                        </div>
-                        {/* Split for source indicies */}
-                        {prompt.completion.split('\n').map((part, index) => (
-                          <Typewriter
-                            sentence={part.trim()}
-                            delay={700}
-                            index={index}
-                            length={prompt.completion.split('\n').length}
-                            sources={prompt.sources}
-                          />
-                        ))}
+                        {prompt.completion}
                         {prompt.sources && prompt.sources.length > 0 ? (
                           <div
                             className="grid-row"
@@ -243,27 +197,13 @@ export const Investigation = (): React.ReactElement => {
                               <ul>
                                 {prompt.sources.map((source, index) => (
                                   <li key={index}>
-                                    <a href={source[1]}>
-                                      {index + 1}. {source[0]}
-                                    </a>
+                                    <a href={source[1]}>{source[0]}</a>
                                   </li>
                                 ))}
                               </ul>
                             </div>
                           )}
                         </div>
-                      </div>
-                      <div
-                        style={{
-                          position: 'absolute',
-                          bottom: '0',
-                          right: '0',
-                          color: 'gray',
-                          fontSize: '0.8rem',
-                          padding: '5px',
-                        }}
-                      >
-                        AI generated content may be incorrect
                       </div>
                     </div>
                   </div>
@@ -274,12 +214,7 @@ export const Investigation = (): React.ReactElement => {
         </div>
       </div>
       <div id="investigations" className="prompt">
-        <Search
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          // abortController={abortController}
-          // setAbortController={setAbortController}
-        />
+        <Search searchInput={searchInput} setSearchInput={setSearchInput} />
       </div>
     </>
   );
