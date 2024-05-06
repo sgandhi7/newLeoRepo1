@@ -35,15 +35,3 @@ export interface Completion {
   search_intents: string;
   output_entities: ListItem;
 }
-
-// export interface ChatHistory {
-//   inputs: {
-//     query: string;
-//   };
-//   outputs: {
-//     current_query_intent: string;
-//     fetched_docs: ListItem;
-//     reply: string;
-//     search_intents: string;
-//   };
-// }
