@@ -97,7 +97,11 @@ export const Investigation = (): React.ReactElement => {
       <div className="grid-container">
         <div className="grid-row">
           <div className="grid-col">
-            <div className="chat-content" ref={chatContentRef}>
+            <div
+              className="chat-content"
+              ref={chatContentRef}
+              style={{ bottom: '50px' }}
+            >
               {isSearching ? (
                 <div key={`chat-content-loading`}>
                   <div className="grid-row flex-column">
