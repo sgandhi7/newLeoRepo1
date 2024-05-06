@@ -8,7 +8,8 @@ import { Button, ListItem } from '@metrostar/comet-uswds';
 // eslint-disable-next-line prettier/prettier
 import { TextAreaInput } from '@src/components/text-area-input/textarea-input';
 // eslint-disable-next-line prettier/prettier
-import {
+import { // abortController as abortControllerAtom,
+  abortController,
   currentInvestigation as defaultInvestigation,
   currentSearch as defaultSearch,
   searching,
@@ -50,7 +51,7 @@ function formatConversation(
 
 export const Search = ({
   searchInput,
-  setSearchInput,
+  setSearchInput, // abortController, setAbortController,
 }: {
   searchInput: string;
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
@@ -62,6 +63,10 @@ export const Search = ({
     useRecoilState<InvestigationState>(defaultInvestigation);
   const [isSearching, setIsSearching] = useRecoilState<boolean>(searching);
   const [, setCurrentSearch] = useRecoilState<string>(defaultSearch);
+  const [abortControllerRef, setAbortController] =
+    useRecoilState<AbortController | null>(abortController);
+  const [isNavigationEvent, setIsNavigationEvent] = useState(false);
+
   const updateFocus = () => {
     const input = document.querySelector('textarea');
     if (input) {
@@ -70,6 +75,15 @@ export const Search = ({
   };
 
   const submitSearch = async () => {
+    // Cancel the previous request if it exists
+    if (abortControllerRef) {
+      abortControllerRef.abort();
+    }
+
+    // Create a new AbortController instance
+    const newAbortController = new AbortController();
+    setAbortController(newAbortController);
+
     // Begin chat
     setIsSearching(true);
 
@@ -83,104 +97,152 @@ export const Search = ({
 
     const queryCopy = searchInput;
     setCurrentSearch(searchInput);
-    if (
-      queryCopy.toLowerCase() == 'clear chat history' ||
-      queryCopy.toLowerCase() == 'clear' ||
-      queryCopy.toLowerCase() == 'clear chat'
-    ) {
-      window.sessionStorage.setItem('chat_history', '');
-      setSearchInput('');
-      setQuery('');
-      return;
-    }
+
+    //Create current investigation (chat)
     let newData: Prompt[] = [];
     if (currentInvestigation?.prompts) {
       newData = [...currentInvestigation.prompts];
     }
 
+    //New chat prompt
     let newPrompt: Prompt = {
       id: Math.random().toString(),
       prompt: queryCopy,
       completion: 'Loading...',
       sources: [],
     };
+
+    //Add new prompt to current investigation
     newData.unshift(newPrompt);
+
     // Get current chat history
     const localData = window.sessionStorage.getItem('chat_history');
     if (localData != null && localData != '') {
       chatHistory = JSON.parse(localData);
-      console.log(chatHistory);
     }
-
+    console.log('localData: ', localData);
     // Intialize variable to send to api
     const data = {
       query: queryCopy,
       chat_history: chatHistory,
     };
-    // Make API call
-    const response = await fetch('api/PromptFlowAPI', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      } as HeadersInit,
-      body: JSON.stringify(data),
-    });
-    if (response.ok) {
-      const jsonResponse = await response.json();
-      console.log('Got jsonResponse: ', jsonResponse);
-      // Get resume sharepoint links and titles
-      const getSources: Array<[string, string]> = [];
-      for (const source of jsonResponse.fetched_docs) {
-        console.log('Source: ', source);
-        if (source.includes('sharepoint')) {
-          const parsedSource = JSON.parse(source);
-          console.log('Parsed Source: ', parsedSource);
-          for (const doc of parsedSource.retrieved_documents) {
+    console.log('Data: ', data);
+    // Use controller.signal for fetch request
+    try {
+      // Make API call
+      const response = await fetch('api/PromptFlowAPI', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        } as HeadersInit,
+        body: JSON.stringify(data),
+        signal: newAbortController.signal,
+      });
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+
+        // Get resume sharepoint links and titles
+        const getSources: Array<[string, string]> = [];
+        const source = jsonResponse.fetched_docs[0]['retrieved_documents'];
+        // Get sharepoint data
+        if (source) {
+          for (const doc of source) {
             for (const key in doc) {
               const document = doc[key];
-              const sharepointData = document.sharepoint;
-              const sharepointName = document.title;
-              console.log(sharepointData);
-              if (sharepointName && sharepointData) {
-                getSources.push([
-                  sharepointName,
-                  'https://metrostarsys.sharepoint.com/:f:/r/sites/PC/ContentRepository/Resumes/' +
-                    sharepointData,
-                ]);
+              if (document['file type'] == 'resume') {
+                const sharepointData = document.sharepoint;
+                const sharepointName = document.title;
+                //If sharepoint exists and is not empty
+                if (sharepointName && sharepointData) {
+                  getSources.push([
+                    sharepointName,
+                    'https://metrostarsys.sharepoint.com/:f:/r/sites/PC/ContentRepository/Resumes/' +
+                      sharepointData,
+                  ]);
+                }
+              } else {
+                const jobTitle = document.title;
+                getSources.push([jobTitle, '']);
               }
             }
           }
         }
+
+        // // Map sources to response
+        // const indices: number[] = [];
+        // const completionParts = jsonResponse.reply.split('\n');
+        // getSources.forEach((source) => {
+        //   const sourceText = source[0];
+        //   const sourceIndex = completionParts.findIndex((part: string) =>
+        //     part.includes(sourceText),
+        //   );
+        //   if (sourceIndex !== -1) {
+        //     indices.push(sourceIndex);
+        //   }
+        // });
+
+        let reply = jsonResponse.reply;
+        // Bold words related to output entities
+        for (const word of jsonResponse.output_entities) {
+          // Check if the word is in reply
+          if (reply.includes(word) && word != '') {
+            const boldWord = `**${word}**`;
+            reply = reply.replace(word, boldWord); // Replace the word with the bold version
+          }
+        }
+        // Initialize variable with response
+        newPrompt = {
+          id: generateGUID(),
+          prompt: queryCopy,
+          completion: reply,
+          sources: getSources,
+        };
+        // Format chat history
+        chatHistory = formatConversation(chatHistory, queryCopy, jsonResponse);
+
+        // Send chat history to session storage
+        window.sessionStorage.setItem(
+          'chat_history',
+          JSON.stringify(chatHistory),
+        );
+
+        // Update investigation (chat)
+        newData[0] = newPrompt;
+        updateCurrentInvestigation(newData);
+
+        // Finished responding
+        setIsSearching(false);
+        setSearchInput('');
+      } else {
+        console.error('Error:', response.statusText);
       }
-      console.log('Sources found: ', getSources);
-      // Initialize variable with response
-      newPrompt = {
-        id: generateGUID(),
-        prompt: queryCopy,
-        completion: jsonResponse.reply,
-        sources: getSources,
-      };
-      // Format chat history
-      chatHistory = formatConversation(chatHistory, queryCopy, jsonResponse);
-
-      // Send chat history to session storage
-      window.sessionStorage.setItem(
-        'chat_history',
-        JSON.stringify(chatHistory),
-      );
-
-      // Update investigation (chat)
-      newData[0] = newPrompt;
-      updateCurrentInvestigation(newData);
-
-      // Finished responding
+      setQuery('');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          console.log('Fetch aborted by user');
+        } else {
+          console.error('Error in fetch: ', error);
+        }
+      } else {
+        console.error('Unknown error occurred: ', error);
+      }
+    } finally {
+      // Cleanup
       setIsSearching(false);
-      setSearchInput('');
-    } else {
-      console.error('Error:', response.statusText);
+      setQuery('');
     }
-    setQuery('');
   };
+
+  // // Cancel the initial search request when the component unmounts
+  // useEffect(() => {
+  //   return () => {
+  //     if (abortController) {
+  //       abortController.abort();
+  //     }
+  //   };
+  // }, [abortController]);
 
   const updateCurrentInvestigation = (newData: Prompt[]) => {
     console.log('Updating current investigation');
@@ -200,6 +262,27 @@ export const Search = ({
   const handleSearch = () => {
     submitSearch();
   };
+
+  const handleCancel = () => {
+    if (abortControllerRef) {
+      abortControllerRef.abort();
+      setIsSearching(false);
+    }
+  };
+
+  useEffect(() => {
+    if (location.pathname === '/dashboard') {
+      setIsNavigationEvent(true); // Set the flag to true before navigating
+    } else {
+      setIsNavigationEvent(false);
+    }
+    return () => {
+      // Check if the component is unmounting due to a navigation event
+      if (!isNavigationEvent && abortControllerRef) {
+        abortControllerRef.abort();
+      }
+    };
+  }, [abortControllerRef, isNavigationEvent, location.pathname]);
 
   useEffect(() => {
     if (!isSearching) {
@@ -242,7 +325,16 @@ export const Search = ({
           }}
         />
         {isSearching ? (
-          <img src={infinteLoop} alt="Loading" className="searching" />
+          <>
+            <img src={infinteLoop} alt="Loading" className="searching" />
+            <Button
+              id="cancel-btn"
+              className="search-input"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          </>
         ) : (
           <Button
             id="search-btn"

@@ -27,7 +27,16 @@ const currentSearch = atom({
   default: '',
 });
 
+// Create a new atom to manage the AbortController
+const abortController = atom<AbortController | null>({
+  key: 'abortController',
+  default: null,
+  // Recoil does not automatically reset non-serializable objects like AbortController,
+  // so it is typically set to null initially and created in components as needed.
+});
+
 export {
+  abortController,
   currentInvestigation,
   currentSearch,
   currentUser,

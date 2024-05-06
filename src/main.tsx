@@ -7,7 +7,7 @@ import './styles.scss';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename={'/'}>
+    <BrowserRouter basename={process.env.APP_BASE_URL}>
       <RecoilRoot>
         <App />
       </RecoilRoot>
