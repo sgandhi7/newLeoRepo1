@@ -5,6 +5,7 @@ import { Header } from './components/header/header';
 import { Investigation } from './pages/chatwindow/chatwindow';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Home } from './pages/home/home';
+// import { SignIn } from './pages/sign-in/sign-in';
 
 const queryClient = new QueryClient();
 
@@ -14,9 +15,11 @@ export const App = (): React.ReactElement => (
       <Header />
       <main id="mainSection" className="usa-section">
         <Routes>
+          {/* <Route path="/signin" element={<SignIn />} /> */}
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/investigations" element={<Investigation />} />
+          <Route path="/investigations/:id" element={<Investigation />} />
         </Routes>
       </main>
     </div>

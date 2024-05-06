@@ -11,6 +11,7 @@
 // .loading-text {
 //   color: #005ea2;
 // }
+
 @forward 'providers/uswds/uswds.scss';
 
 $color-primary: #00101f;
@@ -174,7 +175,6 @@ body {
   .searching {
     max-width: 51px;
     max-height: 128px;
-    padding-right: 20px;
   }
 
   .search-area {
