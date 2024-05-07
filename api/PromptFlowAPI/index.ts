@@ -7,7 +7,7 @@ const PromptFlowAPI: AzureFunction = async function (
 ): Promise<void> {
   const url =
     'https://dvasquez-seattle-vcqoi.eastus.inference.ml.azure.com/score';
-  const deploymentDoc = '14';
+  const deploymentDoc = '11';
   const deploymentReply = '12';
   const deploymentFormat = '13';
 
