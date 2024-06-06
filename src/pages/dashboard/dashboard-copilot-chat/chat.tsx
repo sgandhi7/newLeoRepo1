@@ -13,9 +13,11 @@ import { // abortController as abortControllerAtom,
   currentInvestigation as defaultInvestigation,
   currentSearch as defaultSearch,
   searching,
+  showDropdownMenu,
 } from 'src/store';
 // eslint-disable-next-line prettier/prettier
 // import useApi from '@src/hooks/use-api';
+// import { employees } from '@src/data/employeeData.ts';
 import { generateGUID } from '@src/utils/api';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -51,7 +53,7 @@ function formatConversation(
 
 export const Search = ({
   searchInput,
-  setSearchInput, // abortController, setAbortController,
+  setSearchInput,
 }: {
   searchInput: string;
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
@@ -66,6 +68,29 @@ export const Search = ({
   const [abortControllerRef, setAbortController] =
     useRecoilState<AbortController | null>(abortController);
   const [isNavigationEvent, setIsNavigationEvent] = useState(false);
+  // Variables and components related to Dropdown Menu
+  const [showDropdown, setShowDropdown] = useRecoilState(showDropdownMenu);
+  const [searchTerm, setSearchTerm] = useState(''); // Variable used to filter out matching people/emails
+  const [activeTab, setActiveTab] = useState('contacts');
+  const [jsonData, setJsonData] = useState([]); // Variable to store fetched JSON data from Azure Function API call
+  const [peopleNames, setPeopleNames] = useState<string[]>([]); // Arrays to store people and emails
+  const [peopleEmails, setPeopleEmails] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const filteredContacts = //Array containing only contacts with people OR emails that match searchTerm
+    searchTerm.length > 0
+      ? peopleNames.filter((_, index) => {
+          // Built in function that only returns strings containing searchTerm
+          const name = peopleNames[index].toLowerCase();
+          const email = peopleEmails[index].toLowerCase();
+          return (
+            name.includes(searchTerm.toLowerCase()) ||
+            email.includes(searchTerm.toLowerCase())
+          );
+        })
+      : peopleNames;
+  const filesData = ['Report.pdf', 'Presentation.pptx', 'Document.docx'];
+  const [isLoading, setIsLoading] = useState(false);
+  const [recentIndices, setRecentIndices] = useState<number[]>([]); // Array containing indices of recently-autofilled names
 
   const updateFocus = () => {
     const input = document.querySelector('textarea');
@@ -75,6 +100,15 @@ export const Search = ({
   };
 
   const submitSearch = async () => {
+    const response = await fetch('/.auth/me');
+    const payload = await response.json();
+    let user = null;
+    const { clientPrincipal } = payload;
+    if (clientPrincipal == null) {
+      window.location.reload();
+    } else {
+      user = clientPrincipal.userDetails;
+    }
     // Cancel the previous request if it exists
     if (abortControllerRef) {
       abortControllerRef.abort();
@@ -88,14 +122,15 @@ export const Search = ({
     setIsSearching(true);
 
     // Navigate to chatwindow
-    if (location.pathname === '/dashboard') {
+    if (location.pathname === '/') {
       navigate('/investigations');
     }
 
     // Intialize chat history
     let chatHistory: object[] = [];
 
-    const queryCopy = searchInput;
+    const queryCopy = searchInput; // original query
+    const queryCopyJSON = convertNamesToJSON(searchInput); // query that has names replaced with JSON objects
     setCurrentSearch(searchInput);
 
     //Create current investigation (chat)
@@ -107,9 +142,10 @@ export const Search = ({
     //New chat prompt
     let newPrompt: Prompt = {
       id: Math.random().toString(),
-      prompt: queryCopy,
+      prompt: queryCopyJSON,
       completion: 'Loading...',
       sources: [],
+      suggestions: [],
     };
 
     //Add new prompt to current investigation
@@ -123,10 +159,11 @@ export const Search = ({
     console.log('localData: ', localData);
     // Intialize variable to send to api
     const data = {
-      query: queryCopy,
+      query: queryCopyJSON,
       chat_history: chatHistory,
+      user: user,
     };
-    console.log('Data: ', data);
+    console.log('Checking Data: ', data);
     // Use controller.signal for fetch request
     try {
       // Make API call
@@ -169,19 +206,6 @@ export const Search = ({
           }
         }
 
-        // // Map sources to response
-        // const indices: number[] = [];
-        // const completionParts = jsonResponse.reply.split('\n');
-        // getSources.forEach((source) => {
-        //   const sourceText = source[0];
-        //   const sourceIndex = completionParts.findIndex((part: string) =>
-        //     part.includes(sourceText),
-        //   );
-        //   if (sourceIndex !== -1) {
-        //     indices.push(sourceIndex);
-        //   }
-        // });
-
         let reply = jsonResponse.reply;
         // Bold words related to output entities
         for (const word of jsonResponse.output_entities) {
@@ -191,15 +215,22 @@ export const Search = ({
             reply = reply.replace(word, boldWord); // Replace the word with the bold version
           }
         }
+        console.log('Suggested Prompts:', jsonResponse.suggested_prompts);
         // Initialize variable with response
         newPrompt = {
           id: generateGUID(),
           prompt: queryCopy,
           completion: reply,
           sources: getSources,
+          suggestions: jsonResponse.suggested_prompts,
         };
+        console.log('Json Response: ', jsonResponse);
         // Format chat history
-        chatHistory = formatConversation(chatHistory, queryCopy, jsonResponse);
+        chatHistory = formatConversation(
+          chatHistory,
+          queryCopyJSON,
+          jsonResponse,
+        );
 
         // Send chat history to session storage
         window.sessionStorage.setItem(
@@ -235,14 +266,154 @@ export const Search = ({
     }
   };
 
-  // // Cancel the initial search request when the component unmounts
-  // useEffect(() => {
-  //   return () => {
-  //     if (abortController) {
-  //       abortController.abort();
-  //     }
-  //   };
-  // }, [abortController]);
+  // On initial render, call function to fetch employee data from Azure Function API
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('api/EmployeeDataAPI', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          } as HeadersInit,
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setJsonData(data.jsonData); // Update employee data with fetched information
+        setPeopleNames(data.names);
+        setPeopleEmails(data.emails);
+        setError(null);
+      } catch (error) {
+        console.error('Failed to fetch employee data:', error);
+        setError('Failed to fetch employee data:');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchEmployees();
+  }, []);
+
+  // Variable to store html, backend logic, and functions for dropdown menu
+  const DropdownMenu = () => {
+    // State to manage active tab
+    const [, setShowDropdown] = useRecoilState(showDropdownMenu); // Using Recoil state to toggle visibility
+
+    const handleTabClick = (tabName: string) => {
+      setActiveTab(tabName);
+    };
+
+    // Function to handle clicking on an item in the dropdown menu
+    const handleItemClick = (item: string, index = 0) => {
+      setSearchInput((prev) => prev.substring(0, prev.indexOf('/')) + item); // Set the search input to the clicked item
+      setRecentIndices((prev) => [...prev, index]); // Cache index of name to substitute with corresponding JSON object later
+
+      setActiveTab((prevTab) => prevTab);
+      setShowDropdown(false);
+    };
+
+    const handleClose = () => {
+      setShowDropdown(false); // Function to close the dropdown
+    };
+
+    // HTML of dropdown menu
+    return error ? (
+      // If there's an error, display the error message
+      <p>Error: {error}</p>
+    ) : (
+      // Otherwise, display the dropdown menu
+      <div className="dropdown-menu">
+        <ul className="tab-list">
+          {/* Tab for 'Contacts' */}
+          <li
+            className={activeTab === 'contacts' ? 'active' : ''} // Apply 'active' class if 'contacts' tab is active
+            onClick={() => handleTabClick('contacts')} // Handle click to switch to 'contacts' tab
+          >
+            Contacts
+          </li>
+          {/* Tab for 'Files' */}
+          <li
+            className={activeTab === 'files' ? 'active' : ''} // Apply 'active' class if 'files' tab is active
+            onClick={() => handleTabClick('files')} // Handle click to switch to 'files' tab
+          >
+            Files
+          </li>
+          {/* Close button for the dropdown */}
+          <button className="close-button" onClick={handleClose}>
+            &times;
+          </button>
+        </ul>
+        <div className="tab-content">
+          {/* Content for 'Contacts' tab */}
+          {activeTab === 'contacts' &&
+            (isLoading ? (
+              // Show loading state if data is still loading
+              <ul>
+                <div className="contact-item">
+                  <div className="contact-name">Loading ... </div>
+                </div>
+              </ul>
+            ) : filteredContacts.length === 0 ? (
+              // Show 'No matching results' if no contacts match the filter
+              <ul>
+                <div className="contact-item">
+                  <div className="contact-name">No matching results</div>
+                </div>
+              </ul>
+            ) : (
+              // List of filtered contacts
+              <ul>
+                {filteredContacts.map((person) => (
+                  <div className="contact-item" key={person}>
+                    {/* Display contact name and handle click */}
+                    <div
+                      className="contact-name"
+                      onClick={() =>
+                        handleItemClick(person, peopleNames.indexOf(person))
+                      } // Pass in index of person to make substituting with JSON object easier
+                    >
+                      {person}
+                    </div>
+                    {/* Display contact email and handle click */}
+                    <div
+                      className="contact-email"
+                      onClick={() =>
+                        handleItemClick(
+                          peopleEmails[peopleNames.indexOf(person)],
+                          peopleNames.indexOf(person),
+                        )
+                      } // Ensure email corresponds to correct person by using peopleNames.indexOf(person)
+                    >
+                      {peopleEmails[peopleNames.indexOf(person)]}
+                    </div>
+                  </div>
+                ))}
+              </ul>
+            ))}
+          {/* Content for 'Files' tab */}
+          {activeTab === 'files' &&
+            (isLoading ? (
+              // Show loading state if data is still loading
+              <ul>
+                <div className="contact-item">
+                  <div className="contact-name">Loading ... </div>
+                </div>
+              </ul>
+            ) : (
+              // List of files
+              <ul>
+                {filesData.map((file) => (
+                  <li key={file} onClick={() => handleItemClick(file)}>
+                    {file}
+                  </li>
+                ))}
+              </ul>
+            ))}
+        </div>
+      </div>
+    );
+  };
 
   const updateCurrentInvestigation = (newData: Prompt[]) => {
     console.log('Updating current investigation');
@@ -252,30 +423,61 @@ export const Search = ({
     }));
   };
 
+  // Function to remove initial / and any whitespace from searchTerm to facilitate matching
+  const cleanInput = (input: string) => {
+    const match = input.match(/[a-zA-Z].*$/);
+    return match ? match[0] : '';
+  };
+
+  // Function to find and replace all autofilled names with equivalent JSON string
+  const convertNamesToJSON = (input: string) => {
+    let updatedPrompt = input;
+    // Check if autofilled names (accessed using cached indices) are in searchInput
+    recentIndices.forEach((userIndex) => {
+      if (input.includes(jsonData[userIndex]['mss_name'])) {
+        updatedPrompt = updatedPrompt.replace(
+          jsonData[userIndex]['mss_name'], // Name
+          JSON.stringify(jsonData[userIndex]), // String representation of JSON object
+        );
+      }
+    });
+
+    return updatedPrompt;
+  };
+
+  // Event handler triggered each time user types into textbox
   const handleOnChange = (event: SyntheticEvent) => {
     const target = event.target as HTMLInputElement;
     const value = target.value;
     setQuery(value);
     setSearchInput(value);
+
+    // Show dropdown menu if user types backslash into textbox
+    setShowDropdown(value.includes('/'));
+    if (value.includes('/')) {
+      // Set search term to text after backslash
+      setSearchTerm(cleanInput(value.substring(value.indexOf('/'))));
+    }
   };
+
+  // useEffect(() => {
+  //   console.log('searchInput: ' + searchInput);
+  //   console.log(jsonData);
+  //   console.log(recentIndices);
+  // }, [searchInput, jsonData, recentIndices]);
 
   const handleSearch = () => {
-    submitSearch();
-  };
-
-  const clearChat = () => {
-    window.sessionStorage.removeItem('chat_history');
+    submitSearch(); // Submit search when clicking on submit button
   };
 
   const handleCancel = () => {
     if (abortControllerRef) {
       abortControllerRef.abort();
-      setIsSearching(false);
     }
   };
 
   useEffect(() => {
-    if (location.pathname === '/dashboard') {
+    if (location.pathname === '/') {
       setIsNavigationEvent(true); // Set the flag to true before navigating
     } else {
       setIsNavigationEvent(false);
@@ -294,6 +496,13 @@ export const Search = ({
     }
   }, [isSearching]);
 
+  const [image, setImage] = useState('/img/sendbutton.png');
+  function handleMouseHover(imagePath: React.SetStateAction<string>) {
+    return () => {
+      setImage(imagePath);
+    };
+  }
+
   return (
     <div className="grid-container position-relative bottom-2">
       <div
@@ -303,20 +512,13 @@ export const Search = ({
             : 'search-area-investigation'
         }`}
       >
-        <Button
-          id="clear-chat-btn"
-          className="search-input"
-          onClick={clearChat}
-        >
-          New Chat
-        </Button>
         <TextAreaInput
           id="search-input"
           name="search-input"
-          label="Enter your search here..."
+          label="Ask me anything or type / to add people, files, and more"
           className="search-area-input"
           autoFocus
-          placeholder="Enter your search here..."
+          placeholder="Ask me anything or type / to add people, files, and more"
           disabled={isSearching}
           value={searchInput}
           onChange={handleOnChange}
@@ -347,16 +549,27 @@ export const Search = ({
             </Button>
           </>
         ) : (
-          <Button
-            id="search-btn"
-            className="search-input"
-            onClick={handleSearch}
-            disabled={isSearching}
-          >
-            Send
-          </Button>
+          <>
+            <button
+              type="submit"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0.5rem',
+                marginRight: '0.5rem',
+                transform: 'translateX(-160%)',
+              }}
+              onClick={handleSearch}
+              onMouseEnter={handleMouseHover('/img/sendbuttonhover.png')}
+              onMouseLeave={handleMouseHover('/img/sendbutton.png')}
+            >
+              <img src={image} alt="Send" width={26} height={26} />
+            </button>
+          </>
         )}
       </div>
+      {showDropdown && <DropdownMenu />}
     </div>
   );
 };

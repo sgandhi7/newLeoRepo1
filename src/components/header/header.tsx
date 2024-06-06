@@ -62,7 +62,7 @@ export const Header = (): React.ReactElement => {
                 className="usa-logo__text"
                 style={{ fontSize: '35px', height: '52px' }}
               >
-                <NavLink id="logo-link" to="/">
+                <NavLink id="logo-link" to="/Home">
                   {APP_TITLE}
                 </NavLink>
               </em>
@@ -83,9 +83,9 @@ export const Header = (): React.ReactElement => {
               <li className="usa-nav__primary-item">
                 <NavLink
                   id="home-link"
-                  to="/"
+                  to="/Home"
                   className={`usa-nav__link ${
-                    location.pathname === '/' ? 'usa-current' : ''
+                    location.pathname === '/Home' ? 'usa-current' : ''
                   }`}
                 >
                   Home
@@ -94,9 +94,9 @@ export const Header = (): React.ReactElement => {
               <li className="usa-nav__primary-item">
                 <NavLink
                   id="dashboard-link"
-                  to="/dashboard"
+                  to="/"
                   className={`usa-nav__link ${
-                    location.pathname === '/dashboard' ? 'usa-current' : ''
+                    location.pathname === '/' ? 'usa-current' : ''
                   }`}
                 >
                   Copilot

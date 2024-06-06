@@ -23,6 +23,8 @@ $color-gray: #dfe1e2;
 $color-blue: #3f9fd3;
 $color-green: #00bb9d;
 $color-green-light: #00cfc8;
+$color-leoblue: #18aee4;
+$color-dark-chat-blue: #067197;
 
 body {
   background-color: $color-primary-gray;
@@ -71,9 +73,13 @@ body {
     width: 100%;
   }
 
+  iframe:focus, [href]:focus, [tabindex]:focus, [contentEditable=true]:focus {
+    outline: 0rem;
+  }
+
   #mainSection {
     min-height: 800px;
-    margin-top: 96px;
+    //margin-top: 96px;
     .signin {
       background-image: url('/img/leo.png');
       background-size: cover;
@@ -125,16 +131,140 @@ body {
     }
   }
 
+  /* Dropdown Menu Styling */
+  .dropdown-menu {
+    position: absolute;
+    bottom: 100%;  /* Position directly above the search area */
+    left: 13%;    /* Align with the left side of the container */
+    width: 60%; /* Optional: you might adjust this based on design */
+    background-color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 2; /* Ensure it is above other content */
+  }
+
+  .tab-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #f1f1f1;
+  }
+
+  .tab-list li {
+    flex-grow: 1;
+    text-align: center;
+    padding: 8px;
+    cursor: pointer;
+    background-color: lightgray;
+  }
+
+  .tab-list li.active {
+    background-color: rgb(255, 255, 255);
+    border-bottom: 2px solid $color-leoblue;
+  }
+
+  .tab-content {
+    padding: 10px;
+    background-color: white;
+    max-height: 150px; /* Assuming each row is approximately 30px high */
+    overflow-y: auto; /* Enables vertical scrolling */
+  }
+
+  .tab-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tab-content li {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .tab-content li:hover {
+    background-color: #eef;
+  }
+
+  .dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dropdown-menu li {
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  .dropdown-menu li:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* Contacts list styling (within dropdown menu) */
+  .contact-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 16px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  .contact-name, .contact-email {
+    flex: 1;
+    white-space: nowrap; /* Prevents text from wrapping */
+    overflow: hidden; /* Keeps the text within the container */
+    text-overflow: ellipsis; /* Adds ellipsis if the text is too long */
+    padding: 8px 0px;
+  }
+
+  .contact-name:hover, .contact-email:hover {
+    background-color: #f1f1f1;
+  }
+
+  .chat-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  #clear-chat-btn {
+    margin-right: 1rem;
+  }
+
   /* Custom styles */
   #investigations.prompt {
     position: fixed;
+    align-Items: center;
     width: 100%;
     bottom: -1rem;
+
+  }
+  .button-container-two {
+    margin-bottom: 1rem;
+    .helper-button-two {
+      margin: .5rem;
+      padding: .5rem;
+      border: 2px solid $color-primary;
+      cursor: pointer;
+      border-radius: 10px;
+      width: 30%;
+      &:hover {
+        border: 2px solid rgba(17, 27, 212, 0.7);
+      }
+    }
+    p.helper-text-two {
+      font-size: 13px !important;
+      margin: 0;
+      text-align: left;
+      margin-left: 2rem;
+    }
   }
 
   .button-container {
     margin-bottom: 1rem;
     .helper-button {
+      background-color: $color-white;
       margin: 1rem;
       padding: 1rem;
       border: 2px solid $color-primary;
@@ -264,10 +394,14 @@ body {
     max-width: unset;
   }
 
+  a.usa-nav__link.usa-current.active {
+    color: $color-leoblue;
+  }
+
   .usa-button {
-    color: $color-white;
-    background-color: $color-primary;
-    border: 2px solid $color-white;
+    color: $color-black;
+    background-color: $color-white;
+    border: 2px solid $color-black;
   }
 
   .usa-button:hover {
@@ -340,9 +474,10 @@ body {
   }
 
   .chat-content-question {
-    background-color: $color-primary;
+    background-color: $color-white;
+    border: 1px solid $color-black;
     border-top-right-radius: 10px;
-    color: #ffffff;
+    color: #000000;
     border-radius: 4px;
     padding: 1rem;
     margin: 2rem 0;
@@ -354,7 +489,7 @@ body {
 
   .chat-content-answer {
     background-color: $color-white;
-    border: 1px solid $color-gray;
+    border: 1px solid $color-black;
     color: $color-black;
     border-radius: 4px;
     padding: 35px 20px;
@@ -379,6 +514,73 @@ body {
   .hr-suggest {
     width: 60%;
     margin: 3rem 0;
+  }
+}
+
+// For dark mode
+[data-theme="dark"] {
+  body {
+    background-color: $color-primary;
+
+    .usa-section {
+      h1 {
+        color: $color-white;
+      }
+      h2 {
+        color: $color-white;
+      }
+      p {
+        color: $color-white;
+      }
+
+    }
+
+    .chat-content-question {
+      background-color: #012437;
+      border: 1px solid #dfe1e2;
+      color: #fff;
+    }
+
+    .chat-content-answer {
+      background-color: #012437;
+      border: 1px solid #dfe1e2;
+      color: #fff;
+    }
+
+    .search-area {
+
+      .search-area-input {
+        background-color: #012437;
+        border: 1px solid #dfe1e2;
+        color: #fff;
+      }
+
+      textarea.search-area-input:disabled {
+        background-color: #eaeced;
+      }
+    }
+
+    .usa-button.usa-button--unstyled {
+      color: #fff;
+    }
+
+    .button-container-two .helper-button-two {
+      background-color: #011925;
+      border: 1px solid #dfe1e2;
+      color: #fff;
+    }
+
+    .helper-button {
+      background-color: #012437;
+      border: 1px solid #dfe1e2;
+      color: #fff;
+    }
+
+    .usa-button {
+      background-color: #012437;
+      border: 1px solid #dfe1e2;
+      color: #fff;
+    }
   }
 }
 
@@ -413,7 +615,7 @@ body {
     }
     .usa-logo a,
     .usa-nav__primary > .usa-nav__primary-item > a,
-    .usa-nav__primary > .usa-nav__primary-item > a:hover {
+    .usa-nav__primary > .usa-nav__primary-item > a {
       color: $color-white;
     }
 
@@ -426,7 +628,7 @@ body {
   #headerSection.usa-header--basic
     .usa-nav__primary-item
     > .usa-current::after {
-    background-color: $color-white;
+    background-color: $color-leoblue;
   }
 
   #headerSection.usa-header--basic .dropdown .usa-nav__link:hover::after,
@@ -454,7 +656,7 @@ body {
     }
     .usa-logo a,
     .usa-nav__primary > .usa-nav__primary-item > a,
-    .usa-nav__primary > .usa-nav__primary-item > a:hover {
+    .usa-nav__primary > .usa-nav__primary-item > a {
       color: $color-white;
     }
 
@@ -466,6 +668,12 @@ body {
       height: 60px;
     }
   }
+
+  .usa-header--basic .usa-nav__primary-item > .usa-current::after,
+  .usa-header--basic .usa-nav__link:hover::after {
+    background-color: $color-leoblue;
+  }
+
 }
 
 /* Mobile */

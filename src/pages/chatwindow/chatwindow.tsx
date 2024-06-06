@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
 import { useRecoilState } from 'recoil';
 import {
-  // abortController as abortControllerAtom,
   currentInvestigation as defaultInvestigation,
   currentSearch as defaultSearch,
   searching,
@@ -29,8 +28,6 @@ export const Investigation = (): React.ReactElement => {
   const [isSearching] = useRecoilState<boolean>(searching);
   const [showSources, setShowSources] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState('');
-  // const [abortController, setAbortController] =
-  //   useRecoilState(abortControllerAtom);
   const [currentSearch] = useRecoilState<string>(defaultSearch);
   const chatContentRef = useRef<HTMLDivElement>(null);
   // Function to scroll to the bottom when content is generated
@@ -42,13 +39,15 @@ export const Investigation = (): React.ReactElement => {
     }
   };
 
-  // useEffect(() => {
-  //   // Ensure an AbortController is always available
-  //   if (!abortController) {
-  //     const newController = new AbortController();
-  //     setAbortController(newController);
-  //   }
-  // }, [abortController, setAbortController]);
+  const clearChat = () => {
+    window.sessionStorage.removeItem('chat_history');
+    setPrompts([]);
+    currentInvestigation.prompts = [];
+  };
+
+  const handleButtonClick = (buttonText: string) => {
+    setSearchInput(buttonText);
+  };
 
   // Set current chat
   useEffect(() => {
@@ -108,6 +107,14 @@ export const Investigation = (): React.ReactElement => {
 
   return (
     <>
+      <Button
+        id="clear-chat-btn"
+        className="search-input"
+        onClick={clearChat}
+        style={{ float: 'left' }}
+      >
+        New Chat
+      </Button>
       <div className="grid-container">
         <div className="grid-row">
           <div className="grid-col">
@@ -259,6 +266,50 @@ export const Investigation = (): React.ReactElement => {
                           )}
                         </div>
                       </div>
+                      {prompt == prompts[0] &&
+                        prompt.suggestions.length != 0 && (
+                          <div
+                            className="button-container-two"
+                            style={{ margin: '.5rem' }}
+                          >
+                            <button
+                              className="helper-button-two"
+                              style={{
+                                whiteSpace: 'pre-wrap',
+                                fontSize: '13px',
+                              }}
+                              onClick={() =>
+                                handleButtonClick(prompt.suggestions[0])
+                              }
+                            >
+                              {prompt.suggestions[0]}
+                            </button>
+                            <button
+                              className="helper-button-two"
+                              style={{
+                                whiteSpace: 'pre-wrap',
+                                fontSize: '13px',
+                              }}
+                              onClick={() =>
+                                handleButtonClick(prompt.suggestions[1])
+                              }
+                            >
+                              {prompt.suggestions[1]}
+                            </button>
+                            <button
+                              className="helper-button-two"
+                              style={{
+                                whiteSpace: 'pre-wrap',
+                                fontSize: '13px',
+                              }}
+                              onClick={() =>
+                                handleButtonClick(prompt.suggestions[2])
+                              }
+                            >
+                              {prompt.suggestions[2]}
+                            </button>
+                          </div>
+                        )}
                       <div
                         style={{
                           position: 'absolute',

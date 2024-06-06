@@ -52,7 +52,7 @@ export const SignIn = (): React.ReactElement => {
     console.log('Performing SSO Sign in');
     window.location.href = '/.auth/login/aad';
     setIsSignedIn(true);
-    navigate('/dashboard');
+    navigate('/');
   };
 
   return (

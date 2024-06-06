@@ -62,6 +62,7 @@ export const TextAreaInput: React.FC<TextAreaProps> = ({
             borderRadius: '10px',
             margin: '1rem',
             padding: '1rem',
+            paddingRight: '2.5rem',
           }}
         />
       </div>

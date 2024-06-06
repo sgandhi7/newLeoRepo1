@@ -18,6 +18,7 @@ export interface Prompt {
   prompt: string;
   completion: string;
   sources: Array<[string, string]>;
+  suggestions: string[];
 }
 
 export interface CompletionSource {

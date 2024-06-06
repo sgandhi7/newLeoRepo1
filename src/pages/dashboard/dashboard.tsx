@@ -33,11 +33,14 @@ export const Dashboard = (): React.ReactElement => {
                 className="helper-button"
                 onClick={() =>
                   handleButtonClick(
-                    'Given Rosa Nguyen’s skills, what job posting best fits them?',
+                    "Given Daniel Vasquez's skills, what job posting best fits them?",
                   )
                 }
               >
-                Given Rosa Nguyen's skills, what job postings best fit them?
+                <b>
+                  Given Daniel Vasquez's skills, what job postings best fit
+                  them?
+                </b>
               </button>
               <button
                 className="helper-button"
@@ -48,7 +51,7 @@ export const Dashboard = (): React.ReactElement => {
                   )
                 }
               >
-                List employees that have experience with Drupal and PHP
+                <b>List employees that have experience with Drupal and PHP</b>
               </button>
               <button
                 className="helper-button"
@@ -59,7 +62,7 @@ export const Dashboard = (): React.ReactElement => {
                   )
                 }
               >
-                List the top 3 employees that have full-stack experience
+                <b>List the top 3 employees that have full-stack experience</b>
               </button>
             </div>
           </div>
