@@ -1,4 +1,5 @@
 import { AzureFunction, Context } from '@azure/functions';
+import fetch from 'node-fetch';
 
 // Define an interface to represent the structure of Employee objects
 interface Employee {
