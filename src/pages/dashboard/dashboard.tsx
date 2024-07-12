@@ -32,18 +32,7 @@ export const Dashboard = (): React.ReactElement => {
               <button
                 className="helper-button"
                 onClick={() =>
-                  handleButtonClick('What job postings best fit Daniel Vasquez')
-                }
-              >
-                <b>What job postings best fit Daniel Vasquez</b>
-              </button>
-              <button
-                className="helper-button"
-                style={{ whiteSpace: 'pre-wrap' }}
-                onClick={() =>
-                  handleButtonClick(
-                    'List employees that have experience with Drupal and PHP',
-                  )
+                  handleButtonClick('List employees that have experience with Drupal and PHP')
                 }
               >
                 <b>List employees that have experience with Drupal and PHP</b>
@@ -53,11 +42,25 @@ export const Dashboard = (): React.ReactElement => {
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
                   handleButtonClick(
-                    'List the top 3 employees that have full-stack experience',
+                    'List employees that best fit job posting Associate Systems Engineer 4885',
                   )
                 }
               >
-                <b>List the top 3 employees that have full-stack experience</b>
+                <b>
+                  List employees that best fit job posting Associate Systems
+                  Engineer 4885
+                </b>
+              </button>
+              <button
+                className="helper-button"
+                style={{ whiteSpace: 'pre-wrap' }}
+                onClick={() =>
+                  handleButtonClick(
+                    'What job posting best fit Daniel Vasquez',
+                  )
+                }
+              >
+                <b>What job posting best fit Daniel Vasquez</b>
               </button>
             </div>
           </div>
