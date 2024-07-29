@@ -2,7 +2,7 @@
 import { Button, Icon } from '@metrostar/comet-uswds';
 import Typewriter from '@src/components/text-area-input/typewriter';
 import useApi from '@src/hooks/use-api';
-import { Search } from '@src/pages/dashboard/dashboard-copilot-chat/chat';
+import { Search } from '@src/pages/chat';
 import {
   Investigation as InvestigationState,
   Prompt,
@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
 import { useRecoilState } from 'recoil';
 import {
+  currentUser,
   currentInvestigation as defaultInvestigation,
   currentSearch as defaultSearch,
   searching,
@@ -29,7 +30,10 @@ export const Investigation = (): React.ReactElement => {
   const [showSources, setShowSources] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState('');
   const [currentSearch] = useRecoilState<string>(defaultSearch);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [user] = useRecoilState(currentUser);
   const chatContentRef = useRef<HTMLDivElement>(null);
+
   // Function to scroll to the bottom when content is generated
   const scrollToBottom = () => {
     const answers = document.querySelectorAll('.chat-content-answer');
@@ -73,6 +77,7 @@ export const Investigation = (): React.ReactElement => {
       const responsePrompts = currentInvestigation.prompts;
       if (responsePrompts) {
         setPrompts(responsePrompts);
+        setIsTypingComplete(false); // Reset when new prompt is added
       }
     }
   }, [currentInvestigation]);
@@ -107,39 +112,42 @@ export const Investigation = (): React.ReactElement => {
 
   return (
     <>
-      <Button
-        id="clear-chat-btn"
-        className="search-input"
-        onClick={clearChat}
-        style={{ float: 'left' }}
-      >
-        New Chat
-      </Button>
       <div className="grid-container">
-        <div className="grid-row">
-          <div className="grid-col">
-            <div
-              className="chat-content"
-              ref={chatContentRef}
-              style={{
-                bottom: '50px',
-              }}
-            >
+        <div
+          className="grid-row display-flex height-viewport"
+          style={{ width: '140vh' }}
+        >
+          <div
+            className="flex-align-self-start margin-x-auto margin-y-auto"
+            style={{ overflowY: 'auto', width: '90%' }}
+          >
+            <div className="chat-content" ref={chatContentRef}>
               {isSearching ? (
                 <div key={`chat-content-loading`}>
-                  <div className="grid-row flex-column">
-                    <div
-                      key={`chat-content-question-loading`}
-                      className="chat-content-question grid-col-3"
-                    >
-                      <div className="grid-row">
-                        <div className="grid-col-11">{currentSearch}</div>
-                      </div>
+                  <div
+                    key={`chat-content-question-loading`}
+                    className="chat-content-question margin-bottom-2"
+                  >
+                    <div className="grid-row">
+                      {user ? (
+                        <div className="grid-col-1">
+                          <div className="chat-question-avatar">
+                            <span>
+                              {user.firstName?.charAt(0).toUpperCase()}
+                              {user.lastName?.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      <div className="grid-col-11">{currentSearch}</div>
                     </div>
                   </div>
+                  {/* </div> */}
                   <div
                     key={`chat-content-answer-loading`}
-                    className="chat-content-answer grid-col-9 "
+                    className="chat-content-answer margin-bottom-2"
                   >
                     <div className="grid-row">
                       <div className="grid-col-1">
@@ -151,7 +159,7 @@ export const Investigation = (): React.ReactElement => {
                           alt="Leo Logo"
                         />
                       </div>
-                      <div className="grid-col-10">
+                      <div className="grid-col-11">
                         <TypeAnimation
                           sequence={['Generating response...']}
                           speed={50}
@@ -165,17 +173,29 @@ export const Investigation = (): React.ReactElement => {
               )}
               {prompts?.map((prompt: Prompt) => (
                 <div key={`chat-content-${prompt.id}`}>
-                  <div className="grid-row flex-column">
-                    <div
-                      key={`chat-content-question-${prompt.id}`}
-                      className="chat-content-question grid-col-3"
-                    >
-                      {prompt.prompt}
+                  <div
+                    key={`chat-content-question-${prompt.id}`}
+                    className="chat-content-question margin-bottom-2"
+                  >
+                    <div className="grid-row">
+                      {user ? (
+                        <div className="grid-col-1">
+                          <div className="chat-question-avatar">
+                            <span>
+                              {user.firstName?.charAt(0).toUpperCase()}
+                              {user.lastName?.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      <div className="grid-col-11">{prompt.prompt}</div>
                     </div>
                   </div>
                   <div
                     key={`chat-content-answer-${prompt.id}`}
-                    className="chat-content-answer grid-col-9"
+                    className="chat-content-answer margin-bottom-2"
                   >
                     <div className="grid-row">
                       <div className="grid-col-1">
@@ -187,7 +207,7 @@ export const Investigation = (): React.ReactElement => {
                           alt="Leo Logo"
                         />
                       </div>
-                      <div className="grid-col-10">
+                      <div className="grid-col-11">
                         <div
                           style={{
                             color: 'gray',
@@ -214,9 +234,19 @@ export const Investigation = (): React.ReactElement => {
                             index={index}
                             length={prompt.completion.split('\n').length}
                             sources={prompt.sources}
+                            onPartComplete={() => {
+                              if (
+                                index ===
+                                prompt.completion.split('\n').length - 1
+                              ) {
+                                setIsTypingComplete(true);
+                              }
+                            }}
                           />
                         ))}
-                        {prompt.sources && prompt.sources.length > 0 ? (
+                        {prompt.sources &&
+                        isTypingComplete &&
+                        prompt.sources.length > 0 ? (
                           <div
                             className="grid-row"
                             key={`chat-content-sources-${prompt}`}
@@ -267,10 +297,14 @@ export const Investigation = (): React.ReactElement => {
                         </div>
                       </div>
                       {prompt == prompts[0] &&
-                        prompt.suggestions.length != 0 && (
+                        prompt.suggestions.length != 0 &&
+                        isTypingComplete && (
                           <div
                             className="button-container-two"
-                            style={{ margin: '.5rem' }}
+                            style={{
+                              margin: '.5rem',
+                              justifyContent: 'center',
+                            }}
                           >
                             <button
                               className="helper-button-two"
@@ -310,33 +344,39 @@ export const Investigation = (): React.ReactElement => {
                             </button>
                           </div>
                         )}
-                      <div
-                        style={{
-                          position: 'absolute',
-                          bottom: '0',
-                          right: '0',
-                          color: 'gray',
-                          fontSize: '0.8rem',
-                          padding: '5px',
-                        }}
-                      >
-                        AI generated content may be incorrect
-                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+          <div className="flex-align-self-end width-full">
+            <Button
+              id="clear-chat-btn"
+              className="search-input"
+              onClick={clearChat}
+              style={{ float: 'left', marginLeft: '100px', marginTop: '5px' }}
+            >
+              New Chat
+            </Button>
+            <Search searchInput={searchInput} setSearchInput={setSearchInput} />
+            <div
+              className="md:px-[60px]"
+              style={{
+                position: 'relative',
+                bottom: '10px',
+                right: '0',
+                color: 'gray',
+                fontSize: '0.8rem',
+                textAlign: 'center',
+              }}
+            >
+              <span>
+                Leo can make mistakes. Please verify the information provided.
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div id="investigations" className="prompt">
-        <Search
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          // abortController={abortController}
-          // setAbortController={setAbortController}
-        />
       </div>
     </>
   );

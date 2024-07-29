@@ -1,16 +1,16 @@
-import { Search } from '@src/pages/dashboard/dashboard-copilot-chat/chat';
+import { Search } from '@src/pages/chat';
 import { Investigation as InvestigationState } from '@src/types/investigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {
   currentInvestigation as defaultInvestigation, // abortController as abortControllerAtom,
-} from '../../store';
+} from '../store';
 
 export const Dashboard = (): React.ReactElement => {
   const [, setCurrentInvestigation] =
     useRecoilState<InvestigationState>(defaultInvestigation);
   const [searchInput, setSearchInput] = useState<string>('');
-
+  // Comment this out for local testing
   const handleButtonClick = (buttonText: string) => {
     setSearchInput(buttonText);
   };
@@ -25,7 +25,7 @@ export const Dashboard = (): React.ReactElement => {
         <div className="grid-col">
           <div
             className="width-100 padding-top-6"
-            style={{ textAlign: 'center' }}
+            style={{ textAlign: 'center', marginTop: '100px' }}
           >
             <h1 className="margin-bottom-4">Let's Discover Top Talent</h1>
             <div className="button-container">

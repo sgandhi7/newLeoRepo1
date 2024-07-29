@@ -10,6 +10,7 @@ import { TextAreaInput } from '@src/components/text-area-input/textarea-input';
 // eslint-disable-next-line prettier/prettier
 import { // abortController as abortControllerAtom,
   abortController,
+  currentUser,
   currentInvestigation as defaultInvestigation,
   currentSearch as defaultSearch,
   searching,
@@ -26,6 +27,7 @@ import infinteLoop from '/img/infinteLoop.svg';
 
 function formatConversation(
   history: Array<object>,
+  user: string | undefined,
   query: string,
   response: {
     current_query_intent: string;
@@ -39,6 +41,7 @@ function formatConversation(
   conversationHistory.push({
     inputs: {
       query: query,
+      user: user,
     },
     outputs: {
       current_query_intent: response.current_query_intent,
@@ -71,12 +74,13 @@ export const Search = ({
   // Variables and components related to Dropdown Menu
   const [showDropdown, setShowDropdown] = useRecoilState(showDropdownMenu);
   const [searchTerm, setSearchTerm] = useState(''); // Variable used to filter out matching people/emails
-  const [activeTab, setActiveTab] = useState('contacts');
+  const [activeTab, setActiveTab] = useState('people');
   const [jsonData, setJsonData] = useState([]); // Variable to store fetched JSON data from Azure Function API call
   const [peopleNames, setPeopleNames] = useState<string[]>([]); // Arrays to store people and emails
   const [peopleEmails, setPeopleEmails] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const filteredContacts = //Array containing only contacts with people OR emails that match searchTerm
+  const [userData] = useRecoilState(currentUser);
+  const filteredpeople = //Array containing only people with people OR emails that match searchTerm
     searchTerm.length > 0
       ? peopleNames.filter((_, index) => {
           // Built in function that only returns strings containing searchTerm
@@ -88,7 +92,7 @@ export const Search = ({
           );
         })
       : peopleNames;
-  const filesData = ['Report.pdf', 'Presentation.pptx', 'Document.docx'];
+  // const filesData = ['Report.pdf', 'Presentation.pptx', 'Document.docx'];
   const [isLoading, setIsLoading] = useState(false);
   const [recentIndices, setRecentIndices] = useState<number[]>([]); // Array containing indices of recently-autofilled names
 
@@ -156,14 +160,12 @@ export const Search = ({
     if (localData != null && localData != '') {
       chatHistory = JSON.parse(localData);
     }
-    console.log('localData: ', localData);
     // Intialize variable to send to api
     const data = {
       query: queryCopyJSON,
       chat_history: chatHistory,
       user: user,
     };
-    console.log('Checking Data: ', data);
     // Use controller.signal for fetch request
     try {
       // Make API call
@@ -198,10 +200,11 @@ export const Search = ({
                       sharepointData,
                   ]);
                 }
-              } else {
-                const jobTitle = document.title;
-                getSources.push([jobTitle, '']);
               }
+              // else {
+              //   const jobTitle = document.title;
+              //   getSources.push([jobTitle, '']);
+              // }
             }
           }
         }
@@ -215,7 +218,6 @@ export const Search = ({
             reply = reply.replace(word, boldWord); // Replace the word with the bold version
           }
         }
-        console.log('Suggested Prompts:', jsonResponse.suggested_prompts);
         // Initialize variable with response
         newPrompt = {
           id: generateGUID(),
@@ -224,10 +226,10 @@ export const Search = ({
           sources: getSources,
           suggestions: jsonResponse.suggested_prompts,
         };
-        console.log('Json Response: ', jsonResponse);
         // Format chat history
         chatHistory = formatConversation(
           chatHistory,
+          userData?.emailAddress ?? '',
           queryCopyJSON,
           jsonResponse,
         );
@@ -325,19 +327,19 @@ export const Search = ({
       // Otherwise, display the dropdown menu
       <div className="dropdown-menu">
         <ul className="tab-list">
-          {/* Tab for 'Contacts' */}
+          {/* Tab for 'people' */}
           <li
-            className={activeTab === 'contacts' ? 'active' : ''} // Apply 'active' class if 'contacts' tab is active
-            onClick={() => handleTabClick('contacts')} // Handle click to switch to 'contacts' tab
+            className={activeTab === 'people' ? 'active' : ''} // Apply 'active' class if 'people' tab is active
+            onClick={() => handleTabClick('people')} // Handle click to switch to 'people' tab
           >
-            Contacts
+            People
           </li>
           {/* Tab for 'Files' */}
           <li
             className={activeTab === 'files' ? 'active' : ''} // Apply 'active' class if 'files' tab is active
             onClick={() => handleTabClick('files')} // Handle click to switch to 'files' tab
           >
-            Files
+            Jobs
           </li>
           {/* Close button for the dropdown */}
           <button className="close-button" onClick={handleClose}>
@@ -345,8 +347,8 @@ export const Search = ({
           </button>
         </ul>
         <div className="tab-content">
-          {/* Content for 'Contacts' tab */}
-          {activeTab === 'contacts' &&
+          {/* Content for 'People' tab */}
+          {activeTab === 'people' &&
             (isLoading ? (
               // Show loading state if data is still loading
               <ul>
@@ -354,17 +356,17 @@ export const Search = ({
                   <div className="contact-name">Loading ... </div>
                 </div>
               </ul>
-            ) : filteredContacts.length === 0 ? (
-              // Show 'No matching results' if no contacts match the filter
+            ) : filteredpeople.length === 0 ? (
+              // Show 'No matching results' if no people match the filter
               <ul>
                 <div className="contact-item">
                   <div className="contact-name">No matching results</div>
                 </div>
               </ul>
             ) : (
-              // List of filtered contacts
+              // List of filtered people
               <ul>
-                {filteredContacts.map((person) => (
+                {filteredpeople.map((person) => (
                   <div className="contact-item" key={person}>
                     {/* Display contact name and handle click */}
                     <div
@@ -391,32 +393,35 @@ export const Search = ({
                 ))}
               </ul>
             ))}
-          {/* Content for 'Files' tab */}
-          {activeTab === 'files' &&
-            (isLoading ? (
-              // Show loading state if data is still loading
-              <ul>
-                <div className="contact-item">
-                  <div className="contact-name">Loading ... </div>
-                </div>
-              </ul>
-            ) : (
-              // List of files
-              <ul>
-                {filesData.map((file) => (
-                  <li key={file} onClick={() => handleItemClick(file)}>
-                    {file}
-                  </li>
-                ))}
-              </ul>
-            ))}
+          {/* Content for 'Jobs' tab */}
+          {activeTab === 'files' && (
+            // (isLoading ? (
+            //   // Show loading state if data is still loading
+            //   <ul>
+            //     <div className="contact-item">
+            //       <div className="contact-name">Loading ... </div>
+            //     </div>
+            //   </ul>
+            // ) : (
+            //   // List of files
+            // <ul>
+            //   {filesData.map((file) => (
+            //     <li key={file} onClick={() => handleItemClick(file)}>
+            //       {file}
+            //     </li>
+            //   ))}
+            // </ul>
+            // ))
+            <ul>
+              <li>Coming Soon...</li>
+            </ul>
+          )}
         </div>
       </div>
     );
   };
 
   const updateCurrentInvestigation = (newData: Prompt[]) => {
-    console.log('Updating current investigation');
     setCurrentInvestigation((prev) => ({
       ...prev,
       prompts: [...newData],
@@ -459,12 +464,6 @@ export const Search = ({
       setSearchTerm(cleanInput(value.substring(value.indexOf('/'))));
     }
   };
-
-  // useEffect(() => {
-  //   console.log('searchInput: ' + searchInput);
-  //   console.log(jsonData);
-  //   console.log(recentIndices);
-  // }, [searchInput, jsonData, recentIndices]);
 
   const handleSearch = () => {
     submitSearch(); // Submit search when clicking on submit button

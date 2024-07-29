@@ -1,15 +1,16 @@
 // import { User } from '@src/types/user';
 import { atom } from 'recoil';
 import { Investigation } from './types/investigation';
+import { User } from './types/user';
 
 const signedIn = atom({
   key: 'signedIn',
   default: false,
 });
 
-const currentUser = atom({
+const currentUser = atom<User | undefined>({
   key: 'currentUser',
-  default: '',
+  default: undefined,
 });
 
 const currentInvestigation = atom<Investigation>({

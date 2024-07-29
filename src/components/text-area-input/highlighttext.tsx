@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 
 interface TextProps {
   text: string;
+  onPartComplete: () => void;
 }
 
-const HighlightText: React.FC<TextProps> = ({ text }) => {
+const HighlightText: React.FC<TextProps> = ({ text, onPartComplete }) => {
   const parts = text.split(/\*\*(.+?)\*\*/g);
+
+  useEffect(() => {
+    // Calculate total typing time
+    const totalTypingTime = text.length * (1000 / 99); // 99 is the typing speed
+
+    // Set a timeout to call onPartComplete after typing is done
+    const timeout = setTimeout(() => {
+      onPartComplete();
+    }, totalTypingTime);
+
+    // Clean up the timeout if the component unmounts
+    return () => clearTimeout(timeout);
+  }, [text, onPartComplete]);
 
   return (
     <>

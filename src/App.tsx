@@ -1,11 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { Route, Routes } from 'react-router';
-import { Header } from './components/header/header';
-import { Investigation } from './pages/chatwindow/chatwindow';
-import { Dashboard } from './pages/dashboard/dashboard';
-import { Home } from './pages/home/home';
-
+import { Sidebar } from './components/sidebar/sidebar';
+import { Investigation } from './pages/chatwindow';
+import { Dashboard } from './pages/dashboard';
+import { Examples } from './pages/examples';
+import { Faqs } from './pages/faqs';
+import { History } from './pages/history';
 const queryClient = new QueryClient();
 
 /*
@@ -29,15 +30,17 @@ document.documentElement.setAttribute(
 // Export the App
 export const App = (): React.ReactElement => (
   <QueryClientProvider client={queryClient}>
-    <div>
-      <Header />
-      <main id="mainSection" className="usa-section">
+    <main id="mainSection" className="usa-section">
+      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+        <Sidebar />
         <Routes>
-          <Route path="/Home" element={<Home />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/investigations" element={<Investigation />} />
+          <Route path="/faqs" element={<Faqs />} />
+          <Route path="/examples" element={<Examples />} />
+          <Route path="/history" element={<History />} />
         </Routes>
-      </main>
-    </div>
+      </div>
+    </main>
   </QueryClientProvider>
 );

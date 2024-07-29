@@ -58,6 +58,7 @@ body {
 
   .usa-section {
     padding-top: 0 !important;
+    padding-bottom: 0 !important;
 
     h1 {
       color: $color-primary;
@@ -78,8 +79,7 @@ body {
   }
 
   #mainSection {
-    min-height: 800px;
-    //margin-top: 96px;
+    width: 100%;
     .signin {
       background-image: url('/img/leo.png');
       background-size: cover;
@@ -118,7 +118,7 @@ body {
       }
     }
     .grid-container {
-      max-width: 80rem;
+      max-width: 100%;
       .grid-col-2 {
         flex: 1;
       }
@@ -232,12 +232,80 @@ body {
     margin-right: 1rem;
   }
 
+  .sidebar {
+    width: 60px;
+    height: 100%;
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    background-color: $color-primary;
+    transition: left 0.3s ease;
+    z-index: 10001;
+
+    .sidebar-text {
+      position: relative;
+      left: 10px;
+      bottom: 10px;
+      font-size: 14px;
+    }
+
+    .sidebar-text:hover {
+      text-decoration: underline;
+    }
+
+    .sidebar-profile {
+      position: fixed;
+      left: 12px;
+      bottom: 20px;
+    }
+
+    .sidebar-profile-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid $color-white;
+      background-color: $color-primary;
+      font-weight: 700;
+    }
+
+    .sidebar-profile-initials {
+      color: $color-white;
+      position: relative;
+      top: 3px;
+      left: 3px;
+    }
+
+    .sidebar-profile-name {
+      width: 200px;
+      position: relative;
+      top: 3px;
+      left: 35px;
+      font-size: 14px;
+      font-weight: 400;
+      text-wrap: nowrap;
+    }
+
+    .sidebar-btn-group {
+      padding: 12px 0;
+    }
+
+    button {
+      margin: 8px 16px 8px 16px;
+    }
+  }
+
+  .sidebar.open {
+    left: 0;
+    width: 250px;
+  }
+
   /* Custom styles */
   #investigations.prompt {
     position: fixed;
-    align-Items: center;
+    // align-Items: center;
     width: 100%;
-    bottom: -1rem;
+    bottom: 2rem;
 
   }
   .button-container-two {
@@ -249,9 +317,6 @@ body {
       cursor: pointer;
       border-radius: 10px;
       width: 30%;
-      &:hover {
-        border: 2px solid rgba(17, 27, 212, 0.7);
-      }
     }
     p.helper-text-two {
       font-size: 13px !important;
@@ -271,9 +336,6 @@ body {
       cursor: pointer;
       border-radius: 10px;
       width: 30%;
-      &:hover {
-        border: 2px solid rgba(17, 27, 212, 0.7);
-      }
     }
     p.helper-text {
       font-size: 13px !important;
@@ -410,12 +472,12 @@ body {
     border: 2px solid $color-white;
   }
 
-  .usa-button--outline {
-    background-color: $color-white;
-    box-shadow: unset;
-    color: $color-black;
-    border: 2px solid $color-blue;
-  }
+  // .usa-button--outline {
+  //   background-color: $color-white;
+  //   box-shadow: unset;
+  //   color: $color-black;
+  //   border: 2px solid $color-blue;
+  // }
 
   .usa-button--outline:hover {
     color: $color-blue;
@@ -428,6 +490,7 @@ body {
     background-color: transparent;
     border: none;
     color: $color-black;
+    outline: none;
   }
 
   .usa-icon--size-3 {
@@ -466,7 +529,7 @@ body {
 
   .chat-content {
     background-color: transparent;
-    height: 82vh;
+    // height: 82vh;
     overflow-y: auto;
     padding-bottom: 3rem;
     flex-direction: column-reverse;
@@ -576,11 +639,11 @@ body {
       color: #fff;
     }
 
-    .usa-button {
-      background-color: #012437;
-      border: 1px solid #dfe1e2;
-      color: #fff;
-    }
+    // .usa-button {
+    //   background-color: #012437;
+    //   border: 1px solid #dfe1e2;
+    //   color: #fff;
+    // }
   }
 }
 

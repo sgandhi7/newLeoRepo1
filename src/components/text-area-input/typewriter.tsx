@@ -7,12 +7,14 @@ const Typewriter = ({
   index,
   length,
   sources,
+  onPartComplete,
 }: {
   sentence: string; // Sentence to type
   delay: number; // Typing speed in milliseconds
   index: number;
   length: number;
   sources: Array<[string, string]>;
+  onPartComplete: () => void;
 }) => {
   const [shouldRender, setShouldRender] = useState(false);
   const [hasDocX, setHasDocX] = useState(false);
@@ -41,7 +43,10 @@ const Typewriter = ({
       <span key={index}>
         {hasDocX && (
           <span>
-            <HighlightText text={sentence.replace(/\[doc\d+\]/g, '')} />
+            <HighlightText
+              text={sentence.replace(/\[doc\d+\]/g, '')}
+              onPartComplete={onPartComplete}
+            />
             <a href={sources[Number(extractDocXValue(sentence))][1]}>
               <sup
                 style={{
@@ -54,7 +59,9 @@ const Typewriter = ({
             </a>
           </span>
         )}
-        {!hasDocX && <HighlightText text={sentence} />}
+        {!hasDocX && (
+          <HighlightText text={sentence} onPartComplete={onPartComplete} />
+        )}
         {/* Add a break except for the last part */}
         {index !== length - 1 && <br />}
       </span>

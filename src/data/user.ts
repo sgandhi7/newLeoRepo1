@@ -1,9 +1,9 @@
 import { User } from '../types/user';
 
 export const userData: User = {
-  firstName: 'John',
-  lastName: 'Doe',
-  displayName: 'John Doe',
-  emailAddress: 'johndoe@test.com',
+  firstName: 'Admin',
+  lastName: '',
+  displayName: 'Admin',
+  emailAddress: 'admin@email.com',
   phoneNumber: '123-456-7890',
 };
