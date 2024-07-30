@@ -1,16 +1,16 @@
-import { Search } from '@src/pages/chat';
+import { Search } from '@src/pages/dashboard/dashboard-copilot-chat/chat';
 import { Investigation as InvestigationState } from '@src/types/investigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {
   currentInvestigation as defaultInvestigation, // abortController as abortControllerAtom,
-} from '../store';
+} from '../../store';
 
 export const Dashboard = (): React.ReactElement => {
   const [, setCurrentInvestigation] =
     useRecoilState<InvestigationState>(defaultInvestigation);
   const [searchInput, setSearchInput] = useState<string>('');
-  // Comment this out for local testing
+
   const handleButtonClick = (buttonText: string) => {
     setSearchInput(buttonText);
   };
@@ -25,7 +25,7 @@ export const Dashboard = (): React.ReactElement => {
         <div className="grid-col">
           <div
             className="width-100 padding-top-6"
-            style={{ textAlign: 'center', marginTop: '100px' }}
+            style={{ textAlign: 'center' }}
           >
             <h1 className="margin-bottom-4">Let's Discover Top Talent</h1>
             <div className="button-container">
@@ -44,23 +44,23 @@ export const Dashboard = (): React.ReactElement => {
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
                   handleButtonClick(
-                    'List employees that best fit job posting Associate Systems Engineer 4885',
+                    'List employees that best fit job posting Full-Stack (.NET) Developer 5124',
                   )
                 }
               >
                 <b>
-                  List employees that best fit job posting Associate Systems
-                  Engineer 4885
+                  List employees that best fit job posting Full-Stack (.NET) Developer 
+                  5124
                 </b>
               </button>
               <button
                 className="helper-button"
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
-                  handleButtonClick('What job posting best fit Daniel Vasquez')
+                  handleButtonClick('What job posting best fit Shane Matyi')
                 }
               >
-                <b>What job posting best fit Daniel Vasquez</b>
+                <b>What job posting best fit Shane Matyi</b>
               </button>
             </div>
           </div>
