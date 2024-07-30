@@ -44,7 +44,7 @@ export const Dashboard = (): React.ReactElement => {
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
                   handleButtonClick(
-                    'List employees that best fit job posting Full-Stack (.NET) Developer 5124',
+                    'List employees that best fit job posting Full-Stack .NET Developer 5124',
                   )
                 }
               >
