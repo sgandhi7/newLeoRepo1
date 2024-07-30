@@ -354,9 +354,14 @@ export const Investigation = (): React.ReactElement => {
           <div className="flex-align-self-end width-full">
             <Button
               id="clear-chat-btn"
-              className="search-input"
               onClick={clearChat}
-              style={{ float: 'left', marginLeft: '100px', marginTop: '5px' }}
+              style={{
+                position: 'relative',
+                float: 'left',
+                marginLeft: '100px',
+                marginTop: '5px',
+                zIndex: 2,
+              }}
             >
               New Chat
             </Button>
@@ -370,6 +375,7 @@ export const Investigation = (): React.ReactElement => {
                 color: 'gray',
                 fontSize: '0.8rem',
                 textAlign: 'center',
+                zIndex: 1,
               }}
             >
               <span>

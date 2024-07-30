@@ -201,8 +201,7 @@ export const Search = ({
                   ]);
                 }
               } else {
-                const jobTitle = document.title;
-                getSources.push([jobTitle, '']);
+                getSources.push([document.title, document.url]);
               }
             }
           }
@@ -502,7 +501,10 @@ export const Search = ({
   }
 
   return (
-    <div className="grid-container position-relative bottom-2">
+    <div
+      className="grid-container position-relative bottom-2"
+      style={{ zIndex: 1 }}
+    >
       <div
         className={`display-flex flex-justify-center search-area ${
           location.pathname === '/'
