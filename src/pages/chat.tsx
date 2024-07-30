@@ -200,11 +200,10 @@ export const Search = ({
                       sharepointData,
                   ]);
                 }
+              } else {
+                const jobTitle = document.title;
+                getSources.push([jobTitle, '']);
               }
-              // else {
-              //   const jobTitle = document.title;
-              //   getSources.push([jobTitle, '']);
-              // }
             }
           }
         }

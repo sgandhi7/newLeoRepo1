@@ -63,6 +63,7 @@ export const Investigation = (): React.ReactElement => {
       }
 
       setCurrentInvestigation({ ...item, prompts: newPrompts });
+      setIsTypingComplete(false);
     }
   }, [item, setCurrentInvestigation]);
 
@@ -73,11 +74,11 @@ export const Investigation = (): React.ReactElement => {
   }, [id, getItem, setCurrentInvestigation]);
 
   useEffect(() => {
+    setIsTypingComplete(false); // Reset when new prompt is added
     if (currentInvestigation) {
       const responsePrompts = currentInvestigation.prompts;
       if (responsePrompts) {
         setPrompts(responsePrompts);
-        setIsTypingComplete(false); // Reset when new prompt is added
       }
     }
   }, [currentInvestigation]);
