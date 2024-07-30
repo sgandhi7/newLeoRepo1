@@ -287,7 +287,11 @@ export const Investigation = (): React.ReactElement => {
                               <ul>
                                 {prompt.sources.map((source, index) => (
                                   <li key={index}>
-                                    <a href={source[1]}>
+                                    <a
+                                      href={source[1]}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
                                       {index + 1}. {source[0]}
                                     </a>
                                   </li>
