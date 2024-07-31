@@ -44,20 +44,20 @@ export const Dashboard = (): React.ReactElement => {
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
                   handleButtonClick(
-                    'List employees that best fit job posting Associate Systems Engineer 4885',
+                    'List employees that best fit job posting Full-Stack (.NET) Developer 5124',
                   )
                 }
               >
                 <b>
-                  List employees that best fit job posting Associate Systems
-                  Engineer 4885
+                  List employees that best fit job posting Full-Stack (.NET)
+                  Developer 5124
                 </b>
               </button>
               <button
                 className="helper-button"
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
-                  handleButtonClick('What job posting best fit Shane Matyi')
+                  handleButtonClick('What job posting best fits Shane Matyi')
                 }
               >
                 <b>What job posting best fit Shane Matyi</b>
