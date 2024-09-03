@@ -5,9 +5,8 @@ const PromptFlowAPI: AzureFunction = async function (
   context: Context,
   req: HttpRequest,
 ): Promise<void> {
-  const url =
-    'https://dvasquez-seattle-vcqoi.eastus.inference.ml.azure.com/score';
-  const apiKey = '5wKEL3TxvNP6UI54WQF4vND3LI7rY8Ct';
+  const url = 'https://mss-leo-prod-vcqoi.eastus.inference.ml.azure.com/score';
+  const apiKey = 'G2qOjMVNtLtZlSRCxft6jXeA8nXk88za';
 
   if (!apiKey) {
     throw new Error('A key should be provided to invoke the endpoint');
@@ -19,7 +18,7 @@ const PromptFlowAPI: AzureFunction = async function (
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
-        'azureml-model-deployment': 'dvasquez-seattle-vcqoi-39',
+        'azureml-model-deployment': 'mss-leo-prod-vcqoi-1',
       } as HeadersInit,
       body: JSON.stringify(req.body),
     });
