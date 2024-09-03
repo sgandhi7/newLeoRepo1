@@ -38,7 +38,7 @@ export const SignIn = (): React.ReactElement => {
     async (accessToken: string) => {
       console.log('Authentication successful, calling graph from web...');
       const userInfo = await getUserInfoFromGraph(accessToken);
-      // console.log('Authentication success userInfo:', userInfo);
+      console.log('Authentication success userInfo:', userInfo);
       setUser(userInfo);
     },
     [setUser],
@@ -76,14 +76,12 @@ export const SignIn = (): React.ReactElement => {
       // Get client-side token
       const token = await authentication.getAuthToken();
       // Exchange client-side token for server-side token
-      // console.log('Calling server with client token:', token);
+      console.log('Calling server with client token:', token);
       const serverToken = await exchangeTokenForServerToken(token);
-      // console.log('Calling Graph with  serverToken:', serverToken);
+      console.log('Calling Graph with  serverToken:', serverToken);
       const userInfo = await getUserInfoFromGraph(serverToken);
-      // console.log('Teams user info:', userInfo);
+      console.log('Teams user info:', userInfo);
       setUser(userInfo);
-      // console.log('Now authenticating on web...');
-      // authenticateOnWeb();
     } catch (error) {
       console.error('Error during Teams SSO:', error);
       await authenticateOnWeb();
@@ -112,7 +110,7 @@ export const SignIn = (): React.ReactElement => {
           const isInTeams = await initializeTeamsApp()
             .then(() => app.getContext())
             .catch(() => false);
-          // console.log(isInTeams);
+          console.log(isInTeams);
           if (isInTeams) {
             console.log('Running in Teams');
             await authenticateInTeams();
@@ -139,7 +137,6 @@ export const SignIn = (): React.ReactElement => {
   ]);
 
   useEffect(() => {
-    // This is most likely not necessary, should remove later
     const handleRedirectPromise = async () => {
       try {
         console.log('Handling redirect promise...');
@@ -189,7 +186,7 @@ export const SignIn = (): React.ReactElement => {
         token: clientSideToken, // Send the token as a JSON object
       }),
     });
-    // console.log('Token exchange response:', response);
+    console.log('Token exchange response:', response);
 
     if (!response.ok) {
       throw new Error('Failed to exchange token');
