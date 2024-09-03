@@ -1,25 +1,21 @@
 {
   "globalHeaders": {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT"
+    "Access-Control-Allow-Origin": "https://blue-grass-0b87e8d10.4.azurestaticapps.net/",
+    "Access-Control-Allow-Methods": "GET, POST, PUT",
+    "Access-Control-Allow-Credentials": "true"
   },
-  "responseOverrides": {
+ "responseOverrides": {
     "401": {
         "redirect": "/login",
         "statusCode": 302
     }
   },
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  },
   "routes": [
     {
       "route": "/",
-      "allowedRoles": ["authenticated"]
-    },
-    {
-      "route": "/home",
-      "allowedRoles": ["authenticated"]
-    },
-    {
-      "route": "/dashboard",
       "allowedRoles": ["authenticated"]
     },
     {
@@ -39,7 +35,11 @@
     },
     {
       "route": "/login",
-      "redirect": "/.auth/login/aad"
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/PromptFlowAPI",
+      "allowedRoles": ["authenticated", "anonymous"]
     }
   ],
   "auth": {
@@ -47,17 +47,10 @@
       "azureActiveDirectory": {
         "registration": {
           "openIdIssuer": "https://login.microsoftonline.com/399ed244-adb0-4a01-91a2-898d9918314a/v2.0",
-          "clientIdSettingName": "AZURE_CLIENT_ID",
-          "clientSecretSettingName": "AZURE_CLIENT_SECRET"
+          "clientIdSettingName": "REACT_APP_AZURE_CLIENT_ID",
+          "clientSecretSettingName": "REACT_APP_AZURE_CLIENT_SECRET"
         }
       }
     }
-  },
-  "mimeTypes": {
-    ".js": "application/javascript",
-    ".mjs": "application/javascript",
-    ".jsx": "application/javascript",
-    ".tsx": "application/javascript",
-    ".ts": "application/javascript"
   }
 }

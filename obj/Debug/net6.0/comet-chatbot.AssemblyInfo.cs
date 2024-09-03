@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("comet-chatbot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62c40668d5ec670fd184e0a2776779a3f867370c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fa0e69c9d2bf757f21a88ef092aa1321d9ef2abe")]
 [assembly: System.Reflection.AssemblyProductAttribute("comet-chatbot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("comet-chatbot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -16,6 +16,7 @@ export const Sidebar = (): React.ReactElement => {
 
   // Get user info
   if (user === undefined) {
+    console.log('Sidebar: User is undefined');
     getUserInfo().then((userInfo) => {
       setUser(userInfo);
     });
@@ -26,7 +27,7 @@ export const Sidebar = (): React.ReactElement => {
     const response = await fetch('/.auth/me');
     const payload = await response.json();
     const { clientPrincipal } = payload;
-    console.log('Client Principal', clientPrincipal);
+    // console.log('Client Principal', clientPrincipal);
     if (clientPrincipal) {
       const newUser = {
         firstName: '',

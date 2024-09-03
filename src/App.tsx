@@ -7,6 +7,7 @@ import { Dashboard } from './pages/dashboard';
 import { Examples } from './pages/examples';
 import { Faqs } from './pages/faqs';
 import { History } from './pages/history';
+import { SignIn } from './pages/sign-in';
 const queryClient = new QueryClient();
 
 /*
@@ -34,6 +35,7 @@ export const App = (): React.ReactElement => (
       <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
         <Sidebar />
         <Routes>
+          <Route path="/login" element={<SignIn />} />
           <Route path="/" element={<Dashboard />} />
           <Route path="/investigations" element={<Investigation />} />
           <Route path="/faqs" element={<Faqs />} />

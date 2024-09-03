@@ -8,7 +8,7 @@ import { Button, ListItem } from '@metrostar/comet-uswds';
 // eslint-disable-next-line prettier/prettier
 import { TextAreaInput } from '@src/components/text-area-input/textarea-input';
 // eslint-disable-next-line prettier/prettier
-import { // abortController as abortControllerAtom,
+import {
   abortController,
   currentUser,
   currentInvestigation as defaultInvestigation,
@@ -17,8 +17,8 @@ import { // abortController as abortControllerAtom,
   showDropdownMenu,
 } from 'src/store';
 // eslint-disable-next-line prettier/prettier
-// import useApi from '@src/hooks/use-api';
 // import { employees } from '@src/data/employeeData.ts';
+import { User } from '@src/types/user';
 import { generateGUID } from '@src/utils/api';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -79,7 +79,7 @@ export const Search = ({
   const [peopleNames, setPeopleNames] = useState<string[]>([]); // Arrays to store people and emails
   const [peopleEmails, setPeopleEmails] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [userData] = useRecoilState(currentUser);
+  const [userData] = useRecoilState<User | undefined>(currentUser);
   const filteredpeople = //Array containing only people with people OR emails that match searchTerm
     searchTerm.length > 0
       ? peopleNames.filter((_, index) => {
@@ -104,15 +104,6 @@ export const Search = ({
   };
 
   const submitSearch = async () => {
-    const response = await fetch('/.auth/me');
-    const payload = await response.json();
-    let user = null;
-    const { clientPrincipal } = payload;
-    if (clientPrincipal == null) {
-      window.location.reload();
-    } else {
-      user = clientPrincipal.userDetails;
-    }
     // Cancel the previous request if it exists
     if (abortControllerRef) {
       abortControllerRef.abort();
@@ -164,7 +155,7 @@ export const Search = ({
     const data = {
       query: queryCopyJSON,
       chat_history: chatHistory,
-      user: user,
+      user: userData?.emailAddress || '',
     };
     // Use controller.signal for fetch request
     try {
@@ -246,7 +237,8 @@ export const Search = ({
         setIsSearching(false);
         setSearchInput('');
       } else {
-        console.error('Error:', response.statusText);
+        console.error('Error status:', response.status);
+        console.error('Error text:', response.statusText);
       }
       setQuery('');
     } catch (error: unknown) {

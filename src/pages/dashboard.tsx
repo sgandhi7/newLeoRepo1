@@ -57,7 +57,7 @@ export const Dashboard = (): React.ReactElement => {
                 className="helper-button"
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
-                  handleButtonClick('What job posting best fits Shane Matyi')
+                  handleButtonClick('What job posting best fit Shane Matyi')
                 }
               >
                 <b>What job posting best fit Shane Matyi</b>
