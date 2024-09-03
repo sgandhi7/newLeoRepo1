@@ -145,7 +145,7 @@ export const SignIn = (): React.ReactElement => {
         console.log('Handling redirect promise...');
         await msalInstance.initialize();
         const result = await msalInstance.handleRedirectPromise();
-        // console.log('RedirectPromise result:', result);
+        console.log('RedirectPromise result:', result);
         if (result) {
           await handleAuthenticationSuccess(result.accessToken);
         }
