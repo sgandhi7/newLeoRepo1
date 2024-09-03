@@ -101,6 +101,20 @@ export const SignIn = (): React.ReactElement => {
   };
 
   useEffect(() => {
+    const handleRedirectPromise = async () => {
+      try {
+        console.log('Handling redirect promise...');
+        await msalInstance.initialize();
+        const result = await msalInstance.handleRedirectPromise();
+        console.log('RedirectPromise result:', result);
+        if (result) {
+          await handleAuthenticationSuccess(result.accessToken);
+        }
+      } catch (error) {
+        console.error('Error handling redirect:', error);
+      }
+    };
+
     async function initializeUser() {
       if (!user && !isAuthenticating) {
         setIsAuthenticating(true);
@@ -127,32 +141,18 @@ export const SignIn = (): React.ReactElement => {
       }
     }
 
-    initializeUser();
+    handleRedirectPromise().then(() => initializeUser());
   }, [
     user,
     isAuthenticating,
     navigate,
     authenticateInTeams,
     authenticateOnWeb,
+    msalInstance,
+    handleAuthenticationSuccess,
   ]);
 
-  useEffect(() => {
-    const handleRedirectPromise = async () => {
-      try {
-        console.log('Handling redirect promise...');
-        await msalInstance.initialize();
-        const result = await msalInstance.handleRedirectPromise();
-        console.log('RedirectPromise result:', result);
-        if (result) {
-          await handleAuthenticationSuccess(result.accessToken);
-        }
-      } catch (error) {
-        console.error('Error handling redirect:', error);
-      }
-    };
-
-    handleRedirectPromise();
-  }, [msalInstance, handleAuthenticationSuccess]);
+  // useEffect(() => {}, [msalInstance, handleAuthenticationSuccess]);
 
   async function getUserInfoFromGraph(accessToken: string): Promise<User> {
     const response = await fetch('https://graph.microsoft.com/v1.0/me', {
