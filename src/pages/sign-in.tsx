@@ -49,7 +49,7 @@ export const SignIn = (): React.ReactElement => {
       console.log('MSAL initializing');
       await msalInstance.initialize();
       const accounts = msalInstance.getAllAccounts();
-      // console.log('MSAL accounts:', accounts);
+      console.log('MSAL accounts:', accounts);
 
       if (accounts.length > 0) {
         console.log('Acquiring token silently');
@@ -57,7 +57,7 @@ export const SignIn = (): React.ReactElement => {
           scopes: ['User.Read'],
           account: accounts[0],
         });
-        // console.log('Silent result:', silentResult);
+        console.log('Silent result:', silentResult);
         await handleAuthenticationSuccess(silentResult.accessToken);
       } else {
         console.log('Performing login redirect');
@@ -165,9 +165,9 @@ export const SignIn = (): React.ReactElement => {
       },
     });
 
-    // console.log('Graph response: ', response);
+    console.log('Graph response: ', response);
     const data = await response.json();
-    // console.log('Graph data: ', data);
+    console.log('Graph data: ', data);
     return {
       firstName: data.givenName || '',
       lastName: data.surname || '',
