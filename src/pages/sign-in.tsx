@@ -116,32 +116,30 @@ export const SignIn = (): React.ReactElement => {
     };
 
     async function initializeUser() {
-      if (!user && !isAuthenticating) {
-        setIsAuthenticating(true);
-        console.log('Starting authentication...');
-
-        try {
-          const isInTeams = await initializeTeamsApp()
-            .then(() => app.getContext())
-            .catch(() => false);
-          console.log(isInTeams);
-          if (isInTeams) {
-            console.log('Running in Teams');
-            await authenticateInTeams();
-          } else {
-            console.log('Running in web');
-            await authenticateOnWeb();
-          }
-        } catch (error) {
-          console.error('Authentication error:', error);
-        } finally {
-          setIsAuthenticating(false);
-          navigate('/');
+      setIsAuthenticating(true);
+      console.log('Starting authentication...');
+      try {
+        const isInTeams = await initializeTeamsApp()
+          .then(() => app.getContext())
+          .catch(() => false);
+        console.log(isInTeams);
+        if (isInTeams) {
+          console.log('Running in Teams');
+          await authenticateInTeams();
+        } else {
+          console.log('Running in web');
+          await authenticateOnWeb();
         }
+      } catch (error) {
+        console.error('Authentication error:', error);
+      } finally {
+        setIsAuthenticating(false);
+        navigate('/');
       }
     }
-
-    handleRedirectPromise().then(() => initializeUser());
+    if (!user && !isAuthenticating) {
+      handleRedirectPromise().then(() => initializeUser());
+    }
   }, [
     user,
     isAuthenticating,
