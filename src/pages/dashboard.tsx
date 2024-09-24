@@ -20,7 +20,7 @@ export const Dashboard = (): React.ReactElement => {
   }, [setCurrentInvestigation]);
 
   return (
-    <div className="grid-container">
+    <div className="grid-container" style={{ paddingLeft: '50px' }}>
       <div className="grid-row">
         <div className="grid-col">
           <div
@@ -57,10 +57,10 @@ export const Dashboard = (): React.ReactElement => {
                 className="helper-button"
                 style={{ whiteSpace: 'pre-wrap' }}
                 onClick={() =>
-                  handleButtonClick('What job posting best fit Shane Matyi')
+                  handleButtonClick('What job posting best fits Shane Matyi')
                 }
               >
-                <b>What job posting best fit Shane Matyi</b>
+                <b>What job posting best fits Shane Matyi</b>
               </button>
             </div>
           </div>

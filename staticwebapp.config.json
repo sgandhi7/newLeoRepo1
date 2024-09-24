@@ -19,7 +19,7 @@
       "allowedRoles": ["authenticated"]
     },
     {
-      "route": "/investigations",
+      "route": "/session",
       "allowedRoles": ["authenticated"]
     },
     {

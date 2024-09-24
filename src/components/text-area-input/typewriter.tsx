@@ -47,7 +47,11 @@ const Typewriter = ({
               text={sentence.replace(/\[doc\d+\]/g, '')}
               onPartComplete={onPartComplete}
             />
-            <a href={sources[Number(extractDocXValue(sentence))][1]}>
+            <a
+              href={sources[Number(extractDocXValue(sentence))][1]}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <sup
                 style={{
                   fontSize: '0.7rem',

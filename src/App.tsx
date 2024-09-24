@@ -37,7 +37,7 @@ export const App = (): React.ReactElement => (
         <Routes>
           <Route path="/login" element={<SignIn />} />
           <Route path="/" element={<Dashboard />} />
-          <Route path="/investigations" element={<Investigation />} />
+          <Route path="/session" element={<Investigation />} />
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/examples" element={<Examples />} />
           <Route path="/history" element={<History />} />

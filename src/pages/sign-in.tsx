@@ -38,7 +38,6 @@ export const SignIn = (): React.ReactElement => {
     async (accessToken: string) => {
       console.log('Authentication successful, calling graph from web...');
       const userInfo = await getUserInfoFromGraph(accessToken);
-      console.log('Authentication success userInfo:', userInfo);
       setUser(userInfo);
     },
     [setUser],
@@ -46,21 +45,16 @@ export const SignIn = (): React.ReactElement => {
 
   const authenticateOnWeb = useCallback(async () => {
     try {
-      console.log('MSAL initializing');
       await msalInstance.initialize();
       const accounts = msalInstance.getAllAccounts();
-      console.log('MSAL accounts:', accounts);
 
       if (accounts.length > 0) {
-        console.log('Acquiring token silently');
         const silentResult = await msalInstance.acquireTokenSilent({
           scopes: ['User.Read'],
           account: accounts[0],
         });
-        console.log('Silent result:', silentResult);
         await handleAuthenticationSuccess(silentResult.accessToken);
       } else {
-        console.log('Performing login redirect');
         await msalInstance.loginRedirect({
           scopes: ['User.Read'],
         });
@@ -76,11 +70,8 @@ export const SignIn = (): React.ReactElement => {
       // Get client-side token
       const token = await authentication.getAuthToken();
       // Exchange client-side token for server-side token
-      console.log('Calling server with client token:', token);
       const serverToken = await exchangeTokenForServerToken(token);
-      console.log('Calling Graph with  serverToken:', serverToken);
       const userInfo = await getUserInfoFromGraph(serverToken);
-      console.log('Teams user info:', userInfo);
       setUser(userInfo);
     } catch (error) {
       console.error('Error during Teams SSO:', error);
@@ -116,25 +107,27 @@ export const SignIn = (): React.ReactElement => {
     };
 
     async function initializeUser() {
-      setIsAuthenticating(true);
-      console.log('Starting authentication...');
-      try {
-        const isInTeams = await initializeTeamsApp()
-          .then(() => app.getContext())
-          .catch(() => false);
-        console.log(isInTeams);
-        if (isInTeams) {
-          console.log('Running in Teams');
-          await authenticateInTeams();
-        } else {
-          console.log('Running in web');
-          await authenticateOnWeb();
+      if (!user && !isAuthenticating) {
+        setIsAuthenticating(true);
+        console.log('Starting authentication...');
+        try {
+          const isInTeams = await initializeTeamsApp()
+            .then(() => app.getContext())
+            .catch(() => false);
+          console.log(isInTeams);
+          if (isInTeams) {
+            console.log('Running in Teams');
+            await authenticateInTeams();
+          } else {
+            console.log('Running in web');
+            await authenticateOnWeb();
+          }
+        } catch (error) {
+          console.error('Authentication error:', error);
+        } finally {
+          setIsAuthenticating(false);
+          navigate('/');
         }
-      } catch (error) {
-        console.error('Authentication error:', error);
-      } finally {
-        setIsAuthenticating(false);
-        navigate('/');
       }
     }
     if (!user && !isAuthenticating) {
@@ -160,9 +153,7 @@ export const SignIn = (): React.ReactElement => {
       },
     });
 
-    console.log('Graph response: ', response);
     const data = await response.json();
-    console.log('Graph data: ', data);
     return {
       firstName: data.givenName || '',
       lastName: data.surname || '',
@@ -184,7 +175,6 @@ export const SignIn = (): React.ReactElement => {
         token: clientSideToken, // Send the token as a JSON object
       }),
     });
-    console.log('Token exchange response:', response);
 
     if (!response.ok) {
       throw new Error('Failed to exchange token');

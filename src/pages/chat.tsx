@@ -118,7 +118,7 @@ export const Search = ({
 
     // Navigate to chatwindow
     if (location.pathname === '/') {
-      navigate('/investigations');
+      navigate('/session');
     }
 
     // Intialize chat history
