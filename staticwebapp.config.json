@@ -2,7 +2,8 @@
   "globalHeaders": {
     "Access-Control-Allow-Origin": "https://blue-grass-0b87e8d10.4.azurestaticapps.net/",
     "Access-Control-Allow-Methods": "GET, POST, PUT",
-    "Access-Control-Allow-Credentials": "true"
+    "Access-Control-Allow-Credentials": "true",
+    "Cache-Control": "no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0"
   },
  "responseOverrides": {
     "401": {
