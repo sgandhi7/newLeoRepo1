@@ -5,6 +5,7 @@ import { Search } from '@src/pages/chat';
 import {
   Investigation as InvestigationState,
   Prompt,
+  Session,
 } from '@src/types/investigation';
 import { User } from '@src/types/user';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,7 +16,10 @@ import {
   currentInvestigation as defaultInvestigation,
   currentSearch as defaultSearch,
   searching,
+  sessionId,
+  sessions,
 } from 'src/store';
+import { v4 as uuidv4 } from 'uuid';
 import chatBot from '/img/leo.png';
 import lockIcon from '/img/lockIcon.svg';
 
@@ -32,7 +36,8 @@ export const Investigation = (): React.ReactElement => {
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [user] = useRecoilState(currentUser);
   const chatContentRef = useRef<HTMLDivElement>(null);
-
+  const [sessId, setSessionId] = useRecoilState<string | undefined>(sessionId);
+  const [, setSessions] = useRecoilState<Session[] | undefined>(sessions);
   const scrollToBottom = () => {
     if (chatContentRef.current) {
       chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
@@ -42,6 +47,7 @@ export const Investigation = (): React.ReactElement => {
   const clearChat = () => {
     window.sessionStorage.removeItem('chat_history');
     setPrompts([]);
+    setSessionId(undefined);
     setCurrentInvestigation((prev) => ({ ...prev, prompts: [] }));
   };
 
@@ -55,7 +61,7 @@ export const Investigation = (): React.ReactElement => {
       setCurrentInvestigation({ ...item, prompts: newPrompts });
       setIsTypingComplete(false);
     }
-  }, [item, setCurrentInvestigation]);
+  }, [item, setCurrentInvestigation, sessId, setSessionId]);
 
   useEffect(() => {
     if (id) {
@@ -64,10 +70,68 @@ export const Investigation = (): React.ReactElement => {
   }, [id, getItem]);
 
   useEffect(() => {
+    if (sessId === undefined) {
+      setSessionId(uuidv4());
+    }
+    const uploadSession = () => {
+      console.log('Uploading Session: ', sessId);
+      if (prompts && prompts.length > 0) {
+        const session = JSON.stringify({
+          prompts: prompts,
+          chatHistory: window.sessionStorage.getItem('chat_history'),
+        });
+        fetch('/api/fetchSessions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user: user?.emailAddress,
+            sessionId: sessId,
+            action: 'upload',
+            session: session,
+          }),
+        });
+      }
+    };
+    const fetchSessions = async () => {
+      if (!user?.emailAddress) return;
+
+      try {
+        const response = await fetch('/api/fetchSessions', {
+          method: 'POST',
+          body: JSON.stringify({ user: user.emailAddress, action: 'pull' }),
+        });
+        const tempSessions = await response.json();
+        const parsedSessions = tempSessions.map((session: string) => {
+          const parsedSession = JSON.parse(session);
+          return {
+            sessionId: parsedSession.Name,
+            prompts: parsedSession.Content.prompts,
+            chatHistory: parsedSession.Content.chatHistory,
+          };
+        });
+        setSessions(parsedSessions);
+      } catch (error) {
+        console.error('Error fetching sessions:', error);
+      }
+    };
     if (currentInvestigation && currentInvestigation.prompts) {
       setPrompts(currentInvestigation.prompts);
     }
-  }, [currentInvestigation]);
+    if (isTypingComplete) {
+      uploadSession();
+      fetchSessions();
+    }
+  }, [
+    currentInvestigation,
+    prompts,
+    sessId,
+    user?.emailAddress,
+    isTypingComplete,
+    setSessionId,
+    setSessions,
+  ]);
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
@@ -196,11 +260,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         <div className="grid-row">
           {user && (
             <div className="grid-col-1">
-              <div className="chat-question-avatar">
-                <span>
-                  {user.firstName?.charAt(0).toUpperCase()}
-                  {user.lastName?.charAt(0).toUpperCase()}
-                </span>
+              <div className="avatar">
+                {user && user.firstName?.charAt(0).toUpperCase()}
+                {user && user.lastName?.charAt(0).toUpperCase()}
               </div>
             </div>
           )}

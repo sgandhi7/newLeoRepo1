@@ -1,23 +1,67 @@
 import { Search } from '@src/pages/chat';
-import { Investigation as InvestigationState } from '@src/types/investigation';
+import {
+  Investigation as InvestigationState,
+  Session,
+} from '@src/types/investigation';
+import { User } from '@src/types/user';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {
-  currentInvestigation as defaultInvestigation, // abortController as abortControllerAtom,
+  currentUser,
+  currentInvestigation as defaultInvestigation,
+  sessionId,
+  sessions,
 } from '../store';
 
 export const Dashboard = (): React.ReactElement => {
   const [, setCurrentInvestigation] =
     useRecoilState<InvestigationState>(defaultInvestigation);
   const [searchInput, setSearchInput] = useState<string>('');
-  // Comment this out for local testing
+  const [user] = useRecoilState<User | undefined>(currentUser);
+  const [sessionsValue, setSessions] = useRecoilState<Session[] | undefined>(
+    sessions,
+  );
+  const [, setSessionId] = useRecoilState<string | undefined>(sessionId);
   const handleButtonClick = (buttonText: string) => {
     setSearchInput(buttonText);
   };
 
   useEffect(() => {
     setCurrentInvestigation({});
-  }, [setCurrentInvestigation]);
+    setSessionId(undefined);
+    const fetchSessions = async () => {
+      console.log('Fetching sessions');
+      const temp = [];
+      const response = await fetch('/api/fetchSessions', {
+        method: 'POST',
+        body: JSON.stringify({ user: user?.emailAddress, action: 'pull' }),
+      });
+      const tempSessions = await response.json();
+      console.log('Sessions: ', tempSessions);
+      for (const session of tempSessions) {
+        const tempNewSess = JSON.parse(session);
+        const newSess = {
+          sessionId: tempNewSess.Name,
+          prompts: tempNewSess.Content.prompts,
+          chatHistory: tempNewSess.Content.chatHistory,
+        };
+        temp.push(newSess);
+      }
+      console.log('Temp: ', temp);
+      setSessions(temp);
+    };
+    if (sessionsValue === undefined) {
+      fetchSessions();
+    } else {
+      console.log('Sessions already fetched: ', sessions);
+    }
+  }, [
+    sessionsValue,
+    setCurrentInvestigation,
+    setSessionId,
+    setSessions,
+    user?.emailAddress,
+  ]);
 
   return (
     <div className="grid-container" style={{ paddingLeft: '50px' }}>

@@ -27,7 +27,7 @@ export const Sidebar = (): React.ReactElement => {
     const response = await fetch('/.auth/me');
     const payload = await response.json();
     const { clientPrincipal } = payload;
-    // console.log('Client Principal', clientPrincipal);
+    console.log('Client Principal', clientPrincipal);
     if (clientPrincipal) {
       const newUser = {
         firstName: '',

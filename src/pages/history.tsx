@@ -1,147 +1,225 @@
-import { DataTable } from '@metrostar/comet-extras';
-import { Button, ButtonGroup } from '@metrostar/comet-uswds';
-import useApi from '@src/hooks/use-api';
-import { Investigation } from '@src/types/investigation';
-import { ColumnDef } from '@tanstack/react-table';
-import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+// import { Investigation, Session } from '@src/types/investigation';
+// import { User } from '@src/types/user';
+// import React, { useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { useRecoilState } from 'recoil';
+// import {
+//   currentInvestigation,
+//   currentUser,
+//   sessionId,
+//   sessions,
+// } from 'src/store';
+// import chatBot from '/img/leo.png';
+
+// interface MiniChatWindowProps {
+//   session: Session;
+// }
+
+// const truncateText = (text: string, maxLength: number) => {
+//   return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+// };
+
+// const MiniChatWindow: React.FC<MiniChatWindowProps> = ({ session }) => {
+//   const navigate = useNavigate();
+//   console.log('Session: ', session);
+//   const latestPrompt = session.prompts[session.prompts.length - 1];
+//   const [user] = useRecoilState<User | undefined>(currentUser);
+//   const [, setSessionId] = useRecoilState<string | undefined>(sessionId);
+//   const [, setCurrentInvestigation] =
+//     useRecoilState<Investigation>(currentInvestigation);
+//   const handleResumeSession = () => {
+//     window.localStorage.setItem('chat_history', session.chatHistory);
+//     setCurrentInvestigation({ prompts: session.prompts });
+//     setSessionId(session.sessionId);
+//     navigate('/session');
+//   };
+
+//   return (
+//     <button className="mini-chat-button" onClick={handleResumeSession}>
+//       <div className="mini-chat-window">
+//         <div className="chat-content-question margin-bottom-2">
+//           <div className="grid-row">
+//             <div className="grid-col-1">
+//               <div className="chat-question-avatar">
+//                 <span>
+//                   {user && user.firstName?.charAt(0).toUpperCase()}
+//                   {user && user.lastName?.charAt(0).toUpperCase()}
+//                 </span>
+//               </div>
+//             </div>
+//             <div className="grid-col-11">
+//               {truncateText(latestPrompt.prompt, 100)}
+//             </div>
+//           </div>
+//         </div>
+//         <div className="chat-content-answer margin-bottom-2">
+//           <div className="grid-row">
+//             <div className="grid-col-11">
+//               <div className="grid-col-1">
+//                 <img
+//                   className="usa__logo-mark"
+//                   src={chatBot}
+//                   height={50}
+//                   width={40}
+//                   alt="Leo Logo"
+//                 />
+//               </div>
+//               {truncateText(latestPrompt.completion, 100)}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </button>
+//   );
+// };
+
+// export const History = (): React.ReactElement => {
+//   const [sessionsValue, setSessions] = useRecoilState<Session[] | undefined>(
+//     sessions,
+//   );
+//   const [user] = useRecoilState<User | undefined>(currentUser);
+
+//   useEffect(() => {
+//     const fetchSessions = async () => {
+//       console.log('Fetching sessions');
+//       const temp = [];
+//       const response = await fetch('/api/fetchSessions', {
+//         method: 'POST',
+//         body: JSON.stringify({ user: user?.emailAddress, action: 'pull' }),
+//       });
+//       const tempSessions = await response.json();
+//       console.log('Sessions: ', tempSessions);
+//       for (const session of tempSessions) {
+//         const tempNewSess = JSON.parse(session);
+//         const newSess = {
+//           sessionId: tempNewSess.Name,
+//           prompts: tempNewSess.Content.prompts,
+//           chatHistory: tempNewSess.Content.chatHistory,
+//         };
+//         temp.push(newSess);
+//       }
+//       console.log('Temp: ', temp);
+//       setSessions(temp);
+//     };
+//     if (sessionsValue === undefined) {
+//       fetchSessions();
+//     } else {
+//       console.log('Sessions already fetched: ', sessionsValue);
+//     }
+//   }, [sessionsValue, setSessions, user?.emailAddress]);
+
+//   return (
+//     <div className="history-container">
+//       <h1>History</h1>
+//       <div className="chat-list">
+//         {sessionsValue?.map((session) => (
+//           <MiniChatWindow key={session.sessionId} session={session} />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+import { Investigation, Session } from '@src/types/investigation';
+import { User } from '@src/types/user';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { currentSearch as defaultSearch } from 'src/store';
-import { convertToReadableFormat } from 'src/utils/utils';
-import infinteLoop from '/img/infinteLoop.svg';
+import {
+  currentInvestigation,
+  currentUser,
+  sessionId,
+  sessions,
+} from 'src/store';
+import chatBot from '/img/leo.png';
 
-export const History = (): React.ReactElement => {
-  const [loading, setLoading] = useState(true);
-  const { getItems, deleteItem, items } = useApi();
-  const [, setCurrentSearch] = useRecoilState<string>(defaultSearch);
-  const [investigations, setInvestigiations] = useState<Investigation[]>();
-  const cols = React.useMemo<ColumnDef<Investigation>[]>(
-    () => [
-      {
-        accessorKey: 'id',
-        header: 'ID',
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: 'name',
-        header: 'Name',
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: 'created',
-        header: 'Created',
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: 'created_by',
-        header: 'Created By',
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: 'status',
-        header: 'Status',
-        cell: (info) => info.getValue(),
-      },
-      {
-        accessorKey: 'actions',
-        header: 'Actions',
-        cell: (info) => info.getValue(),
-      },
-    ],
-    [],
-  );
+const truncateText = (text: string, maxLength: number) => {
+  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+};
 
-  useEffect(() => {
-    if (items) {
-      const newData: Investigation[] = [];
-      items.forEach((item: Investigation) => {
-        newData.push({
-          id: item.id,
-          name: (
-            <NavLink
-              id={`investigation-link-${item.id}`}
-              to={`/investigations/${item.id}`}
-            >
-              {item.name}
-            </NavLink>
-          ),
-          created: convertToReadableFormat(item.created)?.toLocaleString(),
-          created_by: item.created_by,
+interface MiniChatWindowProps {
+  session: Session;
+}
 
-          status: item.status,
-          actions: (
-            <ButtonGroup>
-              <Button id={`share-${item.id}`} onClick={() => {}}>
-                Share
-              </Button>
-              <Button
-                id={`delete-${item.id}`}
-                onClick={() => {
-                  const confirm = window.confirm(
-                    'Are you sure you would like to delete this investigation?',
-                  );
-                  if (confirm && item.id) {
-                    deleteItem(item.id).then(() => {
-                      getItems();
-                    });
-                  } else {
-                    return;
-                  }
-                }}
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          ),
-        });
-      });
-      setInvestigiations(newData);
-    }
-  }, [items, deleteItem, getItems]);
+const MiniChatWindow: React.FC<MiniChatWindowProps> = ({ session }) => {
+  const navigate = useNavigate();
+  const [user] = useRecoilState<User | undefined>(currentUser);
+  const [, setSessionId] = useRecoilState<string | undefined>(sessionId);
+  const [, setCurrentInvestigation] =
+    useRecoilState<Investigation>(currentInvestigation);
 
-  useEffect(() => {
-    getItems();
-  }, [getItems]);
+  const latestPrompt = session.prompts[session.prompts.length - 1];
 
-  useEffect(() => {
-    if (investigations) {
-      setLoading(false);
-    }
-  }, [loading, investigations]);
+  const handleResumeSession = () => {
+    window.localStorage.setItem('chat_history', session.chatHistory);
+    setCurrentInvestigation({ prompts: session.prompts });
+    setSessionId(session.sessionId);
+    navigate('/session');
+  };
 
-  // Clear current search when navigating to home
-  useEffect(() => {
-    setCurrentSearch('');
-  }, [setCurrentSearch]);
   return (
-    <div className="grid-container">
-      <div className="grid-row">
-        <div className="grid-col">
-          <h1>History</h1>
+    <div className="mini-chat-window" onClick={handleResumeSession}>
+      <div className="chat-header">
+        <span className="session-id">{session.sessionId}</span>
+      </div>
+      <div className="chat-content">
+        <div className="bot-message">
+          <img src={chatBot} alt="Leo Logo" className="bot-avatar" />
+          <p>{truncateText(latestPrompt.completion, 100)}</p>
+        </div>
+        <div className="user-message">
+          <div className="avatar">
+            {user && user.firstName?.charAt(0).toUpperCase()}
+            {user && user.lastName?.charAt(0).toUpperCase()}
+          </div>
+          <p>{truncateText(latestPrompt.prompt, 100)}</p>
         </div>
       </div>
-      <div className="grid-row">
-        <div className="grid-col">
-          {loading ? (
-            <img
-              src={infinteLoop}
-              alt="loading"
-              className="searching history"
-            />
-          ) : investigations ? (
-            <DataTable
-              id="investigation-table"
-              className="width-full"
-              columns={cols}
-              data={investigations}
-              sortable
-              sortCol="id"
-              sortDir="desc"
-            ></DataTable>
-          ) : (
-            <></>
-          )}
-        </div>
+    </div>
+  );
+};
+
+export const History: React.FC = () => {
+  const [sessionsValue, setSessions] = useRecoilState<Session[] | undefined>(
+    sessions,
+  );
+  const [user] = useRecoilState<User | undefined>(currentUser);
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      if (!user?.emailAddress) return;
+
+      try {
+        const response = await fetch('/api/fetchSessions', {
+          method: 'POST',
+          body: JSON.stringify({ user: user.emailAddress, action: 'pull' }),
+        });
+        const tempSessions = await response.json();
+        const parsedSessions = tempSessions.map((session: string) => {
+          const parsedSession = JSON.parse(session);
+          return {
+            sessionId: parsedSession.Name,
+            prompts: parsedSession.Content.prompts,
+            chatHistory: parsedSession.Content.chatHistory,
+          };
+        });
+        setSessions(parsedSessions);
+      } catch (error) {
+        console.error('Error fetching sessions:', error);
+      }
+    };
+
+    if (sessionsValue === undefined) {
+      fetchSessions();
+    }
+  }, [sessionsValue, setSessions, user?.emailAddress]);
+
+  return (
+    <div className="history-container">
+      <h1>Conversation History</h1>
+      <div className="chat-list">
+        {sessionsValue?.map((session) => (
+          <MiniChatWindow key={session.sessionId} session={session} />
+        ))}
       </div>
     </div>
   );

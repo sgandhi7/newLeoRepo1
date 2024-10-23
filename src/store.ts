@@ -1,6 +1,6 @@
 // import { User } from '@src/types/user';
 import { atom } from 'recoil';
-import { Investigation } from './types/investigation';
+import { Investigation, Session } from './types/investigation';
 import { User } from './types/user';
 
 const signedIn = atom({
@@ -10,6 +10,16 @@ const signedIn = atom({
 
 const currentUser = atom<User | undefined>({
   key: 'currentUser',
+  default: undefined,
+});
+
+const sessionId = atom<string | undefined>({
+  key: 'sessionId',
+  default: undefined,
+});
+
+const sessions = atom<Session[] | undefined>({
+  key: 'sessions',
   default: undefined,
 });
 
@@ -51,6 +61,8 @@ export {
   currentUser,
   sasToken,
   searching,
+  sessionId,
+  sessions,
   showDropdownMenu,
   signedIn,
 };

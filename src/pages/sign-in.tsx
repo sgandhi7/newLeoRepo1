@@ -1,42 +1,36 @@
-import { PublicClientApplication } from '@azure/msal-browser';
 import { app, authentication } from '@microsoft/teams-js';
 import { User } from '@src/types/user';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { currentUser } from 'src/store';
+import { msalInstance } from 'src/utils/msal';
 
-export const SignIn = (): React.ReactElement => {
+export const SignIn = () => {
   const [user, setUser] = useRecoilState<User | undefined>(currentUser);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const navigate = useNavigate();
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  const msalConfig = useMemo(
-    () => ({
-      auth: {
-        clientId: process.env.REACT_APP_AZURE_CLIENT_ID as string,
-        authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AZURE_TENANT_ID}`,
-        redirectUri: '/',
-      },
-      cache: {
-        cacheLocation: 'localStorage',
-        storeAuthStateInCookie: true,
-      },
-      system: {
-        allowNativeBroker: false, // Disables WAM Broker
-      },
-    }),
-    [],
-  );
-
-  const msalInstance = useMemo(
-    () => new PublicClientApplication(msalConfig),
-    [msalConfig],
-  );
+  // const msalConfig = useMemo(
+  //   () => ({
+  //     auth: {
+  //       clientId: process.env.REACT_APP_AZURE_CLIENT_ID as string,
+  //       authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AZURE_TENANT_ID}`,
+  //       redirectUri: '/',
+  //     },
+  //     cache: {
+  //       cacheLocation: 'localStorage',
+  //       storeAuthStateInCookie: true,
+  //     },
+  //     system: {
+  //       allowNativeBroker: false, // Disables WAM Broker
+  //     },
+  //   }),
+  //   [],
+  // );
 
   const handleAuthenticationSuccess = useCallback(
     async (accessToken: string) => {
-      console.log('Authentication successful, calling graph from web...');
       const userInfo = await getUserInfoFromGraph(accessToken);
       setUser(userInfo);
     },
@@ -63,7 +57,7 @@ export const SignIn = (): React.ReactElement => {
     } catch (error) {
       console.error('Authentication error:', error);
     }
-  }, [msalInstance, navigate, handleAuthenticationSuccess]);
+  }, [navigate, handleAuthenticationSuccess]);
 
   const authenticateInTeams = useCallback(async () => {
     try {
@@ -92,28 +86,28 @@ export const SignIn = (): React.ReactElement => {
   };
 
   useEffect(() => {
-    const handleRedirectPromise = async () => {
-      try {
-        console.log('Handling redirect promise...');
-        await msalInstance.initialize();
-        const result = await msalInstance.handleRedirectPromise();
-        if (result) {
-          await handleAuthenticationSuccess(result.accessToken);
-        }
-      } catch (error) {
-        console.error('Error handling redirect:', error);
-      }
-    };
+    // const handleRedirectPromise = async () => {
+    //   try {
+    //     console.log('Handling redirect promise...');
+    //     const result = await msalInstance.handleRedirectPromise();
+    //     console.log('RedirectPromise result:', result);
+    //     if (result) {
+    //       await handleAuthenticationSuccess(result.accessToken);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error handling redirect:', error);
+    //   }
+    // };
 
-    async function initializeUser() {
+    const initializeUser = async () => {
       if (!user && !isAuthenticating) {
         setIsAuthenticating(true);
         console.log('Starting authentication...');
+        await msalInstance.initialize();
         try {
           const isInTeams = await initializeTeamsApp()
             .then(() => app.getContext())
             .catch(() => false);
-          console.log(isInTeams);
           if (isInTeams) {
             console.log('Running in Teams');
             await authenticateInTeams();
@@ -128,23 +122,19 @@ export const SignIn = (): React.ReactElement => {
           navigate('/');
         }
       }
-    }
-    if (!user && !isAuthenticating) {
-      handleRedirectPromise().then(() => initializeUser());
-    }
+    };
+
+    initializeUser();
   }, [
+    setUser,
+    authenticateOnWeb,
+    authenticateInTeams,
     user,
     isAuthenticating,
     navigate,
-    authenticateInTeams,
-    authenticateOnWeb,
-    msalInstance,
-    handleAuthenticationSuccess,
   ]);
 
-  // useEffect(() => {}, [msalInstance, handleAuthenticationSuccess]);
-
-  async function getUserInfoFromGraph(accessToken: string): Promise<User> {
+  const getUserInfoFromGraph = async (accessToken: string): Promise<User> => {
     const response = await fetch('https://graph.microsoft.com/v1.0/me', {
       headers: {
         method: 'GET',
@@ -153,6 +143,7 @@ export const SignIn = (): React.ReactElement => {
     });
 
     const data = await response.json();
+
     return {
       firstName: data.givenName || '',
       lastName: data.surname || '',
@@ -160,11 +151,11 @@ export const SignIn = (): React.ReactElement => {
       emailAddress: data.mail || data.userPrincipalName || '',
       phoneNumber: data.mobilePhone || '',
     };
-  }
+  };
 
-  async function exchangeTokenForServerToken(
+  const exchangeTokenForServerToken = async (
     clientSideToken: string,
-  ): Promise<string> {
+  ): Promise<string> => {
     const response = await fetch('/api/getProfileOnBehalfOf', {
       method: 'POST',
       headers: {
@@ -181,18 +172,16 @@ export const SignIn = (): React.ReactElement => {
 
     const data = await response.json();
     return data.accessToken;
-  }
+  };
 
   if (isAuthenticating) {
     return <div style={{ paddingLeft: '100px' }}>Authenticating...</div>;
   }
-
   return (
     <div className="grid-container">
       <div className="grid-row">
         <div className="tablet:grid-col-6" style={{ paddingLeft: '100px' }}>
           <h1>Sign In</h1>
-          {/* TODO: Improve UI */}
         </div>
       </div>
     </div>

@@ -21,6 +21,12 @@ export interface Prompt {
   suggestions: string[];
 }
 
+export interface Session {
+  sessionId: string;
+  prompts: Prompt[];
+  chatHistory: string;
+}
+
 export interface CompletionSource {
   reference: string | null;
   document: string;

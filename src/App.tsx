@@ -1,6 +1,7 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
-import { Route, Routes } from 'react-router';
+import { InteractionStatus } from '@azure/msal-browser';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
+import React, { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router';
 import { Sidebar } from './components/sidebar/sidebar';
 import { Investigation } from './pages/chatwindow';
 import { Dashboard } from './pages/dashboard';
@@ -8,7 +9,6 @@ import { Examples } from './pages/examples';
 import { Faqs } from './pages/faqs';
 import { History } from './pages/history';
 import { SignIn } from './pages/sign-in';
-const queryClient = new QueryClient();
 
 /*
   For Dark mode handling on entrance of the App
@@ -29,20 +29,35 @@ document.documentElement.setAttribute(
 );
 
 // Export the App
-export const App = (): React.ReactElement => (
-  <QueryClientProvider client={queryClient}>
-    <main id="mainSection" className="usa-section">
-      <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-        <Sidebar />
+export const App = (): React.ReactElement => {
+  const { inProgress } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAuthenticated && inProgress === InteractionStatus.None) {
+      navigate('/login');
+    }
+    console.log('isAuthenticated: ', isAuthenticated);
+  }, [inProgress, isAuthenticated, navigate]);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
+      {isAuthenticated ? (
+        <main id="mainSection" className="usa-section">
+          <Sidebar />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/session" element={<Investigation />} />
+            <Route path="/faqs" element={<Faqs />} />
+            <Route path="/examples" element={<Examples />} />
+            <Route path="/history" element={<History />} />
+          </Routes>
+        </main>
+      ) : (
         <Routes>
           <Route path="/login" element={<SignIn />} />
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/session" element={<Investigation />} />
-          <Route path="/faqs" element={<Faqs />} />
-          <Route path="/examples" element={<Examples />} />
-          <Route path="/history" element={<History />} />
         </Routes>
-      </div>
-    </main>
-  </QueryClientProvider>
-);
+      )}
+    </div>
+  );
+};
