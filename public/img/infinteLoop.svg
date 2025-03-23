@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150" data-inject-url="https://www.svgbackgrounds.com/svg/preloaders/infinite-spinner.svg" loading="lazy">
+            <style xmlns="http://www.w3.org/2000/svg">
+		@keyframes leftGradient {
+			0% { stop-color: rgb(159,53,147); }
+			9% { stop-color: rgb(10,117,231); }
+			18% { stop-color: rgb(58,126,192); }
+			27% { stop-color: rgb(97,197,191); }
+			36% { stop-color: rgb(0,150,128); }
+			45% { stop-color: rgb(108,130,69); }
+			54% { stop-color: rgb(205,219,40); }
+			63% { stop-color: rgb(255,199,8); }
+			72% { stop-color: rgb(236,30,36); }
+			81% { stop-color: rgb(184,32,37); }
+			90% { stop-color: rgb(243,124,32); }
+			100% { stop-color: rgb(159,53,147); }
+		}
+		@-webkit-keyframes leftGradient {
+			0% { stop-color: rgb(159,53,147); }
+			9% { stop-color: rgb(10,117,231); }
+			18% { stop-color: rgb(58,126,192); }
+			27% { stop-color: rgb(97,197,191); }
+			36% { stop-color: rgb(0,150,128); }
+			45% { stop-color: rgb(108,130,69); }
+			54% { stop-color: rgb(205,219,40); }
+			63% { stop-color: rgb(255,199,8); }
+			72% { stop-color: rgb(236,30,36); }
+			81% { stop-color: rgb(184,32,37); }
+			90% { stop-color: rgb(243,124,32); }
+			100% { stop-color: rgb(159,53,147); }
+		}
+		@-moz-keyframes leftGradient {
+			0% { stop-color: rgb(159,53,147); }
+			9% { stop-color: rgb(10,117,231); }
+			18% { stop-color: rgb(58,126,192); }
+			27% { stop-color: rgb(97,197,191); }
+			36% { stop-color: rgb(0,150,128); }
+			45% { stop-color: rgb(108,130,69); }
+			54% { stop-color: rgb(205,219,40); }
+			63% { stop-color: rgb(255,199,8); }
+			72% { stop-color: rgb(236,30,36); }
+			81% { stop-color: rgb(184,32,37); }
+			90% { stop-color: rgb(243,124,32); }
+			100% { stop-color: rgb(159,53,147); }
+		}
+		@keyframes rightGradient {
+			0% { stop-color: rgb(10,117,231); }
+			9% { stop-color: rgb(58,126,192); }
+			18% { stop-color: rgb(97,197,191); }
+			27% { stop-color: rgb(0,150,128); }
+			36% { stop-color: rgb(108,130,69); }
+			45% { stop-color: rgb(205,219,40); }
+			54% { stop-color: rgb(255,199,8); }
+			63% { stop-color: rgb(236,30,36); }
+			72% { stop-color: rgb(184,32,37); }
+			81% { stop-color: rgb(243,124,32); }
+			90% { stop-color: rgb(159,53,147); }
+			100% { stop-color: rgb(10,117,231); }
+		}
+		@-webkit-keyframes rightGradient {
+			0% { stop-color: rgb(10,117,231); }
+			9% { stop-color: rgb(58,126,192); }
+			18% { stop-color: rgb(97,197,191); }
+			27% { stop-color: rgb(0,150,128); }
+			36% { stop-color: rgb(108,130,69); }
+			45% { stop-color: rgb(205,219,40); }
+			54% { stop-color: rgb(255,199,8); }
+			63% { stop-color: rgb(236,30,36); }
+			72% { stop-color: rgb(184,32,37); }
+			81% { stop-color: rgb(243,124,32); }
+			90% { stop-color: rgb(159,53,147); }
+			100% { stop-color: rgb(10,117,231); }
+		}
+		@-moz-keyframes rightGradient {
+			0% { stop-color: rgb(10,117,231); }
+			9% { stop-color: rgb(58,126,192); }
+			18% { stop-color: rgb(97,197,191); }
+			27% { stop-color: rgb(0,150,128); }
+			36% { stop-color: rgb(108,130,69); }
+			45% { stop-color: rgb(205,219,40); }
+			54% { stop-color: rgb(255,199,8); }
+			63% { stop-color: rgb(236,30,36); }
+			72% { stop-color: rgb(184,32,37); }
+			81% { stop-color: rgb(243,124,32); }
+			90% { stop-color: rgb(159,53,147); }
+			100% { stop-color: rgb(10,117,231); }
+		}
+
+		#left { -webkit-animation: leftGradient 30s infinite; animation: leftGradient 30s infinite; }
+		#right { -webkit-animation: rightGradient 30s infinite; animation: rightGradient 30s infinite; }
+	</style>
+ <linearGradient xmlns="http://www.w3.org/2000/svg" id="mastGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+		<stop stop-color="rgb(236,30,36)" offset="0%" id="left"/>
+		<stop stop-color="rgb(243,124,32)" offset="100%" id="right"/>
+	</linearGradient>
+   <linearGradient xmlns="http://www.w3.org/2000/svg" id="minGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+		<stop stop-color="rgb(236,30,36)" offset="0%" id="right"/>
+		<stop stop-color="rgb(243,124,32)" offset="100%" id="left"/>
+	</linearGradient>
+   <path xmlns="http://www.w3.org/2000/svg" class="svg__stroke svg_strokeWidth" fill="none" style="stroke:url(#mastGradient);stroke-width:18" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z">
+      <animate attributeName="stroke-dashoffset" calcMode="spline" dur="2.9" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite">
+      </animate>
+   </path>
+   <path xmlns="http://www.w3.org/2000/svg" class="svg__stroke svg_strokeWidth" fill="none" stroke="#00BB9D" style="stroke:url(#minGradient);stroke-width:7" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z">
+      <animate attributeName="stroke-dashoffset" calcMode="spline" dur="3.4" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite">
+      </animate>
+   </path>
+</svg>

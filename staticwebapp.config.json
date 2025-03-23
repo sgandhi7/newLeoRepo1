@@ -1,0 +1,48 @@
+{
+  "globalHeaders": {
+    "Access-Control-Allow-Origin": "https://blue-grass-0b87e8d10.4.azurestaticapps.net/",
+    "Access-Control-Allow-Methods": "GET, POST, PUT",
+    "Access-Control-Allow-Credentials": "true",
+    "Cache-Control": "no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0"
+  },
+  "routes": [
+    {
+      "route": "/",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/session",
+      "allowedRoles": ["authenticated"]
+    },
+    {
+      "route": "/.auth/*",
+      "allowedRoles": [
+        "anonymous",
+        "authenticated"
+      ]
+    },
+    {
+      "route": "/logout",
+      "redirect": "/.auth/logout"
+    },
+    {
+      "route": "/login",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/api/PromptFlowAPI",
+      "allowedRoles": ["authenticated", "anonymous"]
+    }
+  ],
+  "auth": {
+    "identityProviders": {
+      "azureActiveDirectory": {
+        "registration": {
+          "openIdIssuer": "https://login.microsoftonline.com/399ed244-adb0-4a01-91a2-898d9918314a/v2.0",
+          "clientIdSettingName": "REACT_APP_AZURE_CLIENT_ID",
+          "clientSecretSettingName": "REACT_APP_AZURE_CLIENT_SECRET"
+        }
+      }
+    }
+  }
+}
