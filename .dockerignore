@@ -24,3 +24,14 @@
 **/reports
 LICENSE
 README.md
+
+#only want to include front-end aspects for now, so skip the backend files
+api/
+functions/
+backend/
+host.json
+local.settings.json
+*.cs
+*.csproj
+*.tsbuildinfo
+build/
